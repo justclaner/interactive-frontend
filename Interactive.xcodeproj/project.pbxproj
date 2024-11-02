@@ -14,6 +14,7 @@
 		32DA0C0F2CD6E63B006BEF03 /* InteractiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C0E2CD6E63B006BEF03 /* InteractiveTests.swift */; };
 		32DA0C192CD6E63B006BEF03 /* InteractiveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C182CD6E63B006BEF03 /* InteractiveUITests.swift */; };
 		32DA0C1B2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C1A2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift */; };
+		32DA0C282CD6EB04006BEF03 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 32DA0C272CD6EB04006BEF03 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		32DA0C142CD6E63B006BEF03 /* InteractiveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InteractiveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DA0C182CD6E63B006BEF03 /* InteractiveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveUITests.swift; sourceTree = "<group>"; };
 		32DA0C1A2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		32DA0C272CD6EB04006BEF03 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 		32DA0BF12CD6E63A006BEF03 = {
 			isa = PBXGroup;
 			children = (
+				32DA0C272CD6EB04006BEF03 /* README.md */,
 				32DA0BFC2CD6E63A006BEF03 /* Interactive */,
 				32DA0C0D2CD6E63B006BEF03 /* InteractiveTests */,
 				32DA0C172CD6E63B006BEF03 /* InteractiveUITests */,
@@ -231,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32DA0C282CD6EB04006BEF03 /* README.md in Resources */,
 				32DA0C052CD6E63B006BEF03 /* Preview Assets.xcassets in Resources */,
 				32DA0C022CD6E63B006BEF03 /* Assets.xcassets in Resources */,
 			);
