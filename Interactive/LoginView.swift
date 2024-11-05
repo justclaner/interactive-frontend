@@ -13,14 +13,48 @@ struct LoginView: View {
     @State private var password: String = ""
     var body: some View {
         ZStack {
-            Color.gray.opacity(0.4)
+            AngularGradient(colors: [
+                //Color.red, Color.blue
+                Helper.hexColor(hexCode: "#AF945F").opacity(0.3),
+                Helper.hexColor(hexCode: "#735E46").opacity(0.3),
+                Helper.hexColor(hexCode: "#AD7644").opacity(0.3),
+                Helper.hexColor(hexCode: "#FFF3B6").opacity(0.3)
+            ], center: .center, angle: .zero)
+            .blur(radius:100)
+            .rotationEffect(.degrees(155))
+            .frame(width:676,height:453)
+            .offset(x:0,y:-320)
+                
+            AngularGradient(colors: [
+                Helper.hexColor(hexCode: "#AF945F").opacity(0.3),
+                Helper.hexColor(hexCode: "#735E46").opacity(0.3),
+                Helper.hexColor(hexCode: "#AD7644").opacity(0.3),
+                Helper.hexColor(hexCode: "#FFF3B6").opacity(0.3)
+            ], center: UnitPoint(x:0.7,y:0.5), angle: .zero)
+            .blur(radius:100)
+            .frame(width:755,height:720)
+            .rotationEffect(.degrees(-70))
+            .offset(x:100,y:200)
+            
+            Rectangle()
+            .fill(Helper.hexColor(hexCode: "#3C3B3B").opacity(0.65))
+            .blur(radius:100)
+            .frame(width:281,height:224)
+            .offset(x:120,y:-380)
+        
+            Rectangle()
+            .fill(Helper.hexColor(hexCode: "#3C3B3B").opacity(0.65))
+            .blur(radius:100)
+            .frame(width:281,height:224)
+            .offset(x:-200,y:350)
+
+            Color.white.opacity(0)
                 .ignoresSafeArea()
                 .onTapGesture() {
                     if (isLogging) {
                         isLogging.toggle()
                     }
                 }
-            
             VStack {
                 Spacer()
                 Text("i")
