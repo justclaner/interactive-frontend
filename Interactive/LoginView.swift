@@ -30,7 +30,7 @@ struct LoginView: View {
                 Helper.hexColor(hexCode: "#735E46").opacity(0.3),
                 Helper.hexColor(hexCode: "#AD7644").opacity(0.3),
                 Helper.hexColor(hexCode: "#FFF3B6").opacity(0.3)
-            ], center: UnitPoint(x:0.7,y:0.5), angle: .zero)
+            ], center: .center, angle: .zero)
             .blur(radius:100)
             .frame(width:755,height:720)
             .rotationEffect(.degrees(-70))
