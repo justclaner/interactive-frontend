@@ -12,7 +12,7 @@ import SwiftUI
  Returns a Color given a color hexcode. Hexcode must be
  prefixed with '#' and be exactly 7 characters long.
  Characters after '#' must conform to the regex
- ([A-F]|\d). That is, all characters after '#' must be
+ [A-F\d]. That is, all characters after '#' must be
  either digits or capital letters from A-F. The function
  will return Color.black for invalid hexcode strings.
  
