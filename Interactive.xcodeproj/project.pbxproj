@@ -15,8 +15,9 @@
 		32DA0C192CD6E63B006BEF03 /* InteractiveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C182CD6E63B006BEF03 /* InteractiveUITests.swift */; };
 		32DA0C1B2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C1A2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift */; };
 		32DA0C282CD6EB04006BEF03 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 32DA0C272CD6EB04006BEF03 /* README.md */; };
-		32DA0C2A2CD72D3E006BEF03 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C292CD72D3E006BEF03 /* LoginView.swift */; };
+		32DA0C2A2CD72D3E006BEF03 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C292CD72D3E006BEF03 /* LoginPage.swift */; };
 		32DA0C2C2CD95E04006BEF03 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C2B2CD95E04006BEF03 /* Helper.swift */; };
+		32DA0C312CDED205006BEF03 /* WelcomeBackPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0C302CDED205006BEF03 /* WelcomeBackPage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,8 +49,9 @@
 		32DA0C182CD6E63B006BEF03 /* InteractiveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveUITests.swift; sourceTree = "<group>"; };
 		32DA0C1A2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		32DA0C272CD6EB04006BEF03 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		32DA0C292CD72D3E006BEF03 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		32DA0C292CD72D3E006BEF03 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		32DA0C2B2CD95E04006BEF03 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		32DA0C302CDED205006BEF03 /* WelcomeBackPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeBackPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +103,10 @@
 		32DA0BFC2CD6E63A006BEF03 /* Interactive */ = {
 			isa = PBXGroup;
 			children = (
+				32DA0C2F2CDED1BD006BEF03 /* LoginViews */,
 				32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */,
 				32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */,
-				32DA0C292CD72D3E006BEF03 /* LoginView.swift */,
+				32DA0C292CD72D3E006BEF03 /* LoginPage.swift */,
 				32DA0C2B2CD95E04006BEF03 /* Helper.swift */,
 				32DA0C012CD6E63B006BEF03 /* Assets.xcassets */,
 				32DA0C032CD6E63B006BEF03 /* Preview Content */,
@@ -134,6 +137,14 @@
 				32DA0C1A2CD6E63B006BEF03 /* InteractiveUITestsLaunchTests.swift */,
 			);
 			path = InteractiveUITests;
+			sourceTree = "<group>";
+		};
+		32DA0C2F2CDED1BD006BEF03 /* LoginViews */ = {
+			isa = PBXGroup;
+			children = (
+				32DA0C302CDED205006BEF03 /* WelcomeBackPage.swift */,
+			);
+			path = LoginViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,10 +278,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32DA0C2A2CD72D3E006BEF03 /* LoginView.swift in Sources */,
+				32DA0C2A2CD72D3E006BEF03 /* LoginPage.swift in Sources */,
 				32DA0C002CD6E63A006BEF03 /* ContentView.swift in Sources */,
 				32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */,
 				32DA0C2C2CD95E04006BEF03 /* Helper.swift in Sources */,
+				32DA0C312CDED205006BEF03 /* WelcomeBackPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

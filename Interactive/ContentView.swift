@@ -8,9 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var path : [String] = ["Login"]
     var body: some View {
-        Text("Hello Interactive")
-            .font(.system(size:48))
+        NavigationStack(path:$path) {
+            //placeholder view required to put navigationDestination
+            Text("Root View")
+            .navigationDestination(for: String.self) {
+                page in
+                if (page == "Login") {
+                    LoginPage(path:$path).navigationBarBackButtonHidden(true)
+                        .ignoresSafeArea()
+                } else if (page == "Welcome") {
+                    WelcomeBackPage(path:$path)
+                        .navigationBarBackButtonHidden(true)
+                }
+                else {
+                    Text("You selected \(page)")
+                }
+            }
+            
+            
+        }
+        
     }
 }
 
