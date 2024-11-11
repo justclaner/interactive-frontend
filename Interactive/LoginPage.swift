@@ -42,7 +42,7 @@ struct LoginPage: View {
                     .offset(x:0,y:-40)
                     VStack {
                         Button(action: {
-                            path = ["Login","Welcome"]
+                            path.append("Welcome Back")
                         }) {
                             Text("login")
                                 .font(.system(size:17,weight:.bold))
@@ -60,7 +60,7 @@ struct LoginPage: View {
                         .padding([.vertical],10)
                      
                         Button(action: {
-                            //change path
+                            path.append("About You")
                         }) {
                             Text("create an account")
                                 .font(.system(size:17,weight:.bold))

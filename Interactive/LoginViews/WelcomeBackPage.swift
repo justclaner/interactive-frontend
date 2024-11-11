@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct WelcomeBackPage: View {
+    @Binding var path: [String]
     @State private var email: String = ""
     @State private var password: String = ""
-    @Binding var path : [String]
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -22,7 +22,7 @@ struct WelcomeBackPage: View {
                 )
             VStack {
                 Button(action: {
-                    path = ["Login"]
+                    path.removeLast()
                 }) {
                     Image("chevron-back")
                         .resizable()
@@ -43,7 +43,6 @@ struct WelcomeBackPage: View {
                         .frame(width:16,height:52)
                         .clipShape(RoundedRectangle(cornerRadius:12.11))
                         .padding([.bottom],10)
-                    
                 }
                     .background(
                         Circle()
@@ -54,7 +53,7 @@ struct WelcomeBackPage: View {
                 TextField("", text: $email, prompt: Text(verbatim: "example@gmail.com")
                     .font(.system(size:16,weight:.semibold)).foregroundColor(Helper.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
-                    .padding(10)
+                    .padding(16)
                     .frame(width:361,height:43)
                     .border(Color.black,width:1)
                     .clipShape(RoundedRectangle(cornerRadius:8))
@@ -67,7 +66,7 @@ struct WelcomeBackPage: View {
                 TextField("", text: $password, prompt: Text(verbatim: "password")
                     .font(.system(size:16,weight:.semibold)).foregroundColor(Helper.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
-                    .padding(10)
+                    .padding(16)
                     .frame(width:361,height:43)
                     .border(Color.black,width:1)
                     .clipShape(RoundedRectangle(cornerRadius:8))
@@ -95,6 +94,7 @@ struct WelcomeBackPage: View {
                         .font(.system(size:17,weight:.semibold))
                         .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
+                        .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:361,height:40)
                 .background(Helper.hexColor(hexCode: "#FFDD1A"))
@@ -109,12 +109,14 @@ struct WelcomeBackPage: View {
                     .foregroundStyle(Helper.hexColor(hexCode: "#FFE54D"))
                     .frame(maxWidth:361,alignment:.leading)
                 Button(action: {
-                    //add path change
+                    path.removeLast()
+                    path.append("About You")
                 }) {
                     Text("Create new account")
                         .font(.system(size:17,weight:.semibold))
                         .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
+                        .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:361,height:40)
                 .background(Color.white)
@@ -128,5 +130,5 @@ struct WelcomeBackPage: View {
 }
 
 #Preview {
-    WelcomeBackPage(path:.constant(["Login","Welcome"]))
+    WelcomeBackPage(path:.constant(["Login","Welcome Back"]))
 }

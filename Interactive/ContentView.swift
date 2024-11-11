@@ -18,8 +18,11 @@ struct ContentView: View {
                 if (page == "Login") {
                     LoginPage(path:$path).navigationBarBackButtonHidden(true)
                         .ignoresSafeArea()
-                } else if (page == "Welcome") {
+                } else if (page == "Welcome Back") {
                     WelcomeBackPage(path:$path)
+                        .navigationBarBackButtonHidden(true)
+                } else if (page == "About You") {
+                    AboutYouPage(path:$path)
                         .navigationBarBackButtonHidden(true)
                 }
                 else {

@@ -8,18 +8,19 @@
 import Foundation
 import SwiftUI
 
-/*
- Returns a Color given a color hexcode. Hexcode must be
- prefixed with '#' and be exactly 7 characters long.
- Characters after '#' must conform to the regex
- [A-F\d]. That is, all characters after '#' must be
- either digits or capital letters from A-F. The function
- will return Color.black for invalid hexcode strings.
- 
- @param hexCode a 7-character string prefixed with '#'
- @return Color  a SwiftUI Color object
- */
 class Helper {
+    
+    /*
+     Returns a Color given a color hexcode. Hexcode must be
+     prefixed with '#' and be exactly 7 characters long.
+     Characters after '#' must conform to the regex
+     [A-F\d]. That is, all characters after '#' must be
+     either digits or capital letters from A-F. The function
+     will return Color.black for invalid hexcode strings.
+     
+     @param hexCode a 7-character string prefixed with '#'
+     @return Color  a SwiftUI Color object
+     */
     static func hexColor(hexCode: String) -> Color {
         let defaultColor: Color = Color.black
         
@@ -84,5 +85,69 @@ class Helper {
         let blueFrac: Double = Double(blue)/255
 
         return Color(red: redFrac, green: greenFrac, blue: blueFrac)
+    }
+    
+    /*
+     Returns a string format of a Date object.
+     
+     @param date: Date          The Date object
+     
+     @param dateStyle: String   The specified string style for the day, month, and year.
+                                In the en_US locale:
+                                    "none"      No format
+                                    "short"     "DD/MM/YY"
+                                    "medium"    "[Abbreviated Month String] DD, YYYY"
+                                    "long"      "[Month String] DD, YYYY"
+                                    "full"      "[Day of Week], [Month String] DD, YYYY [Era String]"
+                                Note that DD and MM will be truncated to 1 character when possible.
+                                dateStyle defaults to "full" when typed incorrectly.
+     
+    @param timeStyle: String    The specific string style for the time
+                                In the en_US locale:
+                                    "none"      No format
+                                    "short"     "[Hour]:[Minute]"
+                                    "medium"    "[Hour]:[Minute]:[Second] [Period]"     (Period is AM/PM)
+                                    "long"      "[Hour]:[Minute]:[Second] [Period] [Time Zone Abbreviation]"
+                                    "full"      "[Hour]:[Minute]:[Second] [Period] [Time Zone Full Text]"
+                                timeStyle defaults to "full" when typed incorrectly.
+     
+    @param locale: String       A 5-character string, where the first two characters is a lowercase
+                                abbreviation of the language, the third character is a dash ("-"), and
+                                the fourth and fifth character is an uppercase abbreviation of the
+                                region. Examples include "en-US", "zh-CN", and "fr-FR". For more information,
+                                see https://www.techonthenet.com/js/language_tags.php
+                                If typed incorrectly, the locale will default to en-US.
+     */
+    static func dateToString(date: Date, dateStyle: String, timeStyle: String, locale: String) -> String {
+        let dateFormatter = DateFormatter()
+        
+        switch dateStyle {
+        case "none":
+            dateFormatter.dateStyle = .none
+        case "short":
+            dateFormatter.dateStyle = .short
+        case "medium":
+            dateFormatter.dateStyle = .medium
+        case "long":
+            dateFormatter.dateStyle = .long
+        default:
+            dateFormatter.dateStyle = .full
+        }
+        
+        switch timeStyle {
+        case "none":
+            dateFormatter.timeStyle = .none
+        case "short":
+            dateFormatter.timeStyle = .short
+        case "medium":
+            dateFormatter.timeStyle = .medium
+        case "long":
+            dateFormatter.timeStyle = .long
+        default:
+            dateFormatter.timeStyle = .full
+        }
+
+        dateFormatter.locale = Locale(identifier: locale)
+        return dateFormatter.string(from: date)
     }
 }
