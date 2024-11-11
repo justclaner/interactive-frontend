@@ -90,7 +90,6 @@ class Helper {
     
     /*
      Returns a string format of a Date object.
-     
      @param date: Date          The Date object
      
      @param dateStyle: String   The specified string style for the day, month, and year.
@@ -150,6 +149,7 @@ class Helper {
         }
 
         dateFormatter.locale = Locale(identifier: locale)
+        
         return dateFormatter.string(from: date)
     }
 }
