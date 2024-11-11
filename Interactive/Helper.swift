@@ -11,7 +11,7 @@ import SwiftUI
 class Helper {
     
     /*
-     Returns a Color given a color hexcode. Hexcode must be
+     Returns a Color given a color hexcode. Hexcodes must be
      prefixed with '#' and be exactly 7 characters long.
      Characters after '#' must conform to the regex
      [A-F\d]. That is, all characters after '#' must be
@@ -19,6 +19,7 @@ class Helper {
      will return Color.black for invalid hexcode strings.
      
      @param hexCode a 7-character string prefixed with '#'
+                    and followed by a 6-character hex-string
      @return Color  a SwiftUI Color object
      */
     static func hexColor(hexCode: String) -> Color {
@@ -117,6 +118,7 @@ class Helper {
                                 region. Examples include "en-US", "zh-CN", and "fr-FR". For more information,
                                 see https://www.techonthenet.com/js/language_tags.php
                                 If typed incorrectly, the locale will default to en-US.
+     @return String             A string format of the date given.
      */
     static func dateToString(date: Date, dateStyle: String, timeStyle: String, locale: String) -> String {
         let dateFormatter = DateFormatter()
