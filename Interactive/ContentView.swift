@@ -24,6 +24,12 @@ struct ContentView: View {
                 } else if (page == "About You") {
                     AboutYouPage(path:$path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Add Email") {
+                    AddEmailPage(path:$path)
+                        .navigationBarBackButtonHidden(true)
+                } else if (page == "Share Location") {
+                    ShareLocationPage(path:$path)
+                        .navigationBarBackButtonHidden(true)
                 }
                 else {
                     Text("You selected \(page)")

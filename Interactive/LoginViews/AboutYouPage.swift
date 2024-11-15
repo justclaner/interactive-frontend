@@ -50,13 +50,14 @@ struct AboutYouPage: View {
                 }
             VStack {
                 Button(action: {
+                    //could have came from login or welcome back screen
                     path.removeLast()
                 }) {
                     Image("chevron-back")
                         .resizable()
                         .frame(width:30,height:30)
-                        .offset(x:10,y:10)
                 }
+                .padding([.trailing],10)
                 .frame(maxWidth:.infinity,alignment:.leading)
                 VStack{
                     Circle()
@@ -104,7 +105,8 @@ struct AboutYouPage: View {
                     .foregroundStyle(Color.white)
                     .frame(maxWidth:361,alignment:.leading)
                 TextField("", text: $username, prompt: Text(verbatim: "Add username...")
-                    .font(.system(size:16,weight:.semibold)).foregroundColor(Helper.hexColor(hexCode: "#B3B3B3")))
+                    .font(.system(size:16,weight:.semibold))
+                    .foregroundColor(Helper.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
                     .padding(16)
                     .frame(width:361,height:43)
@@ -114,6 +116,7 @@ struct AboutYouPage: View {
                         .stroke(.white.opacity(0.8), lineWidth: 1)
                     )
                     .autocorrectionDisabled()
+                    .foregroundColor(Helper.hexColor(hexCode: "#B3B3B3"))
                     .padding([.bottom],30)
                 Text("Birth Date")
                     .font(.system(size:16,weight:.semibold))
@@ -165,12 +168,14 @@ struct AboutYouPage: View {
                 
                 Spacer()
                 Button(action: {
-                    print(Helper.dateToString(date: date, dateStyle: "long", timeStyle: "none", locale: "en-US"))
+                    path.append("Add Email")
+//                    print(Helper.dateToString(date: date, dateStyle: "long", timeStyle: "none", locale: "en-US"))
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))
                         .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
+                        .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:361,height:40)
                 .background(Helper.hexColor(hexCode: "#FFDD1A"))

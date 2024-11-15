@@ -66,6 +66,7 @@ struct LoginPage: View {
                                 .font(.system(size:17,weight:.bold))
                                 .foregroundStyle(Color.black.opacity(0.75))
                                 .padding(10)
+                                .frame(maxWidth:.infinity,maxHeight:.infinity)
                         }
                         .frame(width:361,height:40)
                         .background(Helper.hexColor(hexCode: "#FFDD1A"))
