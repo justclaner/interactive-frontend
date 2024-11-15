@@ -11,6 +11,7 @@ struct WelcomeBackPage: View {
     @Binding var path: [String]
     @State private var email: String = ""
     @State private var password: String = ""
+    var global = GlobalVariables()
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -92,7 +93,8 @@ struct WelcomeBackPage: View {
                 .frame(maxWidth:361,alignment:.leading)
                 
                 Button(action: {
-                    //add path change
+                    global.test += 1
+                    print(global.test)
                 }) {
                     Text("Submit")
                         .font(.system(size:17,weight:.semibold))

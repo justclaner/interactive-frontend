@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ShareLocationPage: View {
+    
     @Binding var path: [String]
     var body: some View {
         ZStack {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AboutYouPage: View {
+    
     @Binding var path: [String]
     @State private var username: String = ""
     @State private var birthDay: Int = 0

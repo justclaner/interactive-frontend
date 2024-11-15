@@ -8,27 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var path : [String] = ["Login"]
+    @State private var viewModel = ViewModel()
+    //@State private var path : [String] = ["Login"]
     var body: some View {
-        NavigationStack(path:$path) {
+        NavigationStack(path:$viewModel.path) {
             //placeholder view required to put navigationDestination
-            Text("Root View")
+            Text("")
             .navigationDestination(for: String.self) {
                 page in
                 if (page == "Login") {
-                    LoginPage(path:$path).navigationBarBackButtonHidden(true)
+                    LoginPage(path:$viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                         .ignoresSafeArea()
                 } else if (page == "Welcome Back") {
-                    WelcomeBackPage(path:$path)
+                    WelcomeBackPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+ 
                 } else if (page == "About You") {
-                    AboutYouPage(path:$path)
+                    AboutYouPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
                 } else if (page == "Add Email") {
-                    AddEmailPage(path:$path)
+                    AddEmailPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
                 } else if (page == "Share Location") {
-                    ShareLocationPage(path:$path)
+                    ShareLocationPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
                 }
                 else {
@@ -42,6 +45,8 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

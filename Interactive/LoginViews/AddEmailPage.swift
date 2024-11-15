@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddEmailPage: View {
+    
     @Binding var path: [String]
     @State var email = ""
     @State var password = ""
@@ -25,7 +26,6 @@ struct AddEmailPage: View {
                 }
             VStack {
                 Button(action: {
-                    print("back")
                     path.removeLast()
                 }) {
                     Image("chevron-back")
