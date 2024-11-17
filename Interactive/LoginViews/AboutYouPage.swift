@@ -49,33 +49,11 @@ struct AboutYouPage: View {
                         isSelectingDate = false
                     }
                 }
+            BackButton(path:$path)
+                .padding([.top],20)
             VStack {
-                Button(action: {
-                    //could have came from login or welcome back screen
-                    path.removeLast()
-                }) {
-                    Image("chevron-back")
-                        .resizable()
-                        .frame(width:30,height:30)
-                }
-                .padding([.trailing],10)
-                .frame(maxWidth:.infinity,alignment:.leading)
-                VStack{
-                    Circle()
-                        .fill(Helper.hexColor(hexCode: "#FFDD1A"))
-                        .frame(width:16,height:16)
-                        .padding([.bottom],-4)
-                    Rectangle()
-                        .fill(Helper.hexColor(hexCode: "#FFDD1A"))
-                        .frame(width:16,height:52)
-                        .clipShape(RoundedRectangle(cornerRadius:12.11))
-                        .padding([.bottom],10)
-                }
-                    .background(
-                        Circle()
-                            .fill(Helper.hexColor(hexCode:"#333333"))
-                            .frame(width:113,height:113)
-                    )
+                LargeLogo()
+                    .padding([.top],30)
                 Text("Tell us something more about yourself")
                     .font(.system(size:31,weight:.semibold))
                     .foregroundStyle(Color.white)

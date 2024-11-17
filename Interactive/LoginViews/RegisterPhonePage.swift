@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct RegisterPhonePage: View {
+    @Binding var path: [String]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Color.white.opacity(0.001)
+                .ignoresSafeArea()
+                .background(
+                    Image("Background1")
+                        .resizable()
+                        .ignoresSafeArea()
+                )
+            BackButton(path:$path)
+                .padding([.top],20)
+            VStack {
+                LargeLogo()
+                    .padding([.top],30)
+                Spacer()
+            }
+            .frame(maxWidth:361)
+        }
     }
 }
 
 #Preview {
-    RegisterPhonePage()
+    RegisterPhonePage(path:.constant(["Register Phone"]))
 }

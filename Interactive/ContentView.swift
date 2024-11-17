@@ -35,8 +35,10 @@ struct ContentView: View {
                 } else if (page == "All Done") {
                     AllDonePage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Register Phone") {
+                    RegisterPhonePage(path:$viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 }
-                
                 else {
                     Text("You selected \(page)")
                 }

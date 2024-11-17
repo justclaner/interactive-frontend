@@ -21,34 +21,13 @@ struct WelcomeBackPage: View {
                         .resizable()
                         .ignoresSafeArea()
                 )
+            BackButton(path:$path)
+                .padding([.top],8)
             VStack {
-                Button(action: {
-                    path.removeLast()
-                }) {
-                    Image("chevron-back")
-                        .resizable()
-                        .frame(width:30,height:30)
-                }
-                .frame(maxWidth:.infinity,alignment:.leading)
                 Text("Welcome Back")
                     .font(.system(size:37,weight:.semibold))
                     .foregroundStyle(Color.white)
-                VStack{
-                    Circle()
-                        .fill(Helper.hexColor(hexCode: "#FFDD1A"))
-                        .frame(width:16,height:16)
-                        .padding([.bottom],-4)
-                    Rectangle()
-                        .fill(Helper.hexColor(hexCode: "#FFDD1A"))
-                        .frame(width:16,height:52)
-                        .clipShape(RoundedRectangle(cornerRadius:12.11))
-                        .padding([.bottom],10)
-                }
-                    .background(
-                        Circle()
-                            .fill(Helper.hexColor(hexCode:"#333333"))
-                            .frame(width:113,height:113)
-                    )
+                LargeLogo()
                     .padding([.vertical],20)
                 TextField("", text: $email, prompt: Text(verbatim: "example@gmail.com")
                     .font(.system(size:16,weight:.semibold))

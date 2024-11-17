@@ -12,6 +12,9 @@
 		32BF9F9F2CE6C71600D78CBC /* ShareLocationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9F9E2CE6C71600D78CBC /* ShareLocationPage.swift */; };
 		32BF9FA32CE6D6ED00D78CBC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA22CE6D6ED00D78CBC /* ViewModel.swift */; };
 		32BF9FA52CEA59D200D78CBC /* AllDonePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA42CEA59D200D78CBC /* AllDonePage.swift */; };
+		32BF9FA72CEA786E00D78CBC /* RegisterPhonePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA62CEA786E00D78CBC /* RegisterPhonePage.swift */; };
+		32BF9FA92CEA7B0200D78CBC /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA82CEA7B0200D78CBC /* BackButton.swift */; };
+		32BF9FAB2CEA7C5100D78CBC /* LargeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */; };
 		32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */; };
 		32DA0C002CD6E63A006BEF03 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */; };
 		32DA0C022CD6E63B006BEF03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32DA0C012CD6E63B006BEF03 /* Assets.xcassets */; };
@@ -48,6 +51,9 @@
 		32BF9F9E2CE6C71600D78CBC /* ShareLocationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareLocationPage.swift; sourceTree = "<group>"; };
 		32BF9FA22CE6D6ED00D78CBC /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		32BF9FA42CEA59D200D78CBC /* AllDonePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDonePage.swift; sourceTree = "<group>"; };
+		32BF9FA62CEA786E00D78CBC /* RegisterPhonePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhonePage.swift; sourceTree = "<group>"; };
+		32BF9FA82CEA7B0200D78CBC /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeLogo.swift; sourceTree = "<group>"; };
 		32DA0BFA2CD6E63A006BEF03 /* Interactive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Interactive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveApp.swift; sourceTree = "<group>"; };
 		32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -115,7 +121,9 @@
 			children = (
 				32DA0C2F2CDED1BD006BEF03 /* LoginViews */,
 				32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */,
+				32BF9FA82CEA7B0200D78CBC /* BackButton.swift */,
 				32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */,
+				32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */,
 				32BF9FA22CE6D6ED00D78CBC /* ViewModel.swift */,
 				32DA0C292CD72D3E006BEF03 /* LoginPage.swift */,
 				32DA0C2B2CD95E04006BEF03 /* Helper.swift */,
@@ -158,6 +166,7 @@
 				32BF9F9C2CE6C1E800D78CBC /* AddEmailPage.swift */,
 				32BF9F9E2CE6C71600D78CBC /* ShareLocationPage.swift */,
 				32BF9FA42CEA59D200D78CBC /* AllDonePage.swift */,
+				32BF9FA62CEA786E00D78CBC /* RegisterPhonePage.swift */,
 			);
 			path = LoginViews;
 			sourceTree = "<group>";
@@ -294,12 +303,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				32DA0C2A2CD72D3E006BEF03 /* LoginPage.swift in Sources */,
+				32BF9FAB2CEA7C5100D78CBC /* LargeLogo.swift in Sources */,
 				32BF9FA32CE6D6ED00D78CBC /* ViewModel.swift in Sources */,
 				32DA0C002CD6E63A006BEF03 /* ContentView.swift in Sources */,
 				329E2E7F2CE1644E000330F8 /* AboutYouPage.swift in Sources */,
 				32BF9F9F2CE6C71600D78CBC /* ShareLocationPage.swift in Sources */,
 				32BF9F9D2CE6C1E800D78CBC /* AddEmailPage.swift in Sources */,
 				32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */,
+				32BF9FA72CEA786E00D78CBC /* RegisterPhonePage.swift in Sources */,
+				32BF9FA92CEA7B0200D78CBC /* BackButton.swift in Sources */,
 				32DA0C2C2CD95E04006BEF03 /* Helper.swift in Sources */,
 				32BF9FA52CEA59D200D78CBC /* AllDonePage.swift in Sources */,
 				32DA0C312CDED205006BEF03 /* WelcomeBackPage.swift in Sources */,

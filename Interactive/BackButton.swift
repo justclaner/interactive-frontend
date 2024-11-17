@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct BackButton: View {
+    @Binding var path: [String]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Button(action: {
+               path.removeLast()
+            }) {
+                Image("chevron-back")
+                    .resizable()
+                    .frame(width:30,height:30)
+            }
+            .frame(maxWidth:.infinity,alignment:.leading)
+            Spacer()
+        }
+        .frame(maxWidth:361)
     }
 }
 
 #Preview {
-    BackButton()
+    BackButton(path:.constant(["Login"]))
 }
