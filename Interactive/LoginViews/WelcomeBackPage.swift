@@ -11,7 +11,7 @@ struct WelcomeBackPage: View {
     @Binding var path: [String]
     @State private var email: String = ""
     @State private var password: String = ""
-    var global = GlobalVariables()
+    @State var global = GlobalVariables()
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)

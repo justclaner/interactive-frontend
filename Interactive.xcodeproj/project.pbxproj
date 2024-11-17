@@ -11,6 +11,7 @@
 		32BF9F9D2CE6C1E800D78CBC /* AddEmailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9F9C2CE6C1E800D78CBC /* AddEmailPage.swift */; };
 		32BF9F9F2CE6C71600D78CBC /* ShareLocationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9F9E2CE6C71600D78CBC /* ShareLocationPage.swift */; };
 		32BF9FA32CE6D6ED00D78CBC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA22CE6D6ED00D78CBC /* ViewModel.swift */; };
+		32BF9FA52CEA59D200D78CBC /* AllDonePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA42CEA59D200D78CBC /* AllDonePage.swift */; };
 		32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */; };
 		32DA0C002CD6E63A006BEF03 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */; };
 		32DA0C022CD6E63B006BEF03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32DA0C012CD6E63B006BEF03 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		32BF9F9C2CE6C1E800D78CBC /* AddEmailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmailPage.swift; sourceTree = "<group>"; };
 		32BF9F9E2CE6C71600D78CBC /* ShareLocationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareLocationPage.swift; sourceTree = "<group>"; };
 		32BF9FA22CE6D6ED00D78CBC /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		32BF9FA42CEA59D200D78CBC /* AllDonePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDonePage.swift; sourceTree = "<group>"; };
 		32DA0BFA2CD6E63A006BEF03 /* Interactive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Interactive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveApp.swift; sourceTree = "<group>"; };
 		32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				329E2E7E2CE1644E000330F8 /* AboutYouPage.swift */,
 				32BF9F9C2CE6C1E800D78CBC /* AddEmailPage.swift */,
 				32BF9F9E2CE6C71600D78CBC /* ShareLocationPage.swift */,
+				32BF9FA42CEA59D200D78CBC /* AllDonePage.swift */,
 			);
 			path = LoginViews;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				32BF9F9D2CE6C1E800D78CBC /* AddEmailPage.swift in Sources */,
 				32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */,
 				32DA0C2C2CD95E04006BEF03 /* Helper.swift in Sources */,
+				32BF9FA52CEA59D200D78CBC /* AllDonePage.swift in Sources */,
 				32DA0C312CDED205006BEF03 /* WelcomeBackPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

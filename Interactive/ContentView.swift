@@ -23,7 +23,6 @@ struct ContentView: View {
                 } else if (page == "Welcome Back") {
                     WelcomeBackPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
- 
                 } else if (page == "About You") {
                     AboutYouPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
@@ -33,7 +32,11 @@ struct ContentView: View {
                 } else if (page == "Share Location") {
                     ShareLocationPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "All Done") {
+                    AllDonePage(path:$viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 }
+                
                 else {
                     Text("You selected \(page)")
                 }

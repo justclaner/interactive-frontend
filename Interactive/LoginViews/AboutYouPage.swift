@@ -170,7 +170,6 @@ struct AboutYouPage: View {
                 Spacer()
                 Button(action: {
                     path.append("Add Email")
-//                    print(Helper.dateToString(date: date, dateStyle: "long", timeStyle: "none", locale: "en-US"))
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))

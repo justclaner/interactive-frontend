@@ -83,7 +83,7 @@ struct ShareLocationPage: View {
                 .frame(maxWidth:361,alignment:.leading)
                 Spacer()
                 Button(action: {
-                    //action
+                    path.append("All Done")
                 }) {
                     Text("Turn on localization")
                         .font(.system(size:17,weight:.semibold))
