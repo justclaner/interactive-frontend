@@ -159,7 +159,7 @@ class Helper {
      https://en.wikipedia.org/wiki/List_of_country_calling_codes    for calling codes
      https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes   for country abbreivations
      
-     TO-DO: fill in remaining countries
+     TO-DO: fill in remaining countries in sorted order
      */
     static let countryCode : Dictionary<String,Int> = [
         "US": 1,    //United States
