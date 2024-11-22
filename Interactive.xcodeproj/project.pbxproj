@@ -95,6 +95,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		32BF9FAC2CEA7EC400D78CBC /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				32BF9FA82CEA7B0200D78CBC /* BackButton.swift */,
+				32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		32DA0BF12CD6E63A006BEF03 = {
 			isa = PBXGroup;
 			children = (
@@ -121,9 +130,8 @@
 			children = (
 				32DA0C2F2CDED1BD006BEF03 /* LoginViews */,
 				32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */,
-				32BF9FA82CEA7B0200D78CBC /* BackButton.swift */,
+				32BF9FAC2CEA7EC400D78CBC /* Components */,
 				32DA0BFF2CD6E63A006BEF03 /* ContentView.swift */,
-				32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */,
 				32BF9FA22CE6D6ED00D78CBC /* ViewModel.swift */,
 				32DA0C292CD72D3E006BEF03 /* LoginPage.swift */,
 				32DA0C2B2CD95E04006BEF03 /* Helper.swift */,

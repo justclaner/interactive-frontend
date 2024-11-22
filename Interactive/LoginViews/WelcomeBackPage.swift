@@ -72,8 +72,9 @@ struct WelcomeBackPage: View {
                 .frame(maxWidth:361,alignment:.leading)
                 
                 Button(action: {
-                    global.test += 1
-                    print(global.test)
+                  //  print(Locale.availableIdentifiers)
+//                    global.test += 1
+//                    print(global.test)
                 }) {
                     Text("Submit")
                         .font(.system(size:17,weight:.semibold))

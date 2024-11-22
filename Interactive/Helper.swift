@@ -152,4 +152,68 @@ class Helper {
         
         return dateFormatter.string(from: date)
     }
+    /*
+     A dictionary of all country abbreviations and calling codes, sorted by country code (US at top)
+     Country abbreviations are according to the ISO 3166-1 Alpha-2 Standard, and the calling codes
+     are according to the International Telecommunication Union (ITU). For more information see:
+     https://en.wikipedia.org/wiki/List_of_country_calling_codes    for calling codes
+     https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes   for country abbreivations
+     
+     TO-DO: fill in remaining countries
+     */
+    static let countryCode : Dictionary<String,Int> = [
+        "US": 1,    //United States
+        "CA": 1,    //Canada
+        "EG": 20,   //Egypt
+        "SS": 211,  //South Sudan
+        "MA": 212,  //Morocco
+        "DZ": 213,  //Algeria
+        "TN": 216,  //Tunisia
+        "LY": 218,  //Libya
+        "GH": 233,  //Ghana
+        "GL": 299,  //Greenland
+        "NL": 31,   //Netherlands
+        "BE": 32,   //Belgium
+        "FR": 33,   //France
+        "ES": 34,   //Spain
+        "PT": 351,  //Portugal
+        "LU": 352,  //Luxembourg
+        "IE": 353,  //Ireland
+        "IS": 354,  //Iceland
+        "AL": 355,  //Albania
+        "FI": 358,  //Finland
+        "IT": 39,   //Italy
+        "CH": 41,   //Switzerland
+        "UK": 44,   //United Kingdom
+        "DK": 45,   //Denmark
+        "SE": 46,   //Sweden
+        "NO": 47,   //Norway
+        "PL": 48,   //Poland
+        "DE": 49,   //Denmark
+        "MX": 52,   //Mexico
+        "CU": 53,   //Cuba
+        "AR": 54,   //Argentina
+        "BR": 55,   //Brazil
+        "CL": 56,   //Chile
+        "CO": 57,   //Colombia
+        "VE": 58,   //Venezuela
+        "MY": 60,   //Malaysia
+        "AU": 61,   //Australia
+        "ID": 62,   //Indonesia
+        "PH": 63,   //Philippines
+        "NZ": 64,   //New Zealand
+        "SG": 65,   //Singapore
+        "TH": 66,   //Thailand
+        "RU": 7,    //Russia
+        "JP": 81,   //Japan
+        "KR": 82,   //South Korea
+        "VN": 84,   //Vietnam
+        "HK": 852,  //Hong Kong
+        "CN": 86,   //China
+        "TW": 886,  //Taiwan
+        "TR": 90,   //Turkey
+        "IN": 91,   //India
+        "PK": 92,   //Pakistan
+        "AF": 93,   //Afghanistan
+    ]
 }
