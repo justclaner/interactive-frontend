@@ -65,8 +65,9 @@ struct ShareLocationPage: View {
                 Spacer()
                 
                 Button(action: {
-                    path.append("All Done")
                     locationManager.requestCurrentLocation()
+                    path.append("All Done")
+                    
                 }) {
                     Text("Turn on localization")
                         .font(.system(size:17,weight:.semibold))
