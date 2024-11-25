@@ -59,14 +59,12 @@ struct VerifyPhonePage: View {
                         .foregroundStyle(Color.clear)
                         .tint(.clear)
                         .frame(width:361,height:51)
-                        .border(Color.black, width:3)
                         .onChange(of: rawInput) {
                             self.rawInput = String(rawInput.prefix(Control.phoneVerificationCodeLength))
                             inputField = displayCode(codeString: rawInput)
                             }
                 }
                 .frame(width:361,height:51)
-                .border(Color.white, width:2)
                 .contentShape(Rectangle())
                 .onTapGesture {
                     inputFocus = true
