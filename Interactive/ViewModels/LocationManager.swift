@@ -1,0 +1,59 @@
+//
+//  LocationManager.swift
+//  Interactive
+//
+//  Created by Chris Y on 11/25/24.
+//
+
+import CoreLocation
+import SwiftUI
+
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    // Published properties to reflect UI updates
+    @Published var userLocation: CLLocation?
+    @Published var authorizationStatus: CLAuthorizationStatus?
+
+    private var locationManager = CLLocationManager()
+
+    override init() {
+        super.init()
+        setupLocationManager()
+    }
+
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization() // Request permission
+        locationManager.startUpdatingLocation()         // Start location updates
+    }
+
+    // CLLocationManagerDelegate method for authorization changes
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        self.authorizationStatus = manager.authorizationStatus
+        
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()  // Authorized: Start location updates
+        case .denied, .restricted:
+            print("Location access denied or restricted")
+        default:
+            break
+        }
+    }
+
+    // CLLocationManagerDelegate method for location updates
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let newLocation = locations.last else { return }
+        userLocation = newLocation  // Update the published location
+        print("User location updated: \(newLocation)")
+    }
+
+    // CLLocationManagerDelegate method for handling errors
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to get user location: \(error.localizedDescription)")
+    }
+    
+    // Optional: Expose a method to manually request the current location
+    func requestCurrentLocation() {
+        locationManager.requestLocation()
+    }
+}
