@@ -15,6 +15,7 @@ struct VerifyPhonePage: View {
     @State var inputIndex: Int = 0
     @FocusState var inputFocus: Bool
     
+    @State var rawInput = ""
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -24,7 +25,7 @@ struct VerifyPhonePage: View {
                         .resizable()
                         .ignoresSafeArea()
                 )
-                .onTapGesture(count:1) {
+                .onTapGesture {
                     inputFocus = false
                 }
             BackButton(path:$path)
@@ -45,32 +46,30 @@ struct VerifyPhonePage: View {
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
                     .frame(maxWidth:361,alignment:.leading)
-                HStack {
-                    ForEach($inputField, id: \.self) {pointer in
-                        NumberVerificationInputField(inputPointer: pointer)
+                ZStack {
+                    HStack {
+                        ForEach($inputField, id: \.self) {pointer in
+                            NumberVerificationInputField(inputPointer: pointer)
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    TextField("", text:$rawInput)
+                        .focused($inputFocus)
+                        .keyboardType(.decimalPad)
+                        .foregroundStyle(Color.clear)
+                        .tint(.clear)
+                        .frame(width:361,height:51)
+                        .border(Color.black, width:3)
+                        .onChange(of: rawInput) {
+                            self.rawInput = String(rawInput.prefix(Control.phoneVerificationCodeLength))
+                            inputField = displayCode(codeString: rawInput)
+                            }
                 }
                 .frame(width:361,height:51)
+                .border(Color.white, width:2)
                 .contentShape(Rectangle())
-                .focusable()
-                .focused($inputFocus)
-                .onTapGesture(count:1) {
+                .onTapGesture {
                     inputFocus = true
-                }
-                .onKeyPress(keys: [.delete]) { key in
-                    if (inputIndex > 0) {
-                        inputIndex -= 1
-                        inputField[inputIndex] = " "
-                    }
-                    return .handled
-                }
-                .onKeyPress(characters: .decimalDigits) { key in
-                    if (inputIndex < Control.phoneVerificationCodeLength) {
-                        inputField[inputIndex] = key.characters
-                        inputIndex += 1
-                    }
-                    return .handled
                 }
                 HStack {
                     Text("Resend Code")
@@ -95,7 +94,6 @@ struct VerifyPhonePage: View {
                 .padding([.top],20)
                 Spacer()
                 Button(action: {
-                    //append path
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))
@@ -113,6 +111,17 @@ struct VerifyPhonePage: View {
             .frame(maxWidth:361)
         }
     }
+}
+
+func displayCode(codeString: String) -> [String] {
+    var newArr: [String] = []
+    for char in codeString {
+        newArr.append(String(char))
+    }
+    while (newArr.count < Control.phoneVerificationCodeLength) {
+        newArr.append(" ")
+    }
+    return newArr
 }
 
 #Preview {

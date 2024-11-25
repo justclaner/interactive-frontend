@@ -10,7 +10,7 @@ import Combine
 
 struct RegisterPhonePage: View {
     @Binding var path: [String]
-    
+    @FocusState var showKeyboard: Bool
     // (Helper.countryCode[String(describing: country)] ?? -1) gets the corresponding country code
     @State var country: Country = .US
     
@@ -85,6 +85,9 @@ struct RegisterPhonePage: View {
                         .resizable()
                         .ignoresSafeArea()
                 )
+                .onTapGesture {
+                    showKeyboard = false
+                }
             BackButton(path:$path)
                 .padding([.top],20)
             VStack {
@@ -122,14 +125,16 @@ struct RegisterPhonePage: View {
                         prompt: Text(verbatim: "123-456-7890")
                         .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3").opacity(0.5))
                     )
-                        .padding([.leading,.trailing],16)
-                        .padding([.vertical],12)
-                        .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
-                        .frame(width:220,height:43)
-                        .clipShape(RoundedRectangle(cornerRadius:8))
-                        .overlay(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Control.hexColor(hexCode: "#CCCCCC"), lineWidth: 1)
-                        )
+                    .focused($showKeyboard)
+                    .keyboardType(.numberPad)
+                    .padding([.leading,.trailing],16)
+                    .padding([.vertical],12)
+                    .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
+                    .frame(width:220,height:43)
+                    .clipShape(RoundedRectangle(cornerRadius:8))
+                    .overlay(RoundedRectangle(cornerRadius: 8)
+                        .stroke(Control.hexColor(hexCode: "#CCCCCC"), lineWidth: 1)
+                    )
                 }
                 .frame(maxWidth:361,alignment:.leading)
                 Text("We will not share this information with anyone, and it will not appear on your profile.")
@@ -156,6 +161,7 @@ struct RegisterPhonePage: View {
             }
             .frame(maxWidth:361)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 
