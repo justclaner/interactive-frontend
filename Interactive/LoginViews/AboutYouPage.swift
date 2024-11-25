@@ -62,7 +62,7 @@ struct AboutYouPage: View {
                 HStack{
                     Text("Are you a business?")
                         .font(.system(size:16,weight:.semibold))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#FFDD1A"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     
                     Spacer()
                     Button(action: {
@@ -75,7 +75,7 @@ struct AboutYouPage: View {
                     }
                     .frame(width:119,height:16)
                     .padding(6)
-                    .background(Helper.hexColor(hexCode: "#1A1A1A"))
+                    .background(Control.hexColor(hexCode: "#1A1A1A"))
                     .clipShape(RoundedRectangle(cornerRadius:999))
                 }
                 .padding([.vertical],20)
@@ -85,7 +85,7 @@ struct AboutYouPage: View {
                     .frame(maxWidth:361,alignment:.leading)
                 TextField("", text: $username, prompt: Text(verbatim: "Add username...")
                     .font(.system(size:16,weight:.semibold))
-                    .foregroundColor(Helper.hexColor(hexCode: "#B3B3B3")))
+                    .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
                     .padding(16)
                     .frame(width:361,height:43)
@@ -95,7 +95,7 @@ struct AboutYouPage: View {
                         .stroke(.white.opacity(0.8), lineWidth: 1)
                     )
                     .autocorrectionDisabled()
-                    .foregroundColor(Helper.hexColor(hexCode: "#B3B3B3"))
+                    .foregroundColor(Control.hexColor(hexCode: "#B3B3B3"))
                     .padding([.bottom],30)
                 Text("Birth Date")
                     .font(.system(size:16,weight:.semibold))
@@ -105,9 +105,9 @@ struct AboutYouPage: View {
                     Button(action: {
                         isSelectingDate.toggle()
                     }) {
-                        Text(Helper.dateToString(date: date, dateStyle: "long", timeStyle: "none", locale: "en-US"))
+                        Text(Control.dateToString(date: date, dateStyle: "long", timeStyle: "none", locale: "en-US"))
                             .font(.system(size:20,weight:.semibold))
-                            .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
+                            .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                             .padding(10)
                             .frame(maxWidth:.infinity,maxHeight:.infinity)
                     }
@@ -151,12 +151,12 @@ struct AboutYouPage: View {
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:361,height:40)
-                .background(Helper.hexColor(hexCode: "#FFDD1A"))
+                .background(Control.hexColor(hexCode: "#FFDD1A"))
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)

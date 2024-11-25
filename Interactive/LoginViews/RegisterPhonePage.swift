@@ -74,11 +74,6 @@ struct RegisterPhonePage: View {
             self.rawValue
         }
     }
-    var countryInfo: [Int: String] = [
-        1: "+1 (US/CA)",
-        31: "+31 (NR)",
-        40: "+40 (ASD)"
-    ]
     
     
     var body: some View {
@@ -98,10 +93,10 @@ struct RegisterPhonePage: View {
                 Text("Enter your phone number")
                     .font(.system(size:31,weight:.semibold))
                     .foregroundStyle(Color.white)
-                    .frame(maxWidth:361,alignment:.leading)
+                    .frame(maxWidth:361,alignment:.center)
                 Text("This way, we can verify that your profile is real.")
                     .font(.system(size:16,weight:.regular))
-                    .foregroundStyle(Helper.hexColor(hexCode: "#CCCCCC"))
+                    .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
                     .frame(maxWidth:361,alignment:.leading)
                     .padding([.vertical],20)
                 Text("Telephone (No dashes required)")
@@ -118,42 +113,42 @@ struct RegisterPhonePage: View {
                         }
                     }
                     .frame(width:130,height:43,alignment: .trailing)
-                    .tint(Helper.hexColor(hexCode: "#B3B3B3"))
+                    .tint(Control.hexColor(hexCode: "#B3B3B3"))
                     .clipShape(RoundedRectangle(cornerRadius:8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(Helper.hexColor(hexCode: "#CCCCCC"), lineWidth: 1)
+                        .stroke(Control.hexColor(hexCode: "#CCCCCC"), lineWidth: 1)
                     )
                     TextField("", text: $phoneNum,
                         prompt: Text(verbatim: "123-456-7890")
-                        .foregroundStyle(Helper.hexColor(hexCode: "#B3B3B3").opacity(0.5))
+                        .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3").opacity(0.5))
                     )
                         .padding([.leading,.trailing],16)
                         .padding([.vertical],12)
-                        .foregroundStyle(Helper.hexColor(hexCode: "#B3B3B3"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
                         .frame(width:220,height:43)
                         .clipShape(RoundedRectangle(cornerRadius:8))
                         .overlay(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Helper.hexColor(hexCode: "#CCCCCC"), lineWidth: 1)
+                            .stroke(Control.hexColor(hexCode: "#CCCCCC"), lineWidth: 1)
                         )
                 }
                 .frame(maxWidth:361,alignment:.leading)
                 Text("We will not share this information with anyone, and it will not appear on your profile.")
                     .font(.system(size:16,weight:.semibold))
-                    .foregroundStyle(Helper.hexColor(hexCode: "#CCCCCC"))
+                    .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
                     .frame(maxWidth:361,alignment:.leading)
                     .padding([.top],40)
                 Spacer()
                 Button(action: {
-                    //append path
+                    path.append("Verify Phone")
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:361,height:40)
-                .background(Helper.hexColor(hexCode: "#FFDD1A"))
+                .background(Control.hexColor(hexCode: "#FFDD1A"))
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)

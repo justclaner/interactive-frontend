@@ -34,16 +34,16 @@ struct ShareLocationPage: View {
                     .frame(maxWidth:361,alignment:.leading)
                 Text("Interactive is based on presence.")
                     .font(.system(size:16,weight:.regular))
-                    .foregroundStyle(Helper.hexColor(hexCode: "#FFDD1A"))
+                    .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     .frame(maxWidth:361,alignment:.leading)
                 Text("Location sharing is essential")
                     .font(.system(size:16,weight:.regular))
-                    .foregroundStyle(Helper.hexColor(hexCode: "#E6E6E6"))
+                    .foregroundStyle(Control.hexColor(hexCode: "#E6E6E6"))
                     .frame(maxWidth:361,alignment:.leading)
                     .padding([.bottom],20)
                 Text("There is no map:")
                     .font(.system(size:16,weight:.regular))
-                    .foregroundStyle(Helper.hexColor(hexCode: "#FFDD1A"))
+                    .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     .frame(maxWidth:361,alignment:.leading)
                 Text("No one will be able to see your movements or precise location.")
                     .font(.system(size:16,weight:.regular))
@@ -53,11 +53,11 @@ struct ShareLocationPage: View {
                 Group {
                     Text("You will only be able to see the people in the same area as you, ")
                         .font(.system(size:16,weight:.regular))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#E6E6E6"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#E6E6E6"))
                     +
                     Text("without location or distance details.")
                         .font(.system(size:16,weight:.regular))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#FFDD1A"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                 }
                 .frame(maxWidth:361,alignment:.leading)
                 Spacer()
@@ -66,12 +66,12 @@ struct ShareLocationPage: View {
                 }) {
                     Text("Turn on localization")
                         .font(.system(size:17,weight:.semibold))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#1A1A1A"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:361,height:40)
-                .background(Helper.hexColor(hexCode: "#FFDD1A"))
+                .background(Control.hexColor(hexCode: "#FFDD1A"))
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
@@ -81,7 +81,7 @@ struct ShareLocationPage: View {
                 }) {
                     Text("Not now")
                         .font(.system(size:16,weight:.semibold))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#999999"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                         .padding()
                 }
             }

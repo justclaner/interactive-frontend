@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class Helper {
+class Control {
     
     /*
      Returns a Color given a color hexcode. Hexcodes must be
@@ -216,4 +216,10 @@ class Helper {
         "PK": 92,   //Pakistan
         "AF": 93,   //Afghanistan
     ]
+    
+    /*
+     The length of the verification code sent by SMS to the user in order to
+     verify their phone number.
+     */
+    static let phoneVerificationCodeLength = 6
 }

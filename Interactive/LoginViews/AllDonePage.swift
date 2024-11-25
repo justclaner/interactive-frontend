@@ -37,24 +37,24 @@ struct AllDonePage: View {
                     +
                     Text(" To maximize your visibility and attract more contacts:")
                         .font(.system(size:16,weight:.regular))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#E6E6E6"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#E6E6E6"))
                 }
                 .padding([.vertical],10)
                 .frame(maxWidth:361,alignment: .leading)
                 HStack {
                     Text("Complete your profile")
                         .font(.system(size:16,weight:.bold))
-                        .foregroundStyle(Helper.hexColor(hexCode: "#FFE54D"))
+                        .foregroundStyle(Control.hexColor(hexCode: "#FFE54D"))
                         .onTapGesture() {
                             //change path
                         }
                         .padding([.trailing],10)
                     Image(systemName:"chevron.right")
                         .font(.system(size:12))
-                        .foregroundStyle(Helper.hexColor(hexCode:"#CCCCCC"))
+                        .foregroundStyle(Control.hexColor(hexCode:"#CCCCCC"))
                         .background(
                         Circle()
-                            .fill(Helper.hexColor(hexCode:"#333333"))
+                            .fill(Control.hexColor(hexCode:"#333333"))
                             .frame(width:20,height:20)
                         )
                         .onTapGesture() {

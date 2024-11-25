@@ -24,11 +24,11 @@ struct LoginPage: View {
                     Spacer()
                     VStack{
                         Circle()
-                            .fill(Helper.hexColor(hexCode: "#FFDD1A"))
+                            .fill(Control.hexColor(hexCode: "#FFDD1A"))
                             .frame(width:16,height:16)
                             .padding([.bottom],-4)
                         Rectangle()
-                            .fill(Helper.hexColor(hexCode: "#FFDD1A"))
+                            .fill(Control.hexColor(hexCode: "#FFDD1A"))
                             .frame(width:16,height:52)
                             .clipShape(RoundedRectangle(cornerRadius:12.11))
                             .padding([.bottom],10)
@@ -36,7 +36,7 @@ struct LoginPage: View {
                     }
                     .background(
                         Circle()
-                            .fill(Helper.hexColor(hexCode:"#333333"))
+                            .fill(Control.hexColor(hexCode:"#333333"))
                             .frame(width:113,height:113)
                     )
                     .offset(x:0,y:-40)
@@ -52,7 +52,7 @@ struct LoginPage: View {
                         }
                         
                         .frame(width:361,height:40)
-                        .background(Helper.hexColor(hexCode: "#FFDD1A"))
+                        .background(Control.hexColor(hexCode: "#FFDD1A"))
                         .clipShape(RoundedRectangle(cornerRadius:20))
                         .overlay(RoundedRectangle(cornerRadius: 20)
                             .stroke(.white.opacity(0.6), lineWidth: 1)
@@ -69,7 +69,7 @@ struct LoginPage: View {
                                 .frame(maxWidth:.infinity,maxHeight:.infinity)
                         }
                         .frame(width:361,height:40)
-                        .background(Helper.hexColor(hexCode: "#FFDD1A"))
+                        .background(Control.hexColor(hexCode: "#FFDD1A"))
                         .clipShape(RoundedRectangle(cornerRadius:20))
                         .overlay(RoundedRectangle(cornerRadius: 20)
                             .stroke(.white.opacity(0.6), lineWidth: 1)
