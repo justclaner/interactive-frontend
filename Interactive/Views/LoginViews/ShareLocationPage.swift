@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct ShareLocationPage: View {
-    
     @Binding var path: [String]
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -61,8 +63,11 @@ struct ShareLocationPage: View {
                 }
                 .frame(maxWidth:361,alignment:.leading)
                 Spacer()
+                
                 Button(action: {
+                    locationManager.requestCurrentLocation()
                     path.append("All Done")
+                    
                 }) {
                     Text("Turn on localization")
                         .font(.system(size:17,weight:.semibold))
