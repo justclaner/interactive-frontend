@@ -11,18 +11,17 @@ struct EditProfilePage: View {
     @State var largeSideLength = 174.0
     @State var mediumSideLength = 81.0
     @State var smallSideLength = 50.0
-    @Binding var path: [String]
     @State var visitors: Int = 0
     @State var interactions: Int = 0
     @State var aboutMe: String = ""
-    @FocusState var aboutMeFocus: Bool
     @State var add: String = "Add"
     @State var addInsight: String = "Add New Insight"
     @State var gray_80: String = "#CCCCCC"
     @State var accent: String = "#FFDD1A"
+    @State var testFunc: () -> Void = {} //add real functions later
     
-    //change later
-    @State var testFunc: () -> Void = {}
+    @Binding var path: [String]
+    @FocusState var aboutMeFocus: Bool
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
