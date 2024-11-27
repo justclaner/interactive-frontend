@@ -11,7 +11,7 @@ import MapKit
 extension ContentView {
     @Observable
     class ViewModel {
-        var path : [String] = ["Register Phone"]
+        var path : [String] = ["Login"]
     }
     
 }
