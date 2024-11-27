@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3271A2382CF685F900EFB7AC /* AddIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A2372CF685F900EFB7AC /* AddIcon.swift */; };
+		3271A23A2CF6923C00EFB7AC /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A2392CF6923C00EFB7AC /* AddButton.swift */; };
+		3271A23C2CF6986C00EFB7AC /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A23B2CF6986C00EFB7AC /* NavigationBar.swift */; };
 		32BF9FA92CEA7B0200D78CBC /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FA82CEA7B0200D78CBC /* BackButton.swift */; };
 		32BF9FAB2CEA7C5100D78CBC /* LargeLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */; };
 		32BF9FB02CF433ED00D78CBC /* NumberVerificationInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF9FAF2CF433ED00D78CBC /* NumberVerificationInputField.swift */; };
@@ -37,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3271A2372CF685F900EFB7AC /* AddIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIcon.swift; sourceTree = "<group>"; };
+		3271A2392CF6923C00EFB7AC /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
+		3271A23B2CF6986C00EFB7AC /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		32BF9FA82CEA7B0200D78CBC /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeLogo.swift; sourceTree = "<group>"; };
 		32BF9FAF2CF433ED00D78CBC /* NumberVerificationInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberVerificationInputField.swift; sourceTree = "<group>"; };
@@ -87,6 +93,9 @@
 			isa = PBXGroup;
 			children = (
 				32BF9FA82CEA7B0200D78CBC /* BackButton.swift */,
+				3271A2372CF685F900EFB7AC /* AddIcon.swift */,
+				3271A23B2CF6986C00EFB7AC /* NavigationBar.swift */,
+				3271A2392CF6923C00EFB7AC /* AddButton.swift */,
 				32BF9FAF2CF433ED00D78CBC /* NumberVerificationInputField.swift */,
 				32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */,
 			);
@@ -222,7 +231,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					32DA0BF92CD6E63A006BEF03 = {
 						CreatedOnToolsVersion = 15.4;
@@ -291,6 +300,9 @@
 			files = (
 				32BF9FB02CF433ED00D78CBC /* NumberVerificationInputField.swift in Sources */,
 				32BF9FAB2CEA7C5100D78CBC /* LargeLogo.swift in Sources */,
+				3271A23A2CF6923C00EFB7AC /* AddButton.swift in Sources */,
+				3271A2382CF685F900EFB7AC /* AddIcon.swift in Sources */,
+				3271A23C2CF6986C00EFB7AC /* NavigationBar.swift in Sources */,
 				32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */,
 				32BF9FA92CEA7B0200D78CBC /* BackButton.swift in Sources */,
 			);
@@ -511,7 +523,6 @@
 		32DA0C222CD6E63B006BEF03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -531,7 +542,6 @@
 		32DA0C232CD6E63B006BEF03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -551,7 +561,6 @@
 		32DA0C252CD6E63B006BEF03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X7NWP4NY47;
@@ -569,7 +578,6 @@
 		32DA0C262CD6E63B006BEF03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X7NWP4NY47;

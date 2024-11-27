@@ -41,6 +41,9 @@ struct ContentView: View {
                 } else if (page == "Verify Phone") {
                     VerifyPhonePage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Your Profile") {
+                    EditProfilePage(path:$viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 }
                 else {
                     Text("You selected \(page)")

@@ -14,6 +14,7 @@ struct LargeLogo: View {
                 .fill(Control.hexColor(hexCode: "#FFDD1A"))
                 .frame(width:16,height:14)
                 .padding([.bottom],-4)
+                .padding([.top],9)
             Rectangle()
                 .fill(Control.hexColor(hexCode: "#FFDD1A"))
                 .frame(width:16,height:52)
