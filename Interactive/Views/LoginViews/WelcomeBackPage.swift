@@ -12,6 +12,8 @@ struct WelcomeBackPage: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State var global = GlobalVariables()
+    @FocusState var emailFocus: Bool
+    @FocusState var passwordFocus: Bool
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -21,6 +23,10 @@ struct WelcomeBackPage: View {
                         .resizable()
                         .ignoresSafeArea()
                 )
+                .onTapGesture {
+                    emailFocus = false
+                    passwordFocus = false
+                }
             BackButton(path:$path)
                 .padding([.top],8)
             VStack {
@@ -44,6 +50,7 @@ struct WelcomeBackPage: View {
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3"))
                     .padding([.top],20)
                     .padding([.bottom],10)
+                    .focused($emailFocus)
                 TextField("", text: $password, prompt: Text(verbatim: "password")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
@@ -59,6 +66,7 @@ struct WelcomeBackPage: View {
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3"))
                     .padding([.top],15)
                     .padding([.bottom],5)
+                    .focused($passwordFocus)
                 Group {
                     Text("Forgot Password? ")
                         .font(.system(size:16,weight:.semibold))
@@ -113,6 +121,7 @@ struct WelcomeBackPage: View {
             }
             .frame(maxWidth:361)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

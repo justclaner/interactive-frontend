@@ -16,7 +16,7 @@ struct AboutYouPage: View {
     @State private var birthYear: Int = 0
     @State private var date = Date()
     @State private var isSelectingDate: Bool = false
-
+    @FocusState private var usernameFocus: Bool
     /*
      The date range allowed for users to pick their birthday.
      TO-DO: make endComponents set the latest date to 18 years
@@ -48,6 +48,7 @@ struct AboutYouPage: View {
                     if(isSelectingDate) {
                         isSelectingDate = false
                     }
+                    usernameFocus = false
                 }
             BackButton(path:$path)
                 .padding([.top],20)
@@ -86,7 +87,6 @@ struct AboutYouPage: View {
                 TextField("", text: $username, prompt: Text(verbatim: "Add username...")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
-                    .foregroundStyle(.white)
                     .padding(16)
                     .frame(width:361,height:43)
                     .border(Color.black,width:1)
@@ -95,8 +95,9 @@ struct AboutYouPage: View {
                         .stroke(.white.opacity(0.8), lineWidth: 1)
                     )
                     .autocorrectionDisabled()
-                    .foregroundColor(Control.hexColor(hexCode: "#B3B3B3"))
+                    .foregroundStyle(Color.white)
                     .padding([.bottom],30)
+                    .focused($usernameFocus)
                 Text("Birth Date")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
@@ -164,6 +165,7 @@ struct AboutYouPage: View {
             }
             .frame(maxWidth:361)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

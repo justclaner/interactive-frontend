@@ -12,6 +12,8 @@ struct AddEmailPage: View {
     @Binding var path: [String]
     @State var email = ""
     @State var password = ""
+    @FocusState var emailFocus: Bool
+    @FocusState var passwordFocus: Bool
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -22,7 +24,8 @@ struct AddEmailPage: View {
                         .ignoresSafeArea()
                 )
                 .onTapGesture {
-                    //add
+                    emailFocus = false
+                    passwordFocus = false
                 }
             BackButton(path:$path)
                 .padding([.top],20)
@@ -55,6 +58,7 @@ struct AddEmailPage: View {
                     )
                     .autocorrectionDisabled()
                     .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
+                    .focused($emailFocus)
                 Text("Password")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
@@ -72,6 +76,7 @@ struct AddEmailPage: View {
                     )
                     .autocorrectionDisabled()
                     .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
+                    .focused($passwordFocus)
                 Spacer()
                 Button(action: {
                     path.append("Share Location")
@@ -91,6 +96,7 @@ struct AddEmailPage: View {
             }
             .frame(maxWidth:361)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 
