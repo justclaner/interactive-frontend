@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import PhotosUI
 
-struct AddIcon: View {
+struct AddNetworkIcon: View {
+    
     @Binding var sideLength: Double
     var body: some View {
         ZStack {
@@ -19,8 +21,9 @@ struct AddIcon: View {
                 .foregroundStyle(Control.hexColor(hexCode:"#CCCCCC"))
         }
     }
+
 }
 
 #Preview {
-    AddIcon(sideLength: .constant(100))
+    AddNetworkIcon(sideLength: .constant(100))
 }

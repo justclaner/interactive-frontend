@@ -18,7 +18,9 @@ struct EditProfilePage: View {
     @State var addInsight: String = "Add New Insight"
     @State var gray_80: String = "#CCCCCC"
     @State var accent: String = "#FFDD1A"
-    @State var testFunc: () -> Void = {} //add real functions later
+    @State var testFunc: () -> Void = {
+        print("hi")
+    } //add real functions later
     
     @Binding var path: [String]
     @FocusState var aboutMeFocus: Bool
@@ -41,20 +43,20 @@ struct EditProfilePage: View {
                     .font(.system(size:25,weight:.semibold))
                     .padding([.top],20)
                 HStack {
-                    AddIcon(sideLength:$largeSideLength)
+                    AddImageIcon(imageNumber: .constant(0), sideLength:$largeSideLength)
                     Spacer()
                     HStack {
                         VStack {
-                            AddIcon(sideLength:$mediumSideLength)
+                            AddImageIcon(imageNumber: .constant(1), sideLength:$mediumSideLength)
                             Spacer()
-                            AddIcon(sideLength:$mediumSideLength)
+                            AddImageIcon(imageNumber: .constant(2), sideLength:$mediumSideLength)
                         }
                         .frame(maxHeight:174)
                         Spacer()
                         VStack {
-                            AddIcon(sideLength:$mediumSideLength)
+                            AddImageIcon(imageNumber: .constant(3), sideLength:$mediumSideLength)
                             Spacer()
-                            AddIcon(sideLength:$mediumSideLength)
+                            AddImageIcon(imageNumber: .constant(4), sideLength:$mediumSideLength)
                         }
                         .frame(maxHeight:174)
                     }.frame(width:174)
@@ -101,7 +103,7 @@ struct EditProfilePage: View {
                     .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                     .frame(width:361,alignment:.leading)
                 HStack {
-                    AddIcon(sideLength:$smallSideLength)
+                    AddNetworkIcon(sideLength:$smallSideLength)
                     Spacer()
                 }
                 VStack {
