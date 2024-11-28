@@ -222,4 +222,6 @@ class Control {
      verify their phone number.
      */
     static let phoneVerificationCodeLength = 6
+    
+    static var test = 0
 }

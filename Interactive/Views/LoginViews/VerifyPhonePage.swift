@@ -108,6 +108,7 @@ struct VerifyPhonePage: View {
             }
             .frame(maxWidth:361)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

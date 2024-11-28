@@ -9,9 +9,9 @@ import SwiftUI
 import PhotosUI
 
 struct AddImageIcon: View {
-    @State var image: Image?
     @State var selectedImage: PhotosPickerItem?
     
+    @Binding var image: Image?
     @Binding var imageNumber: Int
     @Binding var sideLength: Double
     var body: some View {
@@ -45,6 +45,8 @@ struct AddImageIcon: View {
             guard let inputImage = UIImage(data: imageData) else { return }
             image = Image(uiImage: inputImage)
         }
+        ProfileSetup.addedImage = true
+        print(imageNumber)
     }
     
     func getImage() -> (Int,Image?) {
@@ -53,5 +55,5 @@ struct AddImageIcon: View {
 }
 
 #Preview {
-    AddImageIcon(imageNumber: .constant(1), sideLength: .constant(100))
+    AddImageIcon(image: .constant(nil), imageNumber: .constant(1), sideLength: .constant(100))
 }

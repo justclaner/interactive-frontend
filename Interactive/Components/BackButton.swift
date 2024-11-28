@@ -12,11 +12,11 @@ struct BackButton: View {
     var body: some View {
         VStack {
             Button(action: {
-               path.removeLast()
+                    path.removeLast()
             }) {
-                Image("chevron-back")
-                    .resizable()
-                    .frame(width:30,height:30)
+                Image(systemName:"chevron.left")
+                    .font(.system(size:20))
+                    .foregroundStyle(Color.white)
             }
             .frame(maxWidth:.infinity,alignment:.leading)
             Spacer()
