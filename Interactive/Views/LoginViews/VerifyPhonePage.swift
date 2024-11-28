@@ -92,6 +92,7 @@ struct VerifyPhonePage: View {
                 .padding([.top],20)
                 Spacer()
                 Button(action: {
+                    
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))
