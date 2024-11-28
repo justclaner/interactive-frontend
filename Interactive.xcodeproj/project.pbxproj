@@ -63,7 +63,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		505817D82CF523E1006487CD /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
 		505817E82CF52456006487CD /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
-		505817E92CF52462006487CD /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +128,6 @@
 		32DA0BFC2CD6E63A006BEF03 /* Interactive */ = {
 			isa = PBXGroup;
 			children = (
-				505817E92CF52462006487CD /* Models */,
 				505817E82CF52456006487CD /* ViewModels */,
 				505817D82CF523E1006487CD /* Views */,
 				32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */,
@@ -183,7 +181,6 @@
 			fileSystemSynchronizedGroups = (
 				505817D82CF523E1006487CD /* Views */,
 				505817E82CF52456006487CD /* ViewModels */,
-				505817E92CF52462006487CD /* Models */,
 			);
 			name = Interactive;
 			productName = Interactive;
