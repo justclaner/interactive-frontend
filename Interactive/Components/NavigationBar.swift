@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NavigationBar: View {
     var iconSideLength: CGFloat = 40
+    @Binding var height: CGFloat
     @State var activePresence: Bool = false
     var body: some View {
         VStack {
@@ -16,7 +17,7 @@ struct NavigationBar: View {
             ZStack {
                 Rectangle()
                     .fill(Control.hexColor(hexCode: "#1A1A1A").opacity(0.65))
-                    .frame(maxWidth:.infinity,maxHeight:120)
+                    .frame(maxWidth:.infinity,maxHeight:height)
                     .ignoresSafeArea()
                 HStack {
                     Image(systemName:"house")
@@ -57,7 +58,7 @@ struct NavigationBar: View {
                         .frame(maxWidth:.infinity)
                 }
                 .padding()
-                .frame(maxWidth:.infinity,maxHeight:120)
+                .frame(maxWidth:.infinity,maxHeight:height)
                 .ignoresSafeArea()
             }
         }
@@ -66,5 +67,5 @@ struct NavigationBar: View {
 }
 
 #Preview {
-    NavigationBar()
+    NavigationBar(height: .constant(CGFloat(120)))
 }

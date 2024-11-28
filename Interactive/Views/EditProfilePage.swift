@@ -38,6 +38,7 @@ struct EditProfilePage: View {
     @State var image3: Image?
     @State var image4: Image?
     @State var image5: Image?
+
 //    @State var viewBoolList: [Bool] = [
 //        ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0,
 //    ]
@@ -65,22 +66,33 @@ struct EditProfilePage: View {
                         usernameFocus = false
                         aboutMeFocus = false
                         print(tutorialStep)
+                        if (tutorialStep == 2) {
+                            tutorialStep += 1
+                            ProfileSetup.tutorialStep += 1
+                        }
                     }
                 BackButton(path:$path)
                     .padding([.top],20)
                     .opacity(ProfileSetup.tutorialWhiteOpacity)
                 
                 //step 1
-                Image("pencil_edit")
-                    .resizable()
-                    .frame(width:20,height:20)
-                    .position(x:390,y:37)
-                    .onTapGesture {
-                        if (!(inTutorial && tutorialStep != 0)) {
-                            usernameFocus.toggle()
-                        }
+                HStack {
+                    Spacer()
+                    VStack {
+                        Image("pencil_edit")
+                            .resizable()
+                            .frame(width:20,height:20)
+                            .onTapGesture {
+                                if (!(inTutorial && tutorialStep != 0)) {
+                                    usernameFocus.toggle()
+                                }
+                            }
+                            .opacity((inTutorial && tutorialStep != 0) ? ProfileSetup.tutorialWhiteOpacity : 1)
+                            .padding([.top],20)
+                        Spacer()
                     }
-                    .opacity((inTutorial && tutorialStep != 0) ? ProfileSetup.tutorialWhiteOpacity : 1)
+                    .padding([.trailing],geometry.size.width*0.05)
+                }
                 VStack {
                     TextField("", text:$username,
                               prompt:Text(usernameFocus ? "" : "Username")
@@ -95,10 +107,11 @@ struct EditProfilePage: View {
                     .opacity((inTutorial && tutorialStep != 0) ? ProfileSetup.tutorialWhiteOpacity : 1)
                     .disabled(ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0)
                     .onChange(of: username) {
-                        self.username = String(username.prefix(16))
+                        self.username = String(username.prefix(24))
                         ProfileSetup.createdUsername = true
                     }
-                    
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
                     
                     
                     //step 2
@@ -124,7 +137,7 @@ struct EditProfilePage: View {
                     .opacity((inTutorial && tutorialStep != 1) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
                     
-                    
+                    //step 3
                     HStack {
                         VStack {
                             Text("Visitors")
@@ -147,32 +160,45 @@ struct EditProfilePage: View {
                         .padding([.leading],10)
                         Spacer()
                     }
-                    .frame(maxWidth:361)
-                    .padding([.vertical],20)
-                    .opacity(ProfileSetup.tutorialWhiteOpacity)
+                    .frame(maxWidth:geometry.size.width*0.9)
+                    .padding([.vertical],10)
+                    .opacity((inTutorial && tutorialStep != 2) ?
+                             ProfileSetup.tutorialWhiteOpacity : 1)
                     
+                    //step 4
                     VStack {
                         Text("About Me")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:361,alignment:.leading)
-                        TextField("", text: $aboutMe)
-                            .focused($aboutMeFocus)
-                            .padding([.leading,.trailing],10)
-                            .frame(width:361,height:25)
-                            .font(.system(size:13,weight:.regular))
-                            .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
-                            .background(Control.hexColor(hexCode: "#4D4D4D"))
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .padding([.bottom],10)
+                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+
+                        TextField("", text: $aboutMe, axis:.vertical)
+                                .focused($aboutMeFocus)
+                                .padding([.leading,.trailing],10)
+                                .padding([.vertical],5)
+                                .frame(width:geometry.size.width*0.9)
+                                .font(.system(size:13,weight:.regular))
+                                .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
+                                .background(Control.hexColor(hexCode: "#4D4D4D"))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .padding([.bottom],10)
+                                .disabled(ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 3)
+                                .onChange(of: aboutMe) {
+                                    self.aboutMe = String(aboutMe.prefix(150))
+                                    ProfileSetup.addedBio = true
+                                }
+                                .lineLimit(3, reservesSpace: true)
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
                     }
-                    .opacity(ProfileSetup.tutorialWhiteOpacity)
+                    .opacity((inTutorial && tutorialStep != 3) ?
+                             ProfileSetup.tutorialWhiteOpacity : 1)
                     
                     VStack {
                         Text("Network")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:361,alignment:.leading)
+                            .frame(width:geometry.size.width*0.9,alignment:.leading)
                         HStack {
                             AddNetworkIcon(sideLength:$smallSideLength)
                             Spacer()
@@ -184,8 +210,8 @@ struct EditProfilePage: View {
                         Text("Interests")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:361,alignment:.leading)
-                            .padding([.top],10)
+                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+                            .padding([.top],5)
                         HStack {
                             AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
                             Spacer()
@@ -193,8 +219,8 @@ struct EditProfilePage: View {
                         Text("Jobs")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:361,alignment:.leading)
-                            .padding([.top],10)
+                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+                            .padding([.top],5)
                         HStack {
                             AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
                             Spacer()
@@ -202,8 +228,8 @@ struct EditProfilePage: View {
                         Text("Interaction Goals")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:361,alignment:.leading)
-                            .padding([.top],10)
+                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+                            .padding([.top],5)
                         HStack {
                             AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
                             Spacer()
@@ -212,25 +238,26 @@ struct EditProfilePage: View {
                             AddButton(action:$testFunc, text: $addInsight, colorHex:$accent)
                             Spacer()
                         }
-                        .padding([.top],20)
+                        .padding([.top],10)
                     }
                     .opacity(ProfileSetup.tutorialWhiteOpacity)
                     Spacer()
                 }
-                .frame(maxWidth:361)
-                NavigationBar()
-                    .opacity(ProfileSetup.tutorialWhiteOpacity)
+                .frame(maxWidth:geometry.size.width*0.9)
+                NavigationBar(height:.constant(geometry.size.height*0.13))
+                    //.opacity(ProfileSetup.tutorialWhiteOpacity)
                 
                 
                 //step 1
                 VStack {
-                    Text("Tap \"Username\" or the pencil icon to edit your username.")
+                    Text("Tap \"Username\" or the pencil icon to edit your \nusername.")
+                        .foregroundStyle(Color.white)
                         .font(.system(size:16,weight:.regular))
-                        .frame(maxWidth:geometry.size.width*0.8)
-                        .padding([.top],60)
-                        .opacity(tutorialStep == 0 ? 1 : 0)
                     Spacer()
                 }
+                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .opacity(tutorialStep == 0 ? 1 : 0)
+                .padding([.top],60)
                 
                 //step 2
                 VStack {
@@ -239,13 +266,69 @@ struct EditProfilePage: View {
                             .foregroundStyle(Control.hexColor(hexCode: accent))
                         +
                         Text("It is important that others recognize you!")
+                            .foregroundStyle(Color.white)
                     }
-                        .font(.system(size:16,weight:.regular))
-                        .frame(maxWidth:geometry.size.width*0.8)
-                        .padding([.top],240)
-                        .opacity(tutorialStep == 1 ? 1 : 0)
                     Spacer()
                 }
+                .font(.system(size:16,weight:.regular))
+                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .opacity(tutorialStep == 1 ? 1 : 0)
+                .padding([.top],240)
+                
+                //step 3
+                VStack {
+                    Group {
+                        Text("You will be able to see how many people have ")
+                            .foregroundStyle(Color.white)
+                            .bold()
+                        +
+                        Text("visited ")
+                            .foregroundStyle(Control.hexColor(hexCode: accent))
+                        +
+                        Text("your profile and how many people you have ")
+                            .foregroundStyle(Color.white)
+                        +
+                        Text("interacted ")
+                            .foregroundStyle(Control.hexColor(hexCode: accent))
+                        +
+                        Text("with.")
+                            .foregroundStyle(Color.white)
+                    }
+                    Spacer()
+                }
+                .font(.system(size:16,weight:.regular))
+                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .opacity(tutorialStep == 2 ? 1 : 0)
+                .padding([.top],305)
+                
+                
+                //step 4
+                VStack {
+                    Group {
+                        Text("Tell something more ")
+                            .foregroundStyle(Control.hexColor(hexCode: accent))
+                            .bold()
+                        +
+                        Text("about yourself ")
+                            .foregroundStyle(Control.hexColor(hexCode: accent))
+                        +
+                        Text("to people who would like to connect.")
+                            .foregroundStyle(Color.white)
+                    }
+                        .font(.system(size:16,weight:.regular))
+                    Text("Skip for now")
+                        .font(.system(size:13,weight:.semibold))
+                        .foregroundStyle(Control.hexColor(hexCode: accent))
+                        .frame(maxWidth:geometry.size.width*0.835,alignment:.leading)
+                        .underline()
+                        .onTapGesture {
+                            ProfileSetup.addedBio = true
+                        }
+                    Spacer()
+                }
+                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .opacity(tutorialStep == 3 ? 1 : 0)
+                .padding([.top],390)
             }
             .onChange(of: usernameFocus) { //step 1
                 if (ProfileSetup.createdUsername && ProfileSetup.tutorialStep == 0) {
@@ -258,6 +341,18 @@ struct EditProfilePage: View {
                 print("image added")
                 ProfileSetup.tutorialStep += 1
                 tutorialStep += 1
+            }
+            .onChange(of: aboutMeFocus) {
+                if (ProfileSetup.addedBio && ProfileSetup.tutorialStep == 3) {
+                    ProfileSetup.tutorialStep += 1
+                    tutorialStep += 1
+                }
+            }
+            .onChange(of: ProfileSetup.tutorialStep) {
+                if (ProfileSetup.tutorialStep >= ProfileSetup.lastStep) {
+                    ProfileSetup.inTutorial = false
+                    inTutorial = false
+                }
             }
         }
         .ignoresSafeArea(.keyboard)

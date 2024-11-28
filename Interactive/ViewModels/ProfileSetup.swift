@@ -15,6 +15,9 @@ class ProfileSetup {
     
     static var createdUsername = false
     static var addedImage = false
+    static var addedBio = false
+    
+    static var lastStep = 4
 }
 
 
