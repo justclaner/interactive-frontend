@@ -224,4 +224,41 @@ class Control {
     static let phoneVerificationCodeLength = 6
     
     static var test = 0
+    
+    static let socialMediaPlatforms: [String] = [
+        "instagram",
+        "linkedin",
+        "tiktok",
+        "facebook",
+        "spotify",
+        "snapchat",
+        "messenger",
+        "youtube",
+        "whatsapp",
+        "discord",
+        "telegram",
+        "pinterest",
+        "twitter",
+        "behance",
+        "wechat",
+        "signal",
+        "eventbrite",
+        "vinted",
+        "fever",
+        "onlyfans",
+        "twitch",
+        "roblox",
+        "reddit",
+        "patreon",
+        "fiverr",
+        "applemusic",
+        "soundcloud",
+        "amazonmusic",
+        "bereal",
+        "linktree",
+        "threads",
+        "partiful",
+        "shopify",
+        "camaliot"
+    ]
 }

@@ -73,7 +73,8 @@ struct EditProfilePage: View {
                     }
                 BackButton(path:$path)
                     .padding([.top],20)
-                    .opacity(ProfileSetup.tutorialWhiteOpacity)
+                    .opacity(inTutorial ?
+                             ProfileSetup.tutorialWhiteOpacity : 1)
                 
                 //step 1
                 HStack {
@@ -330,25 +331,25 @@ struct EditProfilePage: View {
                 .opacity(tutorialStep == 3 ? 1 : 0)
                 .padding([.top],390)
             }
-            .onChange(of: usernameFocus) { //step 1
+            .onChange(of: usernameFocus) { //step 1 make username
                 if (ProfileSetup.createdUsername && ProfileSetup.tutorialStep == 0) {
                     print("username changed")
                     ProfileSetup.tutorialStep += 1
                     tutorialStep += 1
                 }
             }
-            .onChange(of: ProfileSetup.addedImage) {
+            .onChange(of: ProfileSetup.addedImage) { //step 2 add image
                 print("image added")
                 ProfileSetup.tutorialStep += 1
                 tutorialStep += 1
             }
-            .onChange(of: aboutMeFocus) {
+            .onChange(of: aboutMeFocus) {  //step 3 visitors/interactions
                 if (ProfileSetup.addedBio && ProfileSetup.tutorialStep == 3) {
                     ProfileSetup.tutorialStep += 1
                     tutorialStep += 1
                 }
             }
-            .onChange(of: ProfileSetup.tutorialStep) {
+            .onChange(of: ProfileSetup.tutorialStep) { //step 4 about me
                 if (ProfileSetup.tutorialStep >= ProfileSetup.lastStep) {
                     ProfileSetup.inTutorial = false
                     inTutorial = false
