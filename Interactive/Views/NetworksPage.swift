@@ -62,18 +62,22 @@ struct NetworksPage: View {
                     }
                 ForEach(0..<Int(floor(Double(selectedPlatforms.count)/6))) {row in
                     HStack {
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[row*6]))
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+1]))
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+2]))
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+3]))
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+4]))
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+5]))
+                        if (row*6+5 < selectedPlatforms.count) {
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6]))
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+1]))
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+2]))
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+3]))
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+4]))
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+5]))
+                        }
                     }
                 }
                 HStack {
                     ForEach(0..<Int(selectedPlatforms.count%6)) {i in
                         let index = Int(floor(Double(selectedPlatforms.count)/6))*6 + i
-                        SocialMediaLogo(platform: .constant(selectedPlatforms[index]))
+                        if (index < selectedPlatforms.count) {
+                            SocialMediaLogo(platform: .constant(selectedPlatforms[index]))
+                        }
                     }
                 }
 
