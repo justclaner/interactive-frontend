@@ -16,32 +16,33 @@ struct NetworksPage: View {
     @FocusState var filterFocus: Bool
     @State var selectedPlatforms: [String] = Control.socialMediaPlatforms.map(\.self)
     var body: some View {
-        ZStack {
-            Color.white.opacity(0.001)
-                .ignoresSafeArea()
-                .background(
-                    Image("Background1")
-                        .resizable()
-                        .ignoresSafeArea()
-                )
-                .onTapGesture {
-                    filterFocus = false
-                    print(filterText)
-                    print(Int(floor(Double(selectedPlatforms.count)/6)))
-                }
-            BackButton(path:$path)
-                .padding([.top],20)
-            VStack {
-                Text("Network")
-                    .font(.system(size:20,weight:.semibold))
-                    .foregroundStyle(Color.white)
-                    .frame(maxWidth:361,alignment:.leading)
-                    .padding([.top],18)
-                    .padding([.leading],30)
-                TextField("", text:$filterText, prompt:Text("Search...")
-                    .font(.system(size:16,weight:.regular))
-                    .foregroundStyle(Control.hexColor(hexCode: "#333333"))
-                )
+        GeometryReader { geometry in
+            ZStack {
+                Color.white.opacity(0.001)
+                    .ignoresSafeArea()
+                    .background(
+                        Image("Background1")
+                            .resizable()
+                            .ignoresSafeArea()
+                    )
+                    .onTapGesture {
+                        filterFocus = false
+                        print(filterText)
+                        print(Int(floor(Double(selectedPlatforms.count)/6)))
+                    }
+                BackButton(path:$path)
+                    .padding([.top],20)
+                VStack {
+                    Text("Network")
+                        .font(.system(size:20,weight:.semibold))
+                        .foregroundStyle(Color.white)
+                        .frame(maxWidth:361,alignment:.leading)
+                        .padding([.top],18)
+                        .padding([.leading],30)
+                    TextField("", text:$filterText, prompt:Text("Search...")
+                        .font(.system(size:16,weight:.regular))
+                        .foregroundStyle(Control.hexColor(hexCode: "#333333"))
+                    )
                     .padding([.vertical],8)
                     .padding([.leading,.trailing],16)
                     .background(Control.hexColor(hexCode: "#666666"))
@@ -60,32 +61,33 @@ struct NetworksPage: View {
                             }
                         }
                     }
-                ForEach(0..<Int(floor(Double(selectedPlatforms.count)/6))) {row in
+                    ForEach(0..<Int(floor(Double(selectedPlatforms.count)/6))) {row in
+                        HStack {
+                            if (row*6+5 < selectedPlatforms.count) {
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[row*6]))
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+1]))
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+2]))
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+3]))
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+4]))
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+5]))
+                            }
+                        }
+                    }
                     HStack {
-                        if (row*6+5 < selectedPlatforms.count) {
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6]))
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+1]))
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+2]))
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+3]))
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+4]))
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[row*6+5]))
+                        ForEach(0..<Int(selectedPlatforms.count%6)) {i in
+                            let index = Int(floor(Double(selectedPlatforms.count)/6))*6 + i
+                            if (index < selectedPlatforms.count) {
+                                SocialMediaLogo(platform: .constant(selectedPlatforms[index]))
+                            }
                         }
                     }
+                    Spacer()
                 }
-                HStack {
-                    ForEach(0..<Int(selectedPlatforms.count%6)) {i in
-                        let index = Int(floor(Double(selectedPlatforms.count)/6))*6 + i
-                        if (index < selectedPlatforms.count) {
-                            SocialMediaLogo(platform: .constant(selectedPlatforms[index]))
-                        }
-                    }
-                }
-
-                Spacer()
+                .frame(maxWidth:361)
+                NavigationBar(height:.constant(geometry.size.height*0.13))
             }
-            .frame(maxWidth:361)
+            .ignoresSafeArea(.keyboard)
         }
-        .ignoresSafeArea(.keyboard)
     }
 }
 
