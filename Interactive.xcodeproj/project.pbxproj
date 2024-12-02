@@ -43,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		32064C7E2CFB9BAB009EDC60 /* SocialMediaLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMediaLogo.swift; sourceTree = "<group>"; };
+		323F144E2CFD2B800061B0A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		324233D32CF6ABFF001949B8 /* AddNetworkIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNetworkIcon.swift; sourceTree = "<group>"; };
 		3271A2372CF685F900EFB7AC /* AddImageIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageIcon.swift; sourceTree = "<group>"; };
 		3271A2392CF6923C00EFB7AC /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
@@ -131,6 +132,7 @@
 		32DA0BFC2CD6E63A006BEF03 /* Interactive */ = {
 			isa = PBXGroup;
 			children = (
+				323F144E2CFD2B800061B0A2 /* Info.plist */,
 				505817E82CF52456006487CD /* ViewModels */,
 				505817D82CF523E1006487CD /* Views */,
 				32DA0BFD2CD6E63A006BEF03 /* InteractiveApp.swift */,
@@ -476,6 +478,9 @@
 				DEVELOPMENT_TEAM = X7NWP4NY47;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Interactive/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Share your location with Interactive";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Share your location with Interactive";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Share your location with Interactive";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -506,6 +511,9 @@
 				DEVELOPMENT_TEAM = X7NWP4NY47;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Interactive/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Share your location with Interactive";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Share your location with Interactive";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Share your location with Interactive";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -81,7 +81,7 @@ struct AddEmailPage: View {
                 Button(action: {
                     path.append("Share Location")
                 }) {
-                    Text("Go to Profile")
+                    Text("Continue")
                         .font(.system(size:17,weight:.semibold))
                         .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)

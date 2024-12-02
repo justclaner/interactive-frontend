@@ -9,10 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = ViewModel()
-    //@State private var path : [String] = ["Login"]
+    @StateObject private var locationManager = LocationManager()
     var body: some View {
         NavigationStack(path:$viewModel.path) {
-            //placeholder view required to put navigationDestination
             Text("")
             .navigationDestination(for: String.self) {
                 page in

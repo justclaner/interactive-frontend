@@ -10,6 +10,10 @@ import SwiftUI
 struct LoginPage: View {
 
     @Binding var path : [String]
+    //@Binding var data : UserData
+    
+    var data = UserData()
+    
     var body: some View {
             ZStack {
                 Color.white.opacity(0.001)
@@ -19,6 +23,12 @@ struct LoginPage: View {
                             .resizable()
                             .ignoresSafeArea()
                     )
+                    .onTapGesture {
+                        print("test")
+                        print(data.getLocation())
+                        print(data.incrementCounter())
+                        print(data.getCounter())
+                    }
                 
                 VStack {
                     Spacer()
@@ -84,5 +94,7 @@ struct LoginPage: View {
 }
 
 #Preview {
-    LoginPage(path:.constant(["Login"]))
+    LoginPage(path:.constant(["Login"])
+              //data: .constant( UserData())
+    )
 }

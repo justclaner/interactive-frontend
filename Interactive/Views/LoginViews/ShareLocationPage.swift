@@ -10,7 +10,6 @@ import CoreLocation
 
 struct ShareLocationPage: View {
     @Binding var path: [String]
-    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         ZStack {
@@ -65,8 +64,8 @@ struct ShareLocationPage: View {
                 Spacer()
                 
                 Button(action: {
-                    locationManager.requestCurrentLocation()
-                    path.append("All Done")
+                   // locationManager.requestCurrentLocation()
+                   // path.append("All Done")
                     
                 }) {
                     Text("Turn on localization")
@@ -82,7 +81,7 @@ struct ShareLocationPage: View {
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
                 Button(action: {
-                    
+                    path.append("All Done")
                 }) {
                     Text("Not now")
                         .font(.system(size:16,weight:.semibold))

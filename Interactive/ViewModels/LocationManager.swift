@@ -12,6 +12,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     // Published properties to reflect UI updates
     @Published var userLocation: CLLocation?
     @Published var authorizationStatus: CLAuthorizationStatus?
+    @State private var data = UserData()
+    
+    static var longitude: Double?
+    static var latitude: Double?
 
     private var locationManager = CLLocationManager()
 
@@ -25,6 +29,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization() // Request permission
         locationManager.startUpdatingLocation()         // Start location updates
     }
+    
 
     // CLLocationManagerDelegate method for authorization changes
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -44,7 +49,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let newLocation = locations.last else { return }
         userLocation = newLocation  // Update the published location
-        print("User location updated: \(newLocation)")
+        LocationManager.longitude = userLocation!.coordinate.longitude
+        LocationManager.latitude = userLocation!.coordinate.latitude
+        data.updateLocation(lat: LocationManager.latitude!, long: LocationManager.longitude!)
+        //print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
     }
 
     // CLLocationManagerDelegate method for handling errors
