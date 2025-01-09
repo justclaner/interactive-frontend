@@ -31,6 +31,7 @@ struct ContentView: View {
                 } else if (page == "Share Location") {
                     ShareLocationPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                        .environmentObject(locationManager)
                 } else if (page == "All Done") {
                     AllDonePage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)

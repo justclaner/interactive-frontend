@@ -14,6 +14,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var authorizationStatus: CLAuthorizationStatus?
     @State private var data = UserData()
     
+    
     static var longitude: Double?
     static var latitude: Double?
 
@@ -26,8 +27,11 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     private func setupLocationManager() {
         locationManager.delegate = self
+    }
+    
+    func requestLocation() {
         locationManager.requestWhenInUseAuthorization() // Request permission
-        locationManager.startUpdatingLocation()         // Start location updates
+        //locationManager.startUpdatingLocation()         // Start location updates
     }
     
 
@@ -37,6 +41,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
+            
             locationManager.startUpdatingLocation()  // Authorized: Start location updates
         case .denied, .restricted:
             print("Location access denied or restricted")
@@ -52,7 +57,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         LocationManager.longitude = userLocation!.coordinate.longitude
         LocationManager.latitude = userLocation!.coordinate.latitude
         data.updateLocation(lat: LocationManager.latitude!, long: LocationManager.longitude!)
-        //print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
+        print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
     }
 
     // CLLocationManagerDelegate method for handling errors

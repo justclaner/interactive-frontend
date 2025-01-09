@@ -10,6 +10,9 @@ import CoreLocation
 
 struct ShareLocationPage: View {
     @Binding var path: [String]
+    @EnvironmentObject var locationManager: LocationManager
+    
+    @State var locationRequested: Bool = false
     
     var body: some View {
         ZStack {
@@ -64,22 +67,25 @@ struct ShareLocationPage: View {
                 Spacer()
                 
                 Button(action: {
-                   // locationManager.requestCurrentLocation()
-                   // path.append("All Done")
-                    
-                }) {
-                    Text("Turn on localization")
-                        .font(.system(size:17,weight:.semibold))
-                        .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
-                        .padding(10)
-                        .frame(maxWidth:.infinity,maxHeight:.infinity)
-                }
-                .frame(width:361,height:40)
-                .background(Control.hexColor(hexCode: "#FFDD1A"))
-                .clipShape(RoundedRectangle(cornerRadius:20))
-                .overlay(RoundedRectangle(cornerRadius: 20)
-                    .stroke(.white.opacity(0.6), lineWidth: 1)
-                )
+                    if (!locationRequested) {
+                        locationRequested = true
+                        locationManager.requestLocation()
+                    } else {
+                        path.append("All Done")
+                    }
+                    }) {
+                        Text(locationRequested ? "Continue" : "Turn on localization")
+                            .font(.system(size:17,weight:.semibold))
+                            .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
+                            .padding(10)
+                            .frame(maxWidth:.infinity,maxHeight:.infinity)
+                    }
+                    .frame(width:361,height:40)
+                    .background(Control.hexColor(hexCode: "#FFDD1A"))
+                    .clipShape(RoundedRectangle(cornerRadius:20))
+                    .overlay(RoundedRectangle(cornerRadius: 20)
+                        .stroke(.white.opacity(0.6), lineWidth: 1)
+                    )
                 Button(action: {
                     path.append("All Done")
                 }) {
