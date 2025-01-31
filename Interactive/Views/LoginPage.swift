@@ -24,11 +24,11 @@ struct LoginPage: View {
                             .ignoresSafeArea()
                     )
                     .onTapGesture {
-//                        print("test")
-//                        print(data.getLocation())
-//                        print(data.incrementCounter())
-//                        print(data.getCounter())
-                        testCall()
+                        print("test")
+                        print(data.getLocation())
+                        print(data.incrementCounter())
+                        print(data.getCounter())
+                        //testCall()
                     }
                 
                 VStack {
@@ -98,19 +98,4 @@ struct LoginPage: View {
     LoginPage(path:.constant(["Login"])
               //data: .constant( UserData())
     )
-}
-
-func testCall() {
-    
-    Task {
-        do {
-            let users = try await APIClient.fetchAllUsers()
-            let usernames = users.users.map {
-                $0.username
-            }
-            print(usernames)
-        } catch {
-            print(error)
-        }
-    }
 }
