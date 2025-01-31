@@ -114,8 +114,8 @@ struct AboutYouPage: View {
                     }
                     .frame(width:361,height:40)
                     .background(Color.white.opacity(0.2))
-                    .clipShape(RoundedRectangle(cornerRadius:20))
-                    .overlay(RoundedRectangle(cornerRadius: 20)
+                    .clipShape(RoundedRectangle(cornerRadius:8))
+                    .overlay(RoundedRectangle(cornerRadius: 8)
                         .stroke(.white.opacity(0.6), lineWidth: 1)
                     )
                 } else {

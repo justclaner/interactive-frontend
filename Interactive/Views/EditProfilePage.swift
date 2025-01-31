@@ -21,6 +21,8 @@ struct EditProfilePage: View {
     @State var testFunc: () -> Void = {
         print("hi")
     } //add real functions later
+    @State var count: Int = 0
+    
     
     @State var username = ""
     
@@ -52,6 +54,7 @@ struct EditProfilePage: View {
         //avoid keyboard pushing things up
         GeometryReader {geometry in
             ZStack {
+                Text("\(count)") //force rerender
                 Color.white.opacity(0.001)
                     .ignoresSafeArea()
                     .background(
@@ -65,11 +68,14 @@ struct EditProfilePage: View {
                     .onTapGesture {
                         usernameFocus = false
                         aboutMeFocus = false
-                        print(tutorialStep)
+                        print("tutorialStep: \(tutorialStep)")
+                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
+                        print(ProfileSetup.addedImage)
                         if (tutorialStep == 2) {
-                            tutorialStep += 1
-                            ProfileSetup.tutorialStep += 1
+                            tutorialStep = 3
+                            ProfileSetup.tutorialStep = 3
                         }
+                        count += 1
                     }
                 BackButton(path:$path)
                     .padding([.top],20)
@@ -137,7 +143,9 @@ struct EditProfilePage: View {
                     }
                     .opacity((inTutorial && tutorialStep != 1) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
-                    
+                    .onTapGesture {
+                        count += 1
+                    }
                     //step 3
                     HStack {
                         VStack {
@@ -334,19 +342,19 @@ struct EditProfilePage: View {
             .onChange(of: usernameFocus) { //step 1 make username
                 if (ProfileSetup.createdUsername && ProfileSetup.tutorialStep == 0) {
                     print("username changed")
-                    ProfileSetup.tutorialStep += 1
-                    tutorialStep += 1
+                    ProfileSetup.tutorialStep = 1
+                    tutorialStep = 1
                 }
             }
             .onChange(of: ProfileSetup.addedImage) { //step 2 add image
                 print("image added")
-                ProfileSetup.tutorialStep += 1
-                tutorialStep += 1
+                ProfileSetup.tutorialStep = 2
+                tutorialStep = 2
             }
             .onChange(of: aboutMeFocus) {  //step 3 visitors/interactions
                 if (ProfileSetup.addedBio && ProfileSetup.tutorialStep == 3) {
-                    ProfileSetup.tutorialStep += 1
-                    tutorialStep += 1
+                    ProfileSetup.tutorialStep = 4
+                    tutorialStep = 4
                 }
             }
             .onChange(of: ProfileSetup.tutorialStep) { //step 4 about me

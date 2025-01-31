@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProfileSetup {
+struct ProfileSetup {
     static var inTutorial: Bool = true
     static var tutorialStep: Int = 0
     static let tutorialBlackOpacity: Double = 0.6

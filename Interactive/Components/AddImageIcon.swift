@@ -46,7 +46,7 @@ struct AddImageIcon: View {
             image = Image(uiImage: inputImage)
         }
         ProfileSetup.addedImage = true
-        print(imageNumber)
+        print("Image Number: \(imageNumber)")
     }
     
     func getImage() -> (Int,Image?) {
