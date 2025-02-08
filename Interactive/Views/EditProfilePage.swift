@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditProfilePage: View {
+    
     @State var largeSideLength = 174.0
     @State var mediumSideLength = 81.0
     @State var smallSideLength = 50.0
@@ -40,6 +41,8 @@ struct EditProfilePage: View {
     @State var image3: Image?
     @State var image4: Image?
     @State var image5: Image?
+    
+    
 
 //    @State var viewBoolList: [Bool] = [
 //        ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0,
@@ -68,9 +71,10 @@ struct EditProfilePage: View {
                     .onTapGesture {
                         usernameFocus = false
                         aboutMeFocus = false
-                        print("tutorialStep: \(tutorialStep)")
-                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
-                        print(ProfileSetup.addedImage)
+                        print(UserDefaults.standard.bool(forKey: "inTutorial"))
+//                        print("tutorialStep: \(tutorialStep)")
+//                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
+//                        print(ProfileSetup.addedImage)
                         if (tutorialStep == 2) {
                             tutorialStep = 3
                             ProfileSetup.tutorialStep = 3
@@ -215,41 +219,42 @@ struct EditProfilePage: View {
                     }
                     .opacity(ProfileSetup.tutorialWhiteOpacity)
                     
-                    VStack {
-                        Text("Interests")
-                            .font(.system(size:13,weight:.semibold))
-                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:geometry.size.width*0.9,alignment:.leading)
-                            .padding([.top],5)
-                        HStack {
-                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
-                            Spacer()
-                        }
-                        Text("Jobs")
-                            .font(.system(size:13,weight:.semibold))
-                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:geometry.size.width*0.9,alignment:.leading)
-                            .padding([.top],5)
-                        HStack {
-                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
-                            Spacer()
-                        }
-                        Text("Interaction Goals")
-                            .font(.system(size:13,weight:.semibold))
-                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:geometry.size.width*0.9,alignment:.leading)
-                            .padding([.top],5)
-                        HStack {
-                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
-                            Spacer()
-                        }
-                        HStack {
-                            AddButton(action:$testFunc, text: $addInsight, colorHex:$accent)
-                            Spacer()
-                        }
-                        .padding([.top],10)
-                    }
-                    .opacity(ProfileSetup.tutorialWhiteOpacity)
+                    //add in the future
+//                    VStack {
+//                        Text("Interests")
+//                            .font(.system(size:13,weight:.semibold))
+//                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
+//                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+//                            .padding([.top],5)
+//                        HStack {
+//                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
+//                            Spacer()
+//                        }
+//                        Text("Jobs")
+//                            .font(.system(size:13,weight:.semibold))
+//                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
+//                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+//                            .padding([.top],5)
+//                        HStack {
+//                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
+//                            Spacer()
+//                        }
+//                        Text("Interaction Goals")
+//                            .font(.system(size:13,weight:.semibold))
+//                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
+//                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+//                            .padding([.top],5)
+//                        HStack {
+//                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
+//                            Spacer()
+//                        }
+//                        HStack {
+//                            AddButton(action:$testFunc, text: $addInsight, colorHex:$accent)
+//                            Spacer()
+//                        }
+//                        .padding([.top],10)
+//                    }
+//                    .opacity(ProfileSetup.tutorialWhiteOpacity)
                     Spacer()
                 }
                 .frame(maxWidth:geometry.size.width*0.9)
@@ -265,7 +270,7 @@ struct EditProfilePage: View {
                     Spacer()
                 }
                 .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
-                .opacity(tutorialStep == 0 ? 1 : 0)
+                .opacity((tutorialStep == 0 && inTutorial) ? 1 : 0)
                 .padding([.top],60)
                 
                 //step 2
@@ -281,7 +286,7 @@ struct EditProfilePage: View {
                 }
                 .font(.system(size:16,weight:.regular))
                 .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
-                .opacity(tutorialStep == 1 ? 1 : 0)
+                .opacity((tutorialStep == 1 && inTutorial) ? 1 : 0)
                 .padding([.top],240)
                 
                 //step 3
@@ -307,7 +312,7 @@ struct EditProfilePage: View {
                 }
                 .font(.system(size:16,weight:.regular))
                 .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
-                .opacity(tutorialStep == 2 ? 1 : 0)
+                .opacity((tutorialStep == 2 && inTutorial) ? 1 : 0)
                 .padding([.top],305)
                 
                 
@@ -361,12 +366,23 @@ struct EditProfilePage: View {
                 if (ProfileSetup.tutorialStep >= ProfileSetup.lastStep) {
                     ProfileSetup.inTutorial = false
                     inTutorial = false
+                    UserDefaults.standard.set(false, forKey:"inTutorial")
                 }
             }
         }
         .ignoresSafeArea(.keyboard)
     }
+    
+    func postUser() {
+        Task {
+            do {
+                //add random shit to update user in database
+            }
+        }
+    }
 }
+
+
 
 #Preview {
     EditProfilePage(path: .constant(["Profile Page"]))

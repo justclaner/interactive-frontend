@@ -47,7 +47,7 @@ class APIClient {
             "userId": userId,
             "password": password
         ]
-        let encoded = try JSONEncoder().encode(body)
+        let encoded = try Control.encode(jsonBody: body)
         
         print(String(data: encoded, encoding: .utf8)!)
         

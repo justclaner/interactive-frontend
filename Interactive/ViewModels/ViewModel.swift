@@ -11,12 +11,13 @@ import MapKit
 extension ContentView {
     @Observable
     class ViewModel {
-        var path : [String] = ["Login"]
+        let initialPath : [String]
+        var path: [String]
+        let inTutorial: Bool = UserDefaults.standard.bool(forKey: "inTutorial")
+        init() {
+            self.initialPath = inTutorial ? ["Login"] : ["Your Profile"]
+            self.path = initialPath
+        }
     }
     
-}
-
-class GlobalVariables {
-    static let global = GlobalVariables()
-    @Published var test = 0;
 }

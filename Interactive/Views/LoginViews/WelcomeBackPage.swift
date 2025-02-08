@@ -11,7 +11,6 @@ struct WelcomeBackPage: View {
     @Binding var path: [String]
     @State private var email: String = ""
     @State private var password: String = ""
-    @State var global = GlobalVariables()
     @FocusState var emailFocus: Bool
     @FocusState var passwordFocus: Bool
     var body: some View {

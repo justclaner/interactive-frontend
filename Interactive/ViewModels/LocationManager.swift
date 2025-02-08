@@ -57,18 +57,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         LocationManager.longitude = userLocation!.coordinate.longitude
         LocationManager.latitude = userLocation!.coordinate.latitude
         data.updateLocation(lat: LocationManager.latitude!, long: LocationManager.longitude!)
-        print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
-        Task {
-            do {
-                let users = try await APIClient.fetchAllUsers()
-                let usernames = users.users.map {
-                    $0.username
-                }
-                print(usernames)
-            } catch {
-                print(error)
-            }
-        }
+        //print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
     }
 
     // CLLocationManagerDelegate method for handling errors

@@ -13,6 +13,9 @@ class UserData {
     init() {
         defaults.set(LocationManager.latitude, forKey: "lat")
         defaults.set(LocationManager.longitude, forKey: "long")
+        if (defaults.object(forKey: "inTutorial") == nil) {
+            defaults.set(true, forKey: "inTutorial")
+        }
     }
     
     
@@ -33,5 +36,20 @@ class UserData {
     
     func getLocation() -> (lat: Double, long: Double) {
         return (defaults.double(forKey: "lat"), defaults.double(forKey: "long"))
+    }
+    
+    func setInTutorial(complete: Bool) {
+        defaults.set(complete, forKey: "inTutorial")
+    }
+    
+    func getInTutorial() -> Bool {
+        return defaults.bool(forKey: "inTutorial")
+    }
+    
+    func cleanCompleteStorage() {
+        if let domain = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: domain)
+            UserDefaults.standard.synchronize()
+        }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginPage: View {
-
+    
     @Binding var path : [String]
     //@Binding var data : UserData
     

@@ -223,8 +223,6 @@ class Control {
      */
     static let phoneVerificationCodeLength = 6
     
-    static var test = 0
-    
     static let socialMediaPlatforms: [String] = [
         "instagram",
         "linkedin",
@@ -261,4 +259,8 @@ class Control {
         "shopify",
         "camaliot"
     ]
+    
+    static func encode(jsonBody: Encodable) throws -> Data {
+        return try JSONEncoder().encode(jsonBody)
+    }
 }
