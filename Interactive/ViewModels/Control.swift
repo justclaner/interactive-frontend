@@ -264,6 +264,7 @@ class Control {
         return try JSONEncoder().encode(jsonBody)
     }
     
+    //RFC 5322 Official Standard
     static let emailRegex = "(?:[\\p{L}0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[\\p{L}0-9!#$%\\&'*+/=?\\^_`{|}" +
     "~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" +
     "x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[\\p{L}0-9](?:[a-" +
@@ -276,6 +277,15 @@ class Control {
         return email.range(of: emailRegex, options: .regularExpression, range: nil, locale: nil) != nil
     }
     
+    /*
+     Regex for a password that must satisfy the following conditions:
+     
+     1. Have at least 8 characters.                 {8,}
+     2. Have at least one uppercase English letter. (?=.*?[A-Z])
+     3. Have at least one lowercase English letter. (?=.*?[a-z])
+     4. Have at least one digit.                    (?=.*?[0-9])
+     5. Have at least one special character.        (?=.*?[#?!@$%^&*-])
+     */
     static let passwordRegex = "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}"
     
     static func isValidPassword(password: String) -> Bool {
