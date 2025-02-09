@@ -14,6 +14,11 @@ struct AddEmailPage: View {
     @State var password = ""
     @FocusState var emailFocus: Bool
     @FocusState var passwordFocus: Bool
+    
+    @State var emailWarning: Bool = false
+    @State var passwordWarning: Bool = false
+    @State var emailWarningText: String = "temporary text"
+    @State var passwordWarningText: String = "temporary text"
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -26,6 +31,8 @@ struct AddEmailPage: View {
                 .onTapGesture {
                     emailFocus = false
                     passwordFocus = false
+                    emailWarning = false
+                    passwordWarning = false
                 }
             BackButton(path:$path)
                 .padding([.top],20)
@@ -60,12 +67,18 @@ struct AddEmailPage: View {
                     .textInputAutocapitalization(.never)
                     .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
                     .focused($emailFocus)
+                Text(emailWarningText)
+                    .font(.system(size:16, weight:.semibold))
+                    .foregroundStyle(Color.red)
+                    .opacity(emailWarning ? 1 : 0.01)
+                    .frame(maxWidth:361,alignment:.leading)
+                
                 Text("Password")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
                     .frame(maxWidth:361,alignment:.leading)
                     .padding([.top],30)
-                TextField("", text:$password, prompt: Text(verbatim: "Choose a strong password")
+                SecureField("", text:$password, prompt: Text(verbatim: "Choose a strong password")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3")))
                     .padding(16)
@@ -79,9 +92,37 @@ struct AddEmailPage: View {
                     .textInputAutocapitalization(.never)
                     .foregroundStyle(Control.hexColor(hexCode: "#B3B3B3"))
                     .focused($passwordFocus)
+                Text(passwordWarningText)
+                    .font(.system(size:16, weight:.semibold))
+                    .foregroundStyle(Color.red)
+                    .opacity(passwordWarning ? 1 : 0.01)
+                    .frame(maxWidth:361,alignment:.leading)
                 Spacer()
                 Button(action: {
-                    path.append("Share Location")
+                    if (Control.isValidEmail(email: email) && Control.isValidPassword(password: password) && !email.isEmpty && !password.isEmpty) {
+                        UserDefaults.standard.set(email, forKey: "email")
+                        UserDefaults.standard.set(password, forKey: "password")
+                        path.append("Share Location")
+                        emailWarning = false
+                        passwordWarning = false
+                    }
+                    
+                    if (email.isEmpty) {
+                        emailWarning = true
+                        emailWarningText = "Email address is required."
+                    } else if (!Control.isValidEmail(email: email)) {
+                        emailWarning = true
+                        emailWarningText = "This is not a valid email address."
+                    }
+                    if (password.isEmpty) {
+                        passwordWarning = true
+                        passwordWarningText = "Password is required."
+                    } else if (!Control.isValidPassword(password: password)) {
+                        passwordWarning = true
+                        passwordWarningText = "Password must be at least 8 characters long, contain uppercase and lowercase letters, contain at least one digit, and contain at least one special character."
+                    }
+                    
+                   
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))
