@@ -17,6 +17,7 @@ struct BackButton: View {
                 Image(systemName:"chevron.left")
                     .font(.system(size:20))
                     .foregroundStyle(Color.white)
+                    .frame(width: 30, height: 30)
             }
             .frame(maxWidth:.infinity,alignment:.leading)
             Spacer()

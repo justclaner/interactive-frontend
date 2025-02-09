@@ -7,6 +7,7 @@
 
 import Foundation
 class APIClient {
+    static let baseURL: String = "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
         let users: [User]
@@ -17,6 +18,9 @@ class APIClient {
         let username: String
         let password: String
         let biography: String
+        let birthDay: Int
+        let birthMonth: String
+        let birthYear: Int
         let is_company: Bool
         let is_premium: Bool
         let createdAt: String
@@ -24,6 +28,12 @@ class APIClient {
         let __v: Int
         let latitude: [String: String]?
         let longitude: [String: String]?
+    }
+    
+    struct UsernameExistResponse: Decodable {
+        let success: Bool
+        let exists: Bool
+        let message: String
     }
 
     struct AuthResponse: Decodable {
@@ -34,7 +44,7 @@ class APIClient {
     
     
     static func fetchAllUsers() async throws -> UsersResponse {
-        let url = URL(string: "https://interactive-backend.vercel.app/api/users")!
+        let url = URL(string: "\(baseURL)/api/users")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(UsersResponse.self, from: data)
@@ -42,7 +52,7 @@ class APIClient {
     }
     
     static func authenticateUser(userId: String, password: String) async throws -> AuthResponse {
-        let url = URL(string: "https://interactive-backend.vercel.app/api/users/auth")!
+        let url = URL(string: "\(baseURL)/api/users/auth")!
         let body: Encodable = [
             "userId": userId,
             "password": password
@@ -58,6 +68,14 @@ class APIClient {
         
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
         let decoded = try JSONDecoder().decode(AuthResponse.self, from: data)
+        return decoded
+    }
+    
+    static func checkUsernameExist(username: String) async throws -> UsernameExistResponse {
+        let url = URL(string: "\(baseURL)/api/users/username/\(username)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(UsernameExistResponse.self, from: data)
         return decoded
     }
     

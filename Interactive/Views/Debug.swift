@@ -20,8 +20,19 @@ struct Debug: View {
     }
     
     func testCall() {
+        
         //data.cleanCompleteStorage()
-        print(data.getCounter())
+//        print(data.getCounter())
+//        UserDefaults.standard.set("true", forKey:"inTutorial")
+        Task {
+            do {
+                let auth = try await APIClient.checkUsernameExist(username: "test1")
+                print(auth)
+            } catch {
+                print(error)
+            }
+            
+        }
     //    Task {
     //        do {
     //            let auth = try await APIClient.authenticateUser(

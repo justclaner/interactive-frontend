@@ -14,13 +14,11 @@ struct AboutYouPage: View {
     @State private var birthDay: Int = 0
     @State private var birthMonth: String = ""
     @State private var birthYear: Int = 0
-    @State private var date = Date()
+    @State private var date = Calendar.current.date(byAdding: .year, value: -18, to: Date())!
     @State private var isSelectingDate: Bool = false
     @FocusState private var usernameFocus: Bool
     /*
      The date range allowed for users to pick their birthday.
-     TO-DO: make endComponents set the latest date to 18 years
-            prior from today.
     */
     var dateRange: ClosedRange<Date> {
         let calendar = Calendar.current
@@ -28,7 +26,7 @@ struct AboutYouPage: View {
         let currentMonth = Calendar.current.component(.month, from: Date())
         let currentDay = Calendar.current.component(.day, from: Date())
         let startRange = DateComponents(year: 1900, month: 1, day: 1)
-        let endRange = DateComponents(year: currentYear, month: currentMonth, day: currentDay)
+        let endRange = DateComponents(year: currentYear - 18, month: currentMonth, day: currentDay)
         
         return calendar.date(from:startRange)!
             ...
@@ -59,27 +57,28 @@ struct AboutYouPage: View {
                     .font(.system(size:31,weight:.semibold))
                     .foregroundStyle(Color.white)
                     .padding([.top],40)
+                    .padding([.bottom],10)
                     .frame(maxWidth:361,alignment:.leading)
-                HStack{
-                    Text("Are you a business?")
-                        .font(.system(size:16,weight:.semibold))
-                        .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
-                    
-                    Spacer()
-                    Button(action: {
-                        //add path
-                    }) {
-                        Text("I am a business")
-                            .font(.system(size:13,weight:.semibold))
-                            .foregroundStyle(Color.white)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    .frame(width:119,height:16)
-                    .padding(6)
-                    .background(Control.hexColor(hexCode: "#1A1A1A"))
-                    .clipShape(RoundedRectangle(cornerRadius:999))
-                }
-                .padding([.vertical],20)
+//                HStack{
+//                    Text("Are you a business?")
+//                        .font(.system(size:16,weight:.semibold))
+//                        .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
+//                    
+//                    Spacer()
+//                    Button(action: {
+//                        //add path
+//                    }) {
+//                        Text("I am a business")
+//                            .font(.system(size:13,weight:.semibold))
+//                            .foregroundStyle(Color.white)
+//                            .fixedSize(horizontal: false, vertical: true)
+//                    }
+//                    .frame(width:119,height:16)
+//                    .padding(6)
+//                    .background(Control.hexColor(hexCode: "#1A1A1A"))
+//                    .clipShape(RoundedRectangle(cornerRadius:999))
+//                }
+//                .padding([.vertical],20)
                 Text("How do you prefer to be called?")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
@@ -95,6 +94,7 @@ struct AboutYouPage: View {
                         .stroke(.white.opacity(0.8), lineWidth: 1)
                     )
                     .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
                     .foregroundStyle(Color.white)
                     .padding([.bottom],30)
                     .focused($usernameFocus)
@@ -148,6 +148,14 @@ struct AboutYouPage: View {
                 
                 Spacer()
                 Button(action: {
+                    
+                    //do username check in database:
+                    
+                    
+                    //store birthday info
+                    UserDefaults.standard.set(birthDay, forKey: "birthDay")
+                    UserDefaults.standard.set(birthMonth, forKey: "birthMonth")
+                    UserDefaults.standard.set(birthYear, forKey: "birthYear")
                     path.append("Add Email")
                 }) {
                     Text("Continue")
