@@ -9,6 +9,13 @@ import SwiftUI
 
 struct AboutYouPage: View {
     
+    @State private var usernameWarning: Bool = false
+    @State private var usernameWarningText: String = "temporary warning text"
+    
+//    init() {
+//        self.usernameExistsWarning = false
+//    }
+    
     @Binding var path: [String]
     @State private var username: String = ""
     @State private var birthDay: Int = 0
@@ -47,6 +54,7 @@ struct AboutYouPage: View {
                         isSelectingDate = false
                     }
                     usernameFocus = false
+                    usernameWarning = false
                 }
             BackButton(path:$path)
                 .padding([.top],20)
@@ -96,8 +104,13 @@ struct AboutYouPage: View {
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
                     .foregroundStyle(Color.white)
-                    .padding([.bottom],30)
                     .focused($usernameFocus)
+                Text(usernameWarningText)
+                    .font(.system(size:16, weight:.semibold))
+                    .foregroundStyle(Color.red)
+                    .opacity(usernameWarning ? 1 : 0.01)
+                    .frame(maxWidth:361,alignment:.leading)
+                    .padding([.bottom],30)
                 Text("Birth Date")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
@@ -148,15 +161,31 @@ struct AboutYouPage: View {
                 
                 Spacer()
                 Button(action: {
-                    
-                    //do username check in database:
-                    
-                    
-                    //store birthday info
-                    UserDefaults.standard.set(birthDay, forKey: "birthDay")
-                    UserDefaults.standard.set(birthMonth, forKey: "birthMonth")
-                    UserDefaults.standard.set(birthYear, forKey: "birthYear")
-                    path.append("Add Email")
+                    if (username.isEmpty) {
+                        usernameWarning = true
+                        usernameWarningText = "Please enter a username."
+                    } else {
+                        //do username check in database:
+                        Task {
+                            do {
+                                let response = try await APIClient.checkUsernameExist(username: username)
+                                if (!response.exists) {
+                                    UserDefaults.standard.set(username, forKey: "username")
+                                    
+                                    //store birthday info
+                                    UserDefaults.standard.set(birthDay, forKey: "birthDay")
+                                    UserDefaults.standard.set(birthMonth, forKey: "birthMonth")
+                                    UserDefaults.standard.set(birthYear, forKey: "birthYear")
+                                    path.append("Add Email")
+                                } else {
+                                    usernameWarning = true
+                                    usernameWarningText = "\(username) is taken!"
+                                }
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    }
                 }) {
                     Text("Continue")
                         .font(.system(size:17,weight:.semibold))

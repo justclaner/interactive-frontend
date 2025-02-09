@@ -16,23 +16,41 @@ struct Debug: View {
                 .onTapGesture {
                     testCall()
                 }
+            VStack {
+                Button(action: {
+                    data.cleanCompleteStorage()
+                }) {
+                    Text("Erase all User Defaults")
+                        .font(.system(size:24))
+                        .foregroundStyle(.black)
+                }
+                .padding([.leading, .trailing],15)
+                .frame(height:40)
+                .background(Control.hexColor(hexCode: "#FFDD1A"))
+                .clipShape(RoundedRectangle(cornerRadius:20))
+                .overlay(RoundedRectangle(cornerRadius: 20)
+                    .stroke(.white.opacity(0.6), lineWidth: 1)
+                )
+                Spacer()
+            }
+            
         }
     }
     
     func testCall() {
         
-        //data.cleanCompleteStorage()
-//        print(data.getCounter())
-//        UserDefaults.standard.set("true", forKey:"inTutorial")
-        Task {
-            do {
-                let auth = try await APIClient.checkUsernameExist(username: "test1")
-                print(auth)
-            } catch {
-                print(error)
-            }
-            
-        }
+        //data.incrementCounter()
+        print(data.getCounter())
+//       UserDefaults.standard.set("true", forKey:"inTutorial")
+//        Task {
+//            do {
+//                let auth = try await APIClient.checkUsernameExist(username: "test1")
+//                print(auth.success)
+//            } catch {
+//                print(error)
+//            }
+//            
+//        }
     //    Task {
     //        do {
     //            let auth = try await APIClient.authenticateUser(
