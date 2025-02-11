@@ -61,7 +61,7 @@ struct NetworksPage: View {
                             }
                         }
                     }
-                    ForEach(0..<Int(floor(Double(selectedPlatforms.count)/6))) {row in
+                    ForEach(0..<Int(floor(Double(selectedPlatforms.count)/6)), id: \.self) {row in
                         HStack {
                             if (row*6+5 < selectedPlatforms.count) {
                                 SocialMediaLogo(platform: .constant(selectedPlatforms[row*6]))
@@ -74,7 +74,7 @@ struct NetworksPage: View {
                         }
                     }
                     HStack {
-                        ForEach(0..<Int(selectedPlatforms.count%6)) {i in
+                        ForEach(0..<Int(selectedPlatforms.count%6), id: \.self) {i in
                             let index = Int(floor(Double(selectedPlatforms.count)/6))*6 + i
                             if (index < selectedPlatforms.count) {
                                 SocialMediaLogo(platform: .constant(selectedPlatforms[index]))

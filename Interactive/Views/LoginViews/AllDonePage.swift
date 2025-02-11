@@ -46,7 +46,7 @@ struct AllDonePage: View {
                         .font(.system(size:16,weight:.bold))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFE54D"))
                         .onTapGesture() {
-                            path.append("Your Profile")
+                            path = ["Your Profile"]
                         }
                         .padding([.trailing],10)
                     Image(systemName:"chevron.right")
