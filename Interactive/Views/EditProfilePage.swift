@@ -25,7 +25,7 @@ struct EditProfilePage: View {
     @State var count: Int = 0
     
     
-    @State var username = ""
+    @State var username: String = UserDefaults.standard.string(forKey: "username") ?? "Username"
     
     @Binding var path: [String]
     @FocusState var aboutMeFocus: Bool
@@ -41,8 +41,6 @@ struct EditProfilePage: View {
     @State var image3: Image?
     @State var image4: Image?
     @State var image5: Image?
-    
-    
 
 //    @State var viewBoolList: [Bool] = [
 //        ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0,
@@ -106,7 +104,7 @@ struct EditProfilePage: View {
                 }
                 VStack {
                     TextField("", text:$username,
-                              prompt:Text(usernameFocus ? "" : "Username")
+                              prompt:Text(username)
                         .font(.system(size:25,weight:.semibold))
                         .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                     )
@@ -264,7 +262,7 @@ struct EditProfilePage: View {
                 
                 //step 1
                 VStack {
-                    Text("Tap \"Username\" or the pencil icon to edit your \nusername.")
+                    Text("Tap your username or the pencil icon to edit your \nusername.")
                         .foregroundStyle(Color.white)
                         .font(.system(size:16,weight:.regular))
                     Spacer()
@@ -367,6 +365,8 @@ struct EditProfilePage: View {
                     ProfileSetup.inTutorial = false
                     inTutorial = false
                     UserDefaults.standard.set(false, forKey:"inTutorial")
+                    UserDefaults.standard.set(username, forKey: "username")
+                    UserDefaults.standard.set(aboutMe, forKey:"biography")
                 }
             }
         }

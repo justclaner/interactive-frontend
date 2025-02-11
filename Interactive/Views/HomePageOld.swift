@@ -378,7 +378,7 @@ struct ProfileCard: View {
     }
 }
 
-struct HomePage: View {
+struct HomePageOld: View {
     @Binding var path: [String]
     @State private var selectedTab: String = "People"
     let screenWidth = UIScreen.main.bounds.width
@@ -503,6 +503,6 @@ struct HomePage: View {
 
 struct HomePage_Previews: PreviewProvider {
     static var previews: some View {
-        HomePage(path: .constant([]))
+        HomePageOld(path: .constant([]))
     }
 }
