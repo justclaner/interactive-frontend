@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct EditProfilePage: View {
     
@@ -33,14 +34,22 @@ struct EditProfilePage: View {
     
     @State var inTutorial: Bool = ProfileSetup.inTutorial
     @State var tutorialStep: Int = ProfileSetup.tutorialStep
-    @State var createdUsername: Bool = ProfileSetup.createdUsername
     @State var addedImage: Bool = ProfileSetup.addedImage
     
+    
+    //image for display
     @State var image1: Image?
     @State var image2: Image?
     @State var image3: Image?
     @State var image4: Image?
     @State var image5: Image?
+    
+    //uiimage for sending data
+//    @State var uiImage1: UIImage?
+//    @State var uiImage2: UIImage?
+//    @State var uiImage3: UIImage?
+//    @State var uiImage4: UIImage?
+//    @State var uiImage5: UIImage?
 
 //    @State var viewBoolList: [Bool] = [
 //        ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0,
@@ -73,6 +82,10 @@ struct EditProfilePage: View {
 //                        print("tutorialStep: \(tutorialStep)")
 //                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
 //                        print(ProfileSetup.addedImage)
+                        if (tutorialStep == 0) {
+                            tutorialStep = 1
+                            ProfileSetup.tutorialStep = 1
+                        }
                         if (tutorialStep == 2) {
                             tutorialStep = 3
                             ProfileSetup.tutorialStep = 3
@@ -101,6 +114,7 @@ struct EditProfilePage: View {
                         Spacer()
                     }
                     .padding([.trailing],geometry.size.width*0.05)
+                    
                 }
                 VStack {
                     TextField("", text:$username,
@@ -117,7 +131,6 @@ struct EditProfilePage: View {
                     .disabled(ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0)
                     .onChange(of: username) {
                         self.username = String(username.prefix(24))
-                        ProfileSetup.createdUsername = true
                     }
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
@@ -143,6 +156,7 @@ struct EditProfilePage: View {
                             .frame(maxHeight:174)
                         }.frame(width:174)
                     }
+                    .padding([.top], 10)
                     .opacity((inTutorial && tutorialStep != 1) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
                     .onTapGesture {
@@ -277,7 +291,7 @@ struct EditProfilePage: View {
                         Text("Insert at least one photo of yourself to continue.")
                             .foregroundStyle(Control.hexColor(hexCode: accent))
                         +
-                        Text("It is important that others recognize you!")
+                        Text(" It is important that others recognize you!")
                             .foregroundStyle(Color.white)
                     }
                     Spacer()
@@ -341,13 +355,6 @@ struct EditProfilePage: View {
                 .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
                 .opacity(tutorialStep == 3 ? 1 : 0)
                 .padding([.top],390)
-            }
-            .onChange(of: usernameFocus) { //step 1 make username
-                if (ProfileSetup.createdUsername && ProfileSetup.tutorialStep == 0) {
-                    print("username changed")
-                    ProfileSetup.tutorialStep = 1
-                    tutorialStep = 1
-                }
             }
             .onChange(of: ProfileSetup.addedImage) { //step 2 add image
                 print("image added")

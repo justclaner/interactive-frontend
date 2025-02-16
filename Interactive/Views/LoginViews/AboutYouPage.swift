@@ -171,7 +171,7 @@ struct AboutYouPage: View {
                                 let response = try await APIClient.checkUsernameExist(username: username)
                                 if (!response.exists) {
                                     UserDefaults.standard.set(username, forKey: "username")
-                                    
+
                                     //store birthday info
                                     UserDefaults.standard.set(birthDay, forKey: "birthDay")
                                     UserDefaults.standard.set(birthMonth, forKey: "birthMonth")

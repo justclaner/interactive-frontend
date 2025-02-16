@@ -12,6 +12,7 @@ struct AddImageIcon: View {
     @State var selectedImage: PhotosPickerItem?
     
     @Binding var image: Image?
+   // @Binding var uiImage: UIImage?
     @Binding var imageNumber: Int
     @Binding var sideLength: Double
     var body: some View {
@@ -38,12 +39,20 @@ struct AddImageIcon: View {
         .onChange(of: selectedImage) {
             loadImage()
         }
+        .allowsHitTesting(ProfileSetup.tutorialStep > 0 || !UserDefaults.standard.bool(forKey: "inTutorial"))
     }
     func loadImage() {
         Task {
             guard let imageData = try await selectedImage?.loadTransferable(type: Data.self) else { return }
             guard let inputImage = UIImage(data: imageData) else { return }
+           // uiImage = inputImage
             image = Image(uiImage: inputImage)
+            do {
+                let presignedResult: APIClient.PresignedPostUrlResponse = try await APIClient.getPresignedPostURL()
+                let uploadResult: Void = try await APIClient.uploadImage(image: inputImage, presignedPostResult: presignedResult)
+            } catch {
+                print(error)
+            }
         }
         ProfileSetup.addedImage = true
         print("Image Number: \(imageNumber)")
