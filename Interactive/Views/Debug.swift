@@ -14,9 +14,6 @@ struct Debug: View {
             Color.blue.opacity(1)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    print(ProfileSetup.tutorialStep)
-                    print(UserDefaults.standard.bool(forKey: "inTutorial"))
-                    print(ProfileSetup.tutorialStep < 1 && UserDefaults.standard.bool(forKey: "inTutorial"))
                     testCall()
                 }
             VStack {
@@ -55,6 +52,7 @@ struct Debug: View {
 //        Task {
 //            do {
 //                let auth = try await APIClient.checkUsernameExist(username: "test1")
+//                print(auth)
 //                print(auth.success)
 //            } catch {
 //                print(error)
@@ -70,17 +68,17 @@ struct Debug: View {
 //                print(error)
 //            }
         }
-    //    Task {
-    //        do {
-    //            let auth = try await APIClient.authenticateUser(
-    //                userId: "67883e7bf72444443aab976c",
-    //                password: "1234"
-    //            )
-    //            print(auth)
-    //        } catch {
-    //            print(error)
-    //        }
-    //    }
+        Task {
+            do {
+                let auth = try await APIClient.authenticateUser(
+                    userId: "67a937faba8be5736f697b39",
+                    password: "1234"
+                )
+                print(auth)
+            } catch {
+                print(error)
+            }
+        }
 
 //        Task {
 //            do {

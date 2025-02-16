@@ -49,7 +49,7 @@ struct AddImageIcon: View {
             image = Image(uiImage: inputImage)
             do {
                 let presignedResult: APIClient.PresignedPostUrlResponse = try await APIClient.getPresignedPostURL()
-                let uploadResult: Void = try await APIClient.uploadImage(image: inputImage, presignedPostResult: presignedResult)
+                let uploadResult: Void = try await APIClient.uploadImageToS3(image: inputImage, presignedPostResult: presignedResult)
             } catch {
                 print(error)
             }

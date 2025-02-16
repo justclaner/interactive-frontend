@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = true
+    static let localTesting: Bool = false
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
@@ -41,7 +41,7 @@ class APIClient {
         let message: String
     }
     
-    struct AuthResponse: Decodable {
+    struct DefaultResponse: Decodable {
         let success: Bool
         let message: String
     }
@@ -83,15 +83,9 @@ class APIClient {
         return decoded
     }
     
-    static func authenticateUser(userId: String, password: String) async throws -> AuthResponse {
-        let url = URL(string: "\(baseURL)/api/users/auth")!
-        let body: Encodable = [
-            "userId": userId,
-            "password": password
-        ]
+    static func postRequest(url: String, body: Encodable) async throws -> DefaultResponse {
+        let url = URL(string: url)!
         let encoded = try Control.encode(jsonBody: body)
-        
-        print(String(data: encoded, encoding: .utf8)!)
         
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -99,8 +93,17 @@ class APIClient {
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
-        let decoded = try JSONDecoder().decode(AuthResponse.self, from: data)
+        let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
+    }
+    
+    static func authenticateUser(userId: String, password: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/users/auth"
+        let body: Encodable = [
+            "userId": userId,
+            "password": password
+        ]
+        return try await postRequest(url: url, body: body)
     }
     
     static func checkUsernameExist(username: String) async throws -> UsernameExistResponse {
@@ -119,7 +122,7 @@ class APIClient {
         return decoded
     }
     
-    static func uploadImage(image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
+    static func uploadImageToS3(image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
         let data = presignedPostResult
         let url = URL(string: data.url)!
         
@@ -176,5 +179,14 @@ class APIClient {
                 }
             }
         }).resume()
+    }
+    
+    static func uploadImageToBackend(userId: String, imageKey: String, imageURL: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/users/images/userImage/\(userId)"
+        let body: Encodable = [
+            "imageKey": imageKey,
+            "imageURL": imageURL
+        ]
+        return try await postRequest(url: url, body: body)
     }
 }
