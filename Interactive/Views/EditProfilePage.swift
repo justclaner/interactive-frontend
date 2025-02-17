@@ -15,7 +15,7 @@ struct EditProfilePage: View {
     @State var smallSideLength = 50.0
     @State var visitors: Int = 0
     @State var interactions: Int = 0
-    @State var aboutMe: String = ""
+    @State var aboutMe: String = UserDefaults.standard.string(forKey: "biography") ?? ""
     @State var add: String = "Add"
     @State var addInsight: String = "Add New Insight"
     @State var gray_80: String = "#CCCCCC"
@@ -79,9 +79,9 @@ struct EditProfilePage: View {
                         usernameFocus = false
                         aboutMeFocus = false
                         print(UserDefaults.standard.bool(forKey: "inTutorial"))
-//                        print("tutorialStep: \(tutorialStep)")
-//                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
-//                        print(ProfileSetup.addedImage)
+                        print("tutorialStep: \(tutorialStep)")
+                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
+                        print(ProfileSetup.addedImage)
                         if (tutorialStep == 0) {
                             tutorialStep = 1
                             ProfileSetup.tutorialStep = 1
@@ -92,10 +92,10 @@ struct EditProfilePage: View {
                         }
                         count += 1
                     }
-                BackButton(path:$path)
-                    .padding([.top],20)
-                    .opacity(inTutorial ?
-                             ProfileSetup.tutorialWhiteOpacity : 1)
+//                BackButton(path:$path)
+//                    .padding([.top],20)
+//                    .opacity(inTutorial ?
+//                             ProfileSetup.tutorialWhiteOpacity : 1)
                 
                 //step 1
                 HStack {
@@ -138,20 +138,20 @@ struct EditProfilePage: View {
                     
                     //step 2
                     HStack {
-                        AddImageIcon(image: $image1, imageNumber: .constant(0), sideLength:$largeSideLength)
+                        AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
                         Spacer()
                         HStack {
                             VStack {
-                                AddImageIcon(image: $image2, imageNumber: .constant(1), sideLength:$mediumSideLength)
+                                AddImageIcon(image: $image2, imageNumber: .constant(2), sideLength:$mediumSideLength)
                                 Spacer()
-                                AddImageIcon(image: $image3, imageNumber: .constant(2), sideLength:$mediumSideLength)
+                                AddImageIcon(image: $image3, imageNumber: .constant(4), sideLength:$mediumSideLength)
                             }
                             .frame(maxHeight:174)
                             Spacer()
                             VStack {
                                 AddImageIcon(image: $image4, imageNumber: .constant(3), sideLength:$mediumSideLength)
                                 Spacer()
-                                AddImageIcon(image: $image5, imageNumber: .constant(4), sideLength:$mediumSideLength)
+                                AddImageIcon(image: $image5, imageNumber: .constant(5), sideLength:$mediumSideLength)
                             }
                             .frame(maxHeight:174)
                         }.frame(width:174)
@@ -209,8 +209,8 @@ struct EditProfilePage: View {
                                 .padding([.bottom],10)
                                 .disabled(ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 3)
                                 .onChange(of: aboutMe) {
-                                    self.aboutMe = String(aboutMe.prefix(150))
-                                    ProfileSetup.addedBio = true
+                                    aboutMe = String(aboutMe.prefix(150))
+                                    
                                 }
                                 .lineLimit(3, reservesSpace: true)
                                 .textInputAutocapitalization(.never)
@@ -342,14 +342,14 @@ struct EditProfilePage: View {
                             .foregroundStyle(Color.white)
                     }
                         .font(.system(size:16,weight:.regular))
-                    Text("Skip for now")
-                        .font(.system(size:13,weight:.semibold))
-                        .foregroundStyle(Control.hexColor(hexCode: accent))
-                        .frame(maxWidth:geometry.size.width*0.835,alignment:.leading)
-                        .underline()
-                        .onTapGesture {
-                            ProfileSetup.addedBio = true
-                        }
+//                    Text("Skip for now")
+//                        .font(.system(size:13,weight:.semibold))
+//                        .foregroundStyle(Control.hexColor(hexCode: accent))
+//                        .frame(maxWidth:geometry.size.width*0.835,alignment:.leading)
+//                        .underline()
+//                        .onTapGesture {
+//                            ProfileSetup.addedBio = true
+//                        }
                     Spacer()
                 }
                 .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
@@ -365,6 +365,19 @@ struct EditProfilePage: View {
                 if (ProfileSetup.addedBio && ProfileSetup.tutorialStep == 3) {
                     ProfileSetup.tutorialStep = 4
                     tutorialStep = 4
+                }
+                if (!aboutMeFocus) {
+                    Task {
+                        do {
+                            let updateBio = try await APIClient.updateBio(bio: aboutMe)
+                            if (updateBio.success) {
+                                UserDefaults.standard.set(aboutMe, forKey: "biography")
+                                ProfileSetup.addedBio = true
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
                 }
             }
             .onChange(of: ProfileSetup.tutorialStep) { //step 4 about me

@@ -46,7 +46,30 @@ struct AllDonePage: View {
                         .font(.system(size:16,weight:.bold))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFE54D"))
                         .onTapGesture() {
-                            path = ["Your Profile"]
+                            let data = UserDefaults.standard;
+                            let userData: Encodable = [
+                                "username": data.string(forKey:"username")!,
+                                "email": data.string(forKey:"email")!,
+                                "password": data.string(forKey:"password")!,
+                                "birthDay": String(data.integer(forKey:"birthDay")),
+                                "birthMonth": data.string(forKey:"birthMonth")!,
+                                "birthYear": String(data.integer(forKey:"birthYear"))
+                            ]
+                            Task {
+                                do {
+                                    let createUserResult = try await APIClient.createUser(body: userData)
+                                    let findUser = try await APIClient.getUserFromUsername(username: data.string(forKey:"username")!)
+                                    print(findUser)
+                                    print(String(findUser.user?._id ?? ""))
+                                    UserDefaults.standard.set(String(findUser.user?._id ?? ""), forKey:"userId")
+                                    
+                                    print(createUserResult)
+                                    path = ["Your Profile"]
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                            
                         }
                         .padding([.trailing],10)
                     Image(systemName:"chevron.right")

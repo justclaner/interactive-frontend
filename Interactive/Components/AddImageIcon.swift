@@ -10,13 +10,27 @@ import PhotosUI
 
 struct AddImageIcon: View {
     @State var selectedImage: PhotosPickerItem?
+   
     
     @Binding var image: Image?
+    
    // @Binding var uiImage: UIImage?
     @Binding var imageNumber: Int
     @Binding var sideLength: Double
+    
     var body: some View {
         PhotosPicker(selection: $selectedImage) {
+            if (UserDefaults.standard.string(forKey:"image\(imageNumber)") != nil) {
+                AsyncImage(url: URL(string: UserDefaults.standard.string(forKey:"image\(imageNumber)")!)) {result in
+                    result.image?
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width:CGFloat(sideLength),height:CGFloat(sideLength), alignment: .center)
+                        .clipped()
+                        .contentShape(Rectangle())
+                        .clipShape(RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2))
+                }
+            } else
             if let image {
                 image
                     .resizable()
@@ -49,7 +63,11 @@ struct AddImageIcon: View {
             image = Image(uiImage: inputImage)
             do {
                 let presignedResult: APIClient.PresignedPostUrlResponse = try await APIClient.getPresignedPostURL()
-                let uploadResult: Void = try await APIClient.uploadImageToS3(image: inputImage, presignedPostResult: presignedResult)
+                let uploadResult: Void = try await APIClient.uploadImageToS3(
+                    userId: UserDefaults.standard.string(forKey: "userId")!,
+                    imageKey: "image\(imageNumber)",
+                    image: inputImage,
+                    presignedPostResult: presignedResult)
             } catch {
                 print(error)
             }

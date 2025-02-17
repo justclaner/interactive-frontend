@@ -8,8 +8,9 @@
 import Foundation
 
 struct ProfileSetup {
+    static var bypass = false
     static var data = UserData()
-    static var inTutorial: Bool = data.getInTutorial()
+    static var inTutorial: Bool = bypass ? false : data.getInTutorial()
     static var tutorialStep: Int = 0
     static let tutorialBlackOpacity: Double = 0.6
     static let tutorialWhiteOpacity: Double = 0.3

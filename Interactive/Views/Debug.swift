@@ -59,6 +59,14 @@ struct Debug: View {
 //            }
 //            
 //        }
+        Task {
+            do {
+                let res0 = try await APIClient.fetchAllUsers()
+                let res = try await APIClient.fetchUser(userId:"67a937faba8be5736f697b39")
+            } catch {
+                print(error)
+            }
+        }
         
         Task {
 //            do {
@@ -69,15 +77,15 @@ struct Debug: View {
 //            }
         }
         Task {
-            do {
-                let auth = try await APIClient.authenticateUser(
-                    userId: "67a937faba8be5736f697b39",
-                    password: "1234"
-                )
-                print(auth)
-            } catch {
-                print(error)
-            }
+//            do {
+//                let auth = try await APIClient.authenticateUser(
+//                    userId: "67a937faba8be5736f697b39",
+//                    password: "1234"
+//                )
+//                print(auth)
+//            } catch {
+//                print(error)
+//            }
         }
 
 //        Task {

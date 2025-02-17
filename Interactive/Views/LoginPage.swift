@@ -24,10 +24,11 @@ struct LoginPage: View {
                             .ignoresSafeArea()
                     )
                     .onTapGesture {
-                        print("test")
-                        print(data.getLocation())
-                        print(data.incrementCounter())
-                        print(data.getCounter())
+                        print(UserDefaults.standard.bool(forKey:"inTutorial"))
+//                        print("test")
+//                        print(data.getLocation())
+//                        print(data.incrementCounter())
+//                        print(data.getCounter())
                         //testCall()
                     }
                 

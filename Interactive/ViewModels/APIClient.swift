@@ -11,18 +11,25 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = false
+    static let localTesting: Bool = true
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
-        let users: [User]
+        let users: [User]?
+        let message: String?
+    }
+    
+    struct UserResponse: Decodable {
+        let success: Bool
+        let user: User?
+        let message: String?
     }
     
     struct User: Decodable {
         let _id: String
         let username: String
+        let email: String
         let password: String
-        let biography: String
         let birthDay: Int
         let birthMonth: String
         let birthYear: Int
@@ -43,6 +50,7 @@ class APIClient {
     
     struct DefaultResponse: Decodable {
         let success: Bool
+        let error: String?
         let message: String
     }
     
@@ -78,21 +86,45 @@ class APIClient {
     static func fetchAllUsers() async throws -> UsersResponse {
         let url = URL(string: "\(baseURL)/api/users")!
         let (data, _) = try await URLSession.shared.data(from: url)
-        
+
         let decoded = try JSONDecoder().decode(UsersResponse.self, from: data)
         return decoded
     }
     
-    static func postRequest(url: String, body: Encodable) async throws -> DefaultResponse {
-        let url = URL(string: url)!
-        let encoded = try Control.encode(jsonBody: body)
+    static func fetchUser(userId: String) async throws -> UserResponse {
+        let url = URL(string: "\(baseURL)/api/users/\(userId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
         
-        var request = URLRequest(url: url)
+        let decoded = try JSONDecoder().decode(UserResponse.self, from: data)
+        return decoded
+    }
+    
+    static func postRequest(url: String, body: Encodable) async throws -> DefaultResponse {
+        let urlString = URL(string: url)!
+        let encoded = try Control.encode(jsonBody: body)
+
+        var request = URLRequest(url: urlString)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
         
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
+       // print(String(data: data, encoding: .utf8)!)
+        let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
+        return decoded
+    }
+    
+    static func putRequest(url: String, body: Encodable) async throws -> DefaultResponse {
+        let urlString = URL(string: url)!
+        let encoded = try Control.encode(jsonBody: body)
+
+        var request = URLRequest(url: urlString)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "PUT"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
+        
+        let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
+       // print(String(data: data, encoding: .utf8)!)
         let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
     }
@@ -104,6 +136,18 @@ class APIClient {
             "password": password
         ]
         return try await postRequest(url: url, body: body)
+    }
+    
+    static func createUser(body: Encodable) async throws -> DefaultResponse {
+        return try await postRequest(url: "\(baseURL)/api/users", body: body)
+    }
+    
+    static func getUserFromUsername(username: String) async throws -> UserResponse {
+        let url = URL(string: "\(baseURL)/api/users/fetchFromUsername/\(username)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(UserResponse.self, from: data)
+        return decoded
     }
     
     static func checkUsernameExist(username: String) async throws -> UsernameExistResponse {
@@ -122,7 +166,12 @@ class APIClient {
         return decoded
     }
     
-    static func uploadImageToS3(image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
+    static func uploadImageToS3(userId: String, imageKey: String, image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
+        let userExists = try await fetchUser(userId: userId)
+        if (userExists.success == false) {
+            return
+        }
+        
         let data = presignedPostResult
         let url = URL(string: data.url)!
         
@@ -179,14 +228,32 @@ class APIClient {
                 }
             }
         }).resume()
+        
+
+        let uploadToBackend = try await uploadImageToBackend(userId: userId, imageKey: imageKey, imageURL: "\(data.url)\(data.fields.key)")
+        if (!uploadToBackend.success) {
+            return
+        }
+        UserDefaults.standard.set("\(data.url)\(data.fields.key)", forKey: imageKey)
     }
     
     static func uploadImageToBackend(userId: String, imageKey: String, imageURL: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/users/images/userImage/\(userId)"
+        let url = "\(baseURL)/api/images/userImage/\(userId)"
         let body: Encodable = [
             "imageKey": imageKey,
             "imageURL": imageURL
         ]
+        print(url)
+        print(body)
         return try await postRequest(url: url, body: body)
+    }
+    
+    static func updateBio(bio: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/users/\(UserDefaults.standard.string(forKey:"userId") ?? "")"
+        let body: Encodable = [
+            "biography": bio
+        ]
+        
+        return try await putRequest(url: url, body: body)
     }
 }

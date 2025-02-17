@@ -18,9 +18,9 @@ struct AboutYouPage: View {
     
     @Binding var path: [String]
     @State private var username: String = ""
-    @State private var birthDay: Int = 0
-    @State private var birthMonth: String = ""
-    @State private var birthYear: Int = 0
+    @State private var birthDay: Int = Calendar.current.component(.day, from: Date())
+    @State private var birthMonth: String = Control.getCurrentMonth()
+    @State private var birthYear: Int = Calendar.current.component(.year, from: Date()) - 18
     @State private var date = Calendar.current.date(byAdding: .year, value: -18, to: Date())!
     @State private var isSelectingDate: Bool = false
     @FocusState private var usernameFocus: Bool
@@ -169,6 +169,7 @@ struct AboutYouPage: View {
                         Task {
                             do {
                                 let response = try await APIClient.checkUsernameExist(username: username)
+                                print(response)
                                 if (!response.exists) {
                                     UserDefaults.standard.set(username, forKey: "username")
 

@@ -152,6 +152,14 @@ class Control {
         
         return dateFormatter.string(from: date)
     }
+    
+    static func getCurrentMonth() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "LLLL"
+        let currentDate = Date()
+        return dateFormatter.string(from: Date())
+    }
+    
     /*
      A dictionary of all country abbreviations and calling codes, sorted by country code (US at top)
      Country abbreviations are according to the ISO 3166-1 Alpha-2 Standard, and the calling codes
