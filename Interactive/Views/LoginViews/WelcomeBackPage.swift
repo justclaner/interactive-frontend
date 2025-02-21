@@ -13,6 +13,11 @@ struct WelcomeBackPage: View {
     @State private var password: String = ""
     @FocusState var emailFocus: Bool
     @FocusState var passwordFocus: Bool
+    
+    @State private var authError: Bool = false
+    @State private var errorMessage: String = "Email or password is incorrect or the user does not exist!"
+    
+    var data = UserData()
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -25,6 +30,7 @@ struct WelcomeBackPage: View {
                 .onTapGesture {
                     emailFocus = false
                     passwordFocus = false
+                    authError = false
                 }
             BackButton(path:$path)
                 .padding([.top],8)
@@ -51,7 +57,7 @@ struct WelcomeBackPage: View {
                     .padding([.top],20)
                     .padding([.bottom],10)
                     .focused($emailFocus)
-                TextField("", text: $password, prompt: Text(verbatim: "password")
+                SecureField("", text: $password, prompt: Text(verbatim: "password")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
@@ -79,11 +85,30 @@ struct WelcomeBackPage: View {
                         .underline()
                 }
                 .frame(maxWidth:361,alignment:.leading)
+                Text(errorMessage)
+                    .font(.system(size:16, weight:.semibold))
+                    .foregroundStyle(Color.red)
+                    .opacity(authError ? 1 : 0.01)
+                    .frame(maxWidth:361,alignment:.leading)
+                    .offset(x:0,y:3)
                 
                 Button(action: {
-                  //  print(Locale.availableIdentifiers)
-//                    global.test += 1
-//                    print(global.test)
+                    Task {
+                        do {
+                            let response = try await APIClient.authenticateUser(email: email, password: password)
+                            if (!response.success) {
+                                authError = true
+                            } else {
+                                if (response.user != nil) {
+                                    data.cleanCompleteStorage()
+                                    data.loadFromUserJSON(user: response.user!, password: password)
+                                    path = ["Your Profile"]
+                                }
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
                 }) {
                     Text("Submit")
                         .font(.system(size:17,weight:.semibold))
@@ -97,7 +122,7 @@ struct WelcomeBackPage: View {
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
-                .padding([.vertical],20)
+                .padding([.top],5)
                 Spacer()
                 Text("New to Interactive?")
                     .font(.system(size:16,weight:.semibold))

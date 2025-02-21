@@ -17,18 +17,21 @@ class APIClient {
         let success: Bool
         let users: [User]?
         let message: String?
+        let error: String?
     }
     
     struct UserResponse: Decodable {
         let success: Bool
         let user: User?
         let message: String?
+        let error: String?
     }
     
     struct User: Decodable {
         let _id: String
         let username: String
         let email: String
+        let biography: String?
         let password: String
         let birthDay: Int
         let birthMonth: String
@@ -42,6 +45,26 @@ class APIClient {
         let longitude: [String: String]?
     }
     
+    struct UserImagesResponse: Decodable {
+        let success: Bool
+        let images: UserImages
+        let error: String?
+        let message: String?
+    }
+    
+    struct UserImages: Decodable {
+        let _id: String
+        let user_id: String
+        let image1: String?
+        let image2: String?
+        let image3: String?
+        let image4: String?
+        let image5: String?
+        let createdAt: String
+        let updatedAt: String
+        let __v: Int
+    }
+    
     struct UsernameExistResponse: Decodable {
         let success: Bool
         let exists: Bool
@@ -52,6 +75,7 @@ class APIClient {
         let success: Bool
         let error: String?
         let message: String
+        let user: User?
     }
     
     struct PresignedPostUrlResponse: Decodable {
@@ -83,22 +107,6 @@ class APIClient {
     }
     
     
-    static func fetchAllUsers() async throws -> UsersResponse {
-        let url = URL(string: "\(baseURL)/api/users")!
-        let (data, _) = try await URLSession.shared.data(from: url)
-
-        let decoded = try JSONDecoder().decode(UsersResponse.self, from: data)
-        return decoded
-    }
-    
-    static func fetchUser(userId: String) async throws -> UserResponse {
-        let url = URL(string: "\(baseURL)/api/users/\(userId)")!
-        let (data, _) = try await URLSession.shared.data(from: url)
-        
-        let decoded = try JSONDecoder().decode(UserResponse.self, from: data)
-        return decoded
-    }
-    
     static func postRequest(url: String, body: Encodable) async throws -> DefaultResponse {
         let urlString = URL(string: url)!
         let encoded = try Control.encode(jsonBody: body)
@@ -129,10 +137,26 @@ class APIClient {
         return decoded
     }
     
-    static func authenticateUser(userId: String, password: String) async throws -> DefaultResponse {
+    static func fetchAllUsers() async throws -> UsersResponse {
+        let url = URL(string: "\(baseURL)/api/users")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+
+        let decoded = try JSONDecoder().decode(UsersResponse.self, from: data)
+        return decoded
+    }
+    
+    static func fetchUser(userId: String) async throws -> UserResponse {
+        let url = URL(string: "\(baseURL)/api/users/\(userId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(UserResponse.self, from: data)
+        return decoded
+    }
+    
+    static func authenticateUser(email: String, password: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/users/auth"
         let body: Encodable = [
-            "userId": userId,
+            "email": email,
             "password": password
         ]
         return try await postRequest(url: url, body: body)
@@ -230,14 +254,14 @@ class APIClient {
         }).resume()
         
 
-        let uploadToBackend = try await uploadImageToBackend(userId: userId, imageKey: imageKey, imageURL: "\(data.url)\(data.fields.key)")
+        let uploadToBackend = try await uploadImageURLToBackend(userId: userId, imageKey: imageKey, imageURL: "\(data.url)\(data.fields.key)")
         if (!uploadToBackend.success) {
             return
         }
         UserDefaults.standard.set("\(data.url)\(data.fields.key)", forKey: imageKey)
     }
     
-    static func uploadImageToBackend(userId: String, imageKey: String, imageURL: String) async throws -> DefaultResponse {
+    static func uploadImageURLToBackend(userId: String, imageKey: String, imageURL: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/images/userImage/\(userId)"
         let body: Encodable = [
             "imageKey": imageKey,
@@ -256,4 +280,13 @@ class APIClient {
         
         return try await putRequest(url: url, body: body)
     }
+    
+    static func getUserImages(userId: String) async throws -> UserImagesResponse {
+        let url = URL(string: "\(baseURL)/api/users/images/\(userId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(UserImagesResponse.self, from: data)
+        return decoded
+    }
+    
 }

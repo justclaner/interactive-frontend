@@ -61,12 +61,20 @@ struct Debug: View {
 //        }
         Task {
             do {
-                let res0 = try await APIClient.fetchAllUsers()
-                let res = try await APIClient.fetchUser(userId:"67a937faba8be5736f697b39")
-            } catch {
-                print(error)
+                let imagesResponse = try await APIClient.getUserImages(userId: "67b292ad88a3f915d9776c78")
+                print(imagesResponse)
             }
         }
+        
+        
+//        Task {
+//            do {
+//                let res0 = try await APIClient.fetchAllUsers()
+//                let res = try await APIClient.fetchUser(userId:"67a937faba8be5736f697b39")
+//            } catch {
+//                print(error)
+//            }
+//        }
         
         Task {
 //            do {

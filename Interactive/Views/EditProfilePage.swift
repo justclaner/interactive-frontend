@@ -23,7 +23,7 @@ struct EditProfilePage: View {
     @State var testFunc: () -> Void = {
         print("hi")
     } //add real functions later
-    @State var count: Int = 0
+    @State var updater: Bool = false
     
     
     @State var username: String = UserDefaults.standard.string(forKey: "username") ?? "Username"
@@ -64,7 +64,7 @@ struct EditProfilePage: View {
         //avoid keyboard pushing things up
         GeometryReader {geometry in
             ZStack {
-                Text("\(count)") //force rerender
+                Text("\(updater)") //force rerender
                 Color.white.opacity(0.001)
                     .ignoresSafeArea()
                     .background(
@@ -78,10 +78,11 @@ struct EditProfilePage: View {
                     .onTapGesture {
                         usernameFocus = false
                         aboutMeFocus = false
-                        print(UserDefaults.standard.bool(forKey: "inTutorial"))
-                        print("tutorialStep: \(tutorialStep)")
-                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
-                        print(ProfileSetup.addedImage)
+                        print(UserDefaults.standard.string(forKey:"image1"))
+//                        print(UserDefaults.standard.bool(forKey: "inTutorial"))
+//                        print("tutorialStep: \(tutorialStep)")
+//                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
+//                        print(ProfileSetup.addedImage)
                         if (tutorialStep == 0) {
                             tutorialStep = 1
                             ProfileSetup.tutorialStep = 1
@@ -90,14 +91,14 @@ struct EditProfilePage: View {
                             tutorialStep = 3
                             ProfileSetup.tutorialStep = 3
                         }
-                        count += 1
+                        updater.toggle()
                     }
 //                BackButton(path:$path)
 //                    .padding([.top],20)
 //                    .opacity(inTutorial ?
 //                             ProfileSetup.tutorialWhiteOpacity : 1)
                 
-                //step 1
+//username      //step 1
                 HStack {
                     Spacer()
                     VStack {
@@ -134,9 +135,14 @@ struct EditProfilePage: View {
                     }
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .onChange(of: usernameFocus) {
+                        if (username != UserDefaults.standard.string(forKey: "username")!) {
+                            UserDefaults.standard.set(username, forKey: "username")
+                        }
+                    }
                     
                     
-                    //step 2
+//images            //step 2
                     HStack {
                         AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
                         Spacer()
@@ -160,7 +166,10 @@ struct EditProfilePage: View {
                     .opacity((inTutorial && tutorialStep != 1) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
                     .onTapGesture {
-                        count += 1
+                        updater.toggle()
+                    }
+                    .onAppear {
+                        updater.toggle()
                     }
                     //step 3
                     HStack {
@@ -190,7 +199,7 @@ struct EditProfilePage: View {
                     .opacity((inTutorial && tutorialStep != 2) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
                     
-                    //step 4
+//biography         //step 4
                     VStack {
                         Text("About Me")
                             .font(.system(size:13,weight:.semibold))
@@ -366,11 +375,11 @@ struct EditProfilePage: View {
                     ProfileSetup.tutorialStep = 4
                     tutorialStep = 4
                 }
-                if (!aboutMeFocus) {
+                if (!aboutMeFocus && aboutMe != UserDefaults.standard.string(forKey: "biography")!) {
                     Task {
                         do {
-                            let updateBio = try await APIClient.updateBio(bio: aboutMe)
-                            if (updateBio.success) {
+                            let updateBioReq = try await APIClient.updateBio(bio: aboutMe)
+                            if (updateBioReq.success) {
                                 UserDefaults.standard.set(aboutMe, forKey: "biography")
                                 ProfileSetup.addedBio = true
                             }
@@ -392,6 +401,7 @@ struct EditProfilePage: View {
         }
         .ignoresSafeArea(.keyboard)
     }
+        
     
     func postUser() {
         Task {
@@ -400,7 +410,10 @@ struct EditProfilePage: View {
             }
         }
     }
+    
+    
 }
+
 
 
 
