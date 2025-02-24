@@ -20,9 +20,6 @@ struct EditProfilePage: View {
     @State var addInsight: String = "Add New Insight"
     @State var gray_80: String = "#CCCCCC"
     @State var accent: String = "#FFDD1A"
-    @State var testFunc: () -> Void = {
-        print("hi")
-    } //add real functions later
     @State var updater: Bool = false
     
     
@@ -36,6 +33,8 @@ struct EditProfilePage: View {
     @State var tutorialStep: Int = ProfileSetup.tutorialStep
     @State var addedImage: Bool = ProfileSetup.addedImage
     
+    @State var networkLinks: [String] = []
+    
     
     //image for display
     @State var image1: Image?
@@ -43,21 +42,6 @@ struct EditProfilePage: View {
     @State var image3: Image?
     @State var image4: Image?
     @State var image5: Image?
-    
-    //uiimage for sending data
-//    @State var uiImage1: UIImage?
-//    @State var uiImage2: UIImage?
-//    @State var uiImage3: UIImage?
-//    @State var uiImage4: UIImage?
-//    @State var uiImage5: UIImage?
-
-//    @State var viewBoolList: [Bool] = [
-//        ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0,
-//    ]
-//    
-//    @State var guideBoolList: [Bool] = [
-//        ProfileSetup.tutorialStep == 0,
-//    ]
     
     
     var body: some View {
@@ -78,7 +62,8 @@ struct EditProfilePage: View {
                     .onTapGesture {
                         usernameFocus = false
                         aboutMeFocus = false
-                        print(UserDefaults.standard.string(forKey:"image1"))
+                        print(UserDefaults.standard.string(forKey: "locationStatus") ?? "no status")
+                     //   print(UserDefaults.standard.string(forKey:"userId") ?? "no id")
 //                        print(UserDefaults.standard.bool(forKey: "inTutorial"))
 //                        print("tutorialStep: \(tutorialStep)")
 //                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
@@ -145,7 +130,6 @@ struct EditProfilePage: View {
 //images            //step 2
                     HStack {
                         AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
-                        Spacer()
                         HStack {
                             VStack {
                                 AddImageIcon(image: $image2, imageNumber: .constant(2), sideLength:$mediumSideLength)
@@ -161,6 +145,7 @@ struct EditProfilePage: View {
                             }
                             .frame(maxHeight:174)
                         }.frame(width:174)
+                        Spacer()
                     }
                     .padding([.top], 10)
                     .opacity((inTutorial && tutorialStep != 1) ?
@@ -171,6 +156,7 @@ struct EditProfilePage: View {
                     .onAppear {
                         updater.toggle()
                     }
+                    .allowsHitTesting(ProfileSetup.tutorialStep > 0 || !UserDefaults.standard.bool(forKey: "inTutorial"))
                     //step 3
                     HStack {
                         VStack {
@@ -227,19 +213,26 @@ struct EditProfilePage: View {
                     }
                     .opacity((inTutorial && tutorialStep != 3) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
-                    
+// network
                     VStack {
                         Text("Network")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                             .frame(width:geometry.size.width*0.9,alignment:.leading)
                         HStack {
-                            AddNetworkIcon(sideLength:$smallSideLength)
-                            Spacer()
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    NetworkList()
+                                    AddNetworkIcon(sideLength:$smallSideLength)
+                                        .onTapGesture {
+                                            path.append("Add Network")
+                                        }
+                                    Spacer()
+                                }
+                            }
                         }
                     }
-                    .opacity(ProfileSetup.tutorialWhiteOpacity)
-                    
+                    .opacity(inTutorial ? ProfileSetup.tutorialWhiteOpacity : 1)
                     //add in the future
 //                    VStack {
 //                        Text("Interests")
@@ -375,7 +368,7 @@ struct EditProfilePage: View {
                     ProfileSetup.tutorialStep = 4
                     tutorialStep = 4
                 }
-                if (!aboutMeFocus && aboutMe != UserDefaults.standard.string(forKey: "biography")!) {
+                if (!aboutMeFocus && aboutMe != UserDefaults.standard.string(forKey: "biography") ?? "") {
                     Task {
                         do {
                             let updateBioReq = try await APIClient.updateBio(bio: aboutMe)
@@ -400,15 +393,6 @@ struct EditProfilePage: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-    }
-        
-    
-    func postUser() {
-        Task {
-            do {
-                //add random shit to update user in database
-            }
-        }
     }
     
     

@@ -62,7 +62,7 @@ struct AllDonePage: View {
                                     print(findUser)
                                     print(String(findUser.user?._id ?? ""))
                                     UserDefaults.standard.set(String(findUser.user?._id ?? ""), forKey:"userId")
-                                    
+                                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
                                     print(createUserResult)
                                     path = ["Your Profile"]
                                 } catch {

@@ -22,6 +22,7 @@ struct ContentView: View {
                 } else if (page == "Welcome Back") {
                     WelcomeBackPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                        .environmentObject(locationManager)
                 } else if (page == "About You") {
                     AboutYouPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
@@ -44,8 +45,8 @@ struct ContentView: View {
                 } else if (page == "Your Profile") {
                     EditProfilePage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
-                } else if (page == "Networks") {
-                    NetworksPage(path:$viewModel.path)
+                } else if (page == "Add Network") {
+                    AddNetworkPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
                 }
                 else {

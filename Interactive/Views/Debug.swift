@@ -14,6 +14,7 @@ struct Debug: View {
             Color.blue.opacity(1)
                 .ignoresSafeArea()
                 .onTapGesture {
+                    print("test")
                     testCall()
                 }
             VStack {
@@ -31,12 +32,16 @@ struct Debug: View {
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
-                AsyncImage(url: URL(string: "https://interactive-images.s3.us-east-1.amazonaws.com/c47d6f835850ce9f96a0635f09d66afe")) { result in
-                    result.image?
-                        .resizable()
-                        .scaledToFill()
-                }
-                .frame(width:200, height: 200)
+                Text("test")
+                Link("View Our Terms of Service",
+                      destination: URL(string: "https://www.example.com/TOS.html")!)
+                .foregroundStyle(.black)
+//                AsyncImage(url: URL(string: "https://interactive-images.s3.us-east-1.amazonaws.com/c47d6f835850ce9f96a0635f09d66afe")) { result in
+//                    result.image?
+//                        .resizable()
+//                        .scaledToFill()
+//                }
+//                .frame(width:200, height: 200)
                 //.clipped()
                 Spacer()
             }
@@ -59,13 +64,21 @@ struct Debug: View {
 //            }
 //            
 //        }
+//        Task {
+//            do {
+//                let imagesResponse = try await APIClient.getUserImages(userId: "67b292ad88a3f915d9776c78")
+//                print(imagesResponse)
+//            }
+//        }
+       // print(UserDefaults.standard.dictionaryRepresentation())
+        print("fuck")
         Task {
             do {
-                let imagesResponse = try await APIClient.getUserImages(userId: "67b292ad88a3f915d9776c78")
-                print(imagesResponse)
+//                let response = try await APIClient.createNetworkLink(platformName:"instagram", url:"https://www.instagram.com/")
+                let response = try await APIClient.fetchUserNetworks()
+                print(response)
             }
         }
-        
         
 //        Task {
 //            do {

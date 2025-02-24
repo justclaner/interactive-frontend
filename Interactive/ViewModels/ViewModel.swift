@@ -12,12 +12,17 @@ extension ContentView {
     @Observable
     class ViewModel {
         let initialPath : [String]
-        var path: [String]
-        let inTutorial: Bool = UserDefaults.standard.bool(forKey: "inTutorial")
+        var path: [String] = []
+        let isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
         init() {
-            self.initialPath = inTutorial ? ["Login"] : ["Your Profile"]
+            self.initialPath = isLoggedIn ? ["Your Profile"] : ["Login"]
             self.path = initialPath
         }
+        
+        func getPath() -> [String] {
+            return self.path
+        }
+        
     }
     
 }

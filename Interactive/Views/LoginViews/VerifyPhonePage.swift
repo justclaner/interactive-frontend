@@ -16,6 +16,8 @@ struct VerifyPhonePage: View {
     @FocusState var inputFocus: Bool
     
     @State var rawInput = ""
+    
+    let maxWidth = Control.getMaxWidth()
     var body: some View {
         ZStack {
             Color.white.opacity(0.001)
@@ -36,16 +38,16 @@ struct VerifyPhonePage: View {
                 Text("Verify your number")
                     .font(.system(size:31,weight:.semibold))
                     .foregroundStyle(Color.white)
-                    .frame(maxWidth:361,alignment:.center)
+                    .frame(maxWidth:maxWidth,alignment:.center)
                 Text("We have sent you a code by SMS to the number \(sms)")
                     .font(.system(size:16,weight:.regular))
                     .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
-                    .frame(maxWidth:361,alignment: .leading)
+                    .frame(maxWidth:maxWidth,alignment: .leading)
                     .padding([.vertical],20)
                 Text("My code is")
                     .font(.system(size:16,weight:.semibold))
                     .foregroundStyle(Color.white)
-                    .frame(maxWidth:361,alignment:.leading)
+                    .frame(maxWidth:maxWidth,alignment:.leading)
                 ZStack {
                     HStack {
                         ForEach($inputField, id: \.self) {pointer in
@@ -58,13 +60,13 @@ struct VerifyPhonePage: View {
                         .keyboardType(.decimalPad)
                         .foregroundStyle(Color.clear)
                         .tint(.clear)
-                        .frame(width:361,height:51)
+                        .frame(width:maxWidth,height:51)
                         .onChange(of: rawInput) {
                             self.rawInput = String(rawInput.prefix(Control.phoneVerificationCodeLength))
                             inputField = displayCode(codeString: rawInput)
                             }
                 }
-                .frame(width:361,height:51)
+                .frame(width:maxWidth,height:51)
                 .contentShape(Rectangle())
                 .onTapGesture {
                     inputFocus = true
@@ -100,14 +102,14 @@ struct VerifyPhonePage: View {
                         .padding(10)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
-                .frame(width:361,height:40)
+                .frame(width:maxWidth,height:40)
                 .background(Control.hexColor(hexCode: "#FFDD1A"))
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
             }
-            .frame(maxWidth:361)
+            .frame(maxWidth:maxWidth)
         }
         .ignoresSafeArea(.keyboard)
     }

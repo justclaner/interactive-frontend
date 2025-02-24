@@ -41,7 +41,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
-            print("allowed")
+            UserDefaults.standard.set(manager.authorizationStatus.rawValue, forKey: "locationStatus")
+            UserDefaults.standard.set(true, forKey: "locationAccess")
             locationManager.startUpdatingLocation()  // Authorized: Start location updates
         case .denied, .restricted:
             print("Location access denied or restricted")

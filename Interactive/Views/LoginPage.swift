@@ -24,7 +24,9 @@ struct LoginPage: View {
                             .ignoresSafeArea()
                     )
                     .onTapGesture {
-                        print(UserDefaults.standard.bool(forKey:"inTutorial"))
+                        print(Control.getScreenSize().height)
+//                        print(UserDefaults.standard.bool(forKey:"inTutorial"))
+//                        print(UserDefaults.standard.string(forKey:"locationStatus") ?? "no status")
 //                        print("test")
 //                        print(data.getLocation())
 //                        print(data.incrementCounter())

@@ -54,7 +54,7 @@ class UserData {
     }
     
     func loadFromUserJSON(user: APIClient.User, password: String) {
-        UserDefaults.standard.set(user._id, forKey: "userID")
+        UserDefaults.standard.set(user._id, forKey: "userId")
         UserDefaults.standard.set(user.username, forKey: "username")
         UserDefaults.standard.set(user.email, forKey: "email")
         if (user.biography != nil) {

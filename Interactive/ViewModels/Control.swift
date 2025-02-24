@@ -10,6 +10,21 @@ import SwiftUI
 
 class Control {
     
+    static func getScreenSize() -> CGRect {
+        return UIScreen.main.bounds
+    }
+    
+    static func getMaxWidth() -> CGFloat {
+        return getScreenSize().width * 0.9
+    }
+    
+    static let maxWidth = Control.getMaxWidth()
+    static let maxHeight = Control.getScreenSize().height * 0.04919908466
+    static let mediumHeight = Control.getScreenSize().height * 0.04919908466 * 0.9
+    static let smallFontSize: CGFloat = Control.getScreenSize().height * 0.01830663615
+    static let mediumFontSize: CGFloat = Control.getScreenSize().height * 0.03546910755
+    static let largeFontSize: CGFloat = Control.getScreenSize().height * 0.0423340961
+    
     /*
      Returns a Color given a color hexcode. Hexcodes must be
      prefixed with '#' and be exactly 7 characters long.
@@ -156,7 +171,6 @@ class Control {
     static func getCurrentMonth() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLLL"
-        let currentDate = Date()
         return dateFormatter.string(from: Date())
     }
     
@@ -298,5 +312,10 @@ class Control {
     
     static func isValidPassword(password: String) -> Bool {
         return password.range(of: passwordRegex, options: .regularExpression, range: nil, locale: nil) != nil
+    }
+    
+    static func getDomainHost(from link: String) -> String? {
+        guard let urlComponents = URLComponents(string: link) else { return nil }
+        return urlComponents.host
     }
 }

@@ -30,7 +30,8 @@ struct AddImageIcon: View {
                         .contentShape(Rectangle())
                         .clipShape(RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2))
                 }
-            } else
+            }
+            else
             if let image {
                 image
                     .resizable()
@@ -39,7 +40,8 @@ struct AddImageIcon: View {
                     .clipped()
                     .contentShape(Rectangle())
                     .clipShape(RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2))
-            } else {
+            }
+            else {
                 ZStack {
                     RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2)
                         .fill(Control.hexColor(hexCode:"#999999"))
@@ -53,7 +55,6 @@ struct AddImageIcon: View {
         .onChange(of: selectedImage) {
             loadImage()
         }
-        .allowsHitTesting(ProfileSetup.tutorialStep > 0 || !UserDefaults.standard.bool(forKey: "inTutorial"))
     }
     func loadImage() {
         Task {
@@ -63,7 +64,7 @@ struct AddImageIcon: View {
             image = Image(uiImage: inputImage)
             do {
                 let presignedResult: APIClient.PresignedPostUrlResponse = try await APIClient.getPresignedPostURL()
-                let uploadResult: Void = try await APIClient.uploadImageToS3(
+                let _: Void = try await APIClient.uploadImageToS3(
                     userId: UserDefaults.standard.string(forKey: "userId")!,
                     imageKey: "image\(imageNumber)",
                     image: inputImage,

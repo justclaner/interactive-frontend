@@ -9,14 +9,22 @@ import SwiftUI
 
 struct WelcomeBackPage: View {
     @Binding var path: [String]
+    @EnvironmentObject var locationManager: LocationManager
+    
+    @State var requestedLocation: Bool = false
     @State private var email: String = ""
     @State private var password: String = ""
     @FocusState var emailFocus: Bool
     @FocusState var passwordFocus: Bool
     
+    
+//    @EnvironmentObject var locationManager: LocationManager
+    
     @State private var authError: Bool = false
     @State private var errorMessage: String = "Email or password is incorrect or the user does not exist!"
+
     
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     var data = UserData()
     var body: some View {
         ZStack {
@@ -31,21 +39,23 @@ struct WelcomeBackPage: View {
                     emailFocus = false
                     passwordFocus = false
                     authError = false
+                    print("test")
+                    print(locationManager.authorizationStatus ?? "")
                 }
             BackButton(path:$path)
                 .padding([.top],8)
             VStack {
                 Text("Welcome Back")
-                    .font(.system(size:37,weight:.semibold))
+                    .font(.system(size:Control.largeFontSize,weight:.semibold))
                     .foregroundStyle(Color.white)
                 LargeLogo()
                     .padding([.vertical],20)
                 TextField("", text: $email, prompt: Text(verbatim: "example@gmail.com")
-                    .font(.system(size:16,weight:.semibold))
+                    .font(.system(size:Control.smallFontSize,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
-                    .padding(16)
-                    .frame(width:361,height:43)
+                    .padding(Control.smallFontSize)
+                    .frame(width:Control.maxWidth,height:Control.maxHeight)
                     .border(Color.black,width:1)
                     .clipShape(RoundedRectangle(cornerRadius:8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
@@ -58,11 +68,11 @@ struct WelcomeBackPage: View {
                     .padding([.bottom],10)
                     .focused($emailFocus)
                 SecureField("", text: $password, prompt: Text(verbatim: "password")
-                    .font(.system(size:16,weight:.semibold))
+                    .font(.system(size:Control.smallFontSize,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
-                    .padding(16)
-                    .frame(width:361,height:43)
+                    .padding(Control.smallFontSize)
+                    .frame(width:Control.maxWidth,height: Control.maxHeight)
                     .border(Color.black,width:1)
                     .clipShape(RoundedRectangle(cornerRadius:8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
@@ -76,20 +86,20 @@ struct WelcomeBackPage: View {
                     .focused($passwordFocus)
                 Group {
                     Text("Forgot Password? ")
-                        .font(.system(size:16,weight:.semibold))
-                        .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC")) 
+                        .font(.system(size:Control.smallFontSize,weight:.semibold))
+                        .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
                     +
                     Text("Reset")
-                        .font(.system(size:16,weight:.semibold))
+                        .font(.system(size:Control.smallFontSize,weight:.semibold))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFE54D"))
                         .underline()
                 }
-                .frame(maxWidth:361,alignment:.leading)
+                .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 Text(errorMessage)
-                    .font(.system(size:16, weight:.semibold))
+                    .font(.system(size:Control.smallFontSize, weight:.semibold))
                     .foregroundStyle(Color.red)
                     .opacity(authError ? 1 : 0.01)
-                    .frame(maxWidth:361,alignment:.leading)
+                    .frame(maxWidth:Control.maxWidth,alignment:.leading)
                     .offset(x:0,y:3)
                 
                 Button(action: {
@@ -97,12 +107,24 @@ struct WelcomeBackPage: View {
                         do {
                             let response = try await APIClient.authenticateUser(email: email, password: password)
                             if (!response.success) {
+                                print("authentication failed")
                                 authError = true
                             } else {
                                 if (response.user != nil) {
-                                    data.cleanCompleteStorage()
-                                    data.loadFromUserJSON(user: response.user!, password: password)
-                                    path = ["Your Profile"]
+                                    if (!requestedLocation) {
+                                        Task {
+                                            locationManager.requestLocation()
+                                            // disable if buggy
+                                            data.cleanCompleteStorage()
+                                            data.loadFromUserJSON(user: response.user!, password: password)
+                                            UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                                requestedLocation = true
+                                            }
+                                        }
+                                    } else {
+                                        path = ["Your Profile"]
+                                    }
                                 }
                             }
                         } catch {
@@ -110,13 +132,13 @@ struct WelcomeBackPage: View {
                         }
                     }
                 }) {
-                    Text("Submit")
-                        .font(.system(size:17,weight:.semibold))
+                    Text(requestedLocation ? "Continue" : "Log In")
+                        .font(.system(size:Control.smallFontSize,weight:.semibold))
                         .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
-                .frame(width:361,height:40)
+                .frame(width:Control.maxWidth,height: Control.mediumHeight)
                 .background(Control.hexColor(hexCode: "#FFDD1A"))
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
@@ -125,27 +147,27 @@ struct WelcomeBackPage: View {
                 .padding([.top],5)
                 Spacer()
                 Text("New to Interactive?")
-                    .font(.system(size:16,weight:.semibold))
+                    .font(.system(size:Control.smallFontSize,weight:.semibold))
                     .foregroundStyle(Control.hexColor(hexCode: "#FFE54D"))
-                    .frame(maxWidth:361,alignment:.leading)
+                    .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 Button(action: {
                     path.removeLast()
                     path.append("About You")
                 }) {
                     Text("Create new account")
-                        .font(.system(size:17,weight:.semibold))
+                        .font(.system(size:Control.smallFontSize,weight:.semibold))
                         .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                         .padding(10)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
-                .frame(width:361,height:40)
+                .frame(width:Control.maxWidth,height: Control.mediumHeight)
                 .background(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
             }
-            .frame(maxWidth:361)
+            .frame(maxWidth:Control.maxWidth)
         }
         .ignoresSafeArea(.keyboard)
     }
