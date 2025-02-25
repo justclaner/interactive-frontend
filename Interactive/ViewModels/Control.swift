@@ -18,6 +18,8 @@ class Control {
         return getScreenSize().width * 0.9
     }
     
+    static let showTemporaryImageInterval: Double = 5.0
+    
     static let maxWidth = Control.getMaxWidth()
     static let maxHeight = Control.getScreenSize().height * 0.04919908466
     static let mediumHeight = Control.getScreenSize().height * 0.04919908466 * 0.9

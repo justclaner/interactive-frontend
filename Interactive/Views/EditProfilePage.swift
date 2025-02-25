@@ -62,7 +62,8 @@ struct EditProfilePage: View {
                     .onTapGesture {
                         usernameFocus = false
                         aboutMeFocus = false
-                        print(UserDefaults.standard.string(forKey: "locationStatus") ?? "no status")
+                        print(UserDefaults.standard.string(forKey:"image1") ?? "no image")
+//                        print(UserDefaults.standard.string(forKey: "locationStatus") ?? "no status")
                      //   print(UserDefaults.standard.string(forKey:"userId") ?? "no id")
 //                        print(UserDefaults.standard.bool(forKey: "inTutorial"))
 //                        print("tutorialStep: \(tutorialStep)")
@@ -129,7 +130,19 @@ struct EditProfilePage: View {
                     
 //images            //step 2
                     HStack {
-                        AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
+//                        if (image1URL != "") {
+//                            AsyncImage(url: URL(string: UserDefaults.standard.string(forKey:"image1")!)) {result in
+//                                result.image?
+//                                    .resizable()
+//                                    .scaledToFill()
+//                                    .frame(width:CGFloat(largeSideLength),height:CGFloat(largeSideLength), alignment: .center)
+//                                    .clipped()
+//                                    .contentShape(Rectangle())
+//                                    .clipShape(RoundedRectangle(cornerRadius:CGFloat(largeSideLength)*0.2))
+//                            }
+//                        } else {
+                            AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
+                     //   }
                         HStack {
                             VStack {
                                 AddImageIcon(image: $image2, imageNumber: .constant(2), sideLength:$mediumSideLength)
@@ -344,18 +357,10 @@ struct EditProfilePage: View {
                             .foregroundStyle(Color.white)
                     }
                         .font(.system(size:16,weight:.regular))
-//                    Text("Skip for now")
-//                        .font(.system(size:13,weight:.semibold))
-//                        .foregroundStyle(Control.hexColor(hexCode: accent))
-//                        .frame(maxWidth:geometry.size.width*0.835,alignment:.leading)
-//                        .underline()
-//                        .onTapGesture {
-//                            ProfileSetup.addedBio = true
-//                        }
                     Spacer()
                 }
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
-                .opacity(tutorialStep == 3 ? 1 : 0)
+                .opacity(ProfileSetup.inTutorial && tutorialStep == 3 ? 1 : 0)
                 .padding([.top],390)
             }
             .onChange(of: ProfileSetup.addedImage) { //step 2 add image

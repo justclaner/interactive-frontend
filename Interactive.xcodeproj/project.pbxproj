@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		32064C7F2CFB9BAB009EDC60 /* SocialMediaLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32064C7E2CFB9BAB009EDC60 /* SocialMediaLogo.swift */; };
 		324233D42CF6ABFF001949B8 /* AddNetworkIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324233D32CF6ABFF001949B8 /* AddNetworkIcon.swift */; };
+		325BA4AF2D6D75DF0072F961 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325BA4AE2D6D75DF0072F961 /* ProfileImage.swift */; };
 		3271A2382CF685F900EFB7AC /* AddImageIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A2372CF685F900EFB7AC /* AddImageIcon.swift */; };
 		3271A23A2CF6923C00EFB7AC /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A2392CF6923C00EFB7AC /* AddButton.swift */; };
 		3271A23C2CF6986C00EFB7AC /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A23B2CF6986C00EFB7AC /* NavigationBar.swift */; };
@@ -45,6 +46,7 @@
 		32064C7E2CFB9BAB009EDC60 /* SocialMediaLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMediaLogo.swift; sourceTree = "<group>"; };
 		323F144E2CFD2B800061B0A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		324233D32CF6ABFF001949B8 /* AddNetworkIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNetworkIcon.swift; sourceTree = "<group>"; };
+		325BA4AE2D6D75DF0072F961 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		3271A2372CF685F900EFB7AC /* AddImageIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageIcon.swift; sourceTree = "<group>"; };
 		3271A2392CF6923C00EFB7AC /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
 		3271A23B2CF6986C00EFB7AC /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				32BF9FA82CEA7B0200D78CBC /* BackButton.swift */,
 				3271A2372CF685F900EFB7AC /* AddImageIcon.swift */,
+				325BA4AE2D6D75DF0072F961 /* ProfileImage.swift */,
 				32064C7E2CFB9BAB009EDC60 /* SocialMediaLogo.swift */,
 				324233D32CF6ABFF001949B8 /* AddNetworkIcon.swift */,
 				3271A23B2CF6986C00EFB7AC /* NavigationBar.swift */,
@@ -306,6 +309,7 @@
 				32BF9FB02CF433ED00D78CBC /* NumberVerificationInputField.swift in Sources */,
 				32BF9FAB2CEA7C5100D78CBC /* LargeLogo.swift in Sources */,
 				3271A23A2CF6923C00EFB7AC /* AddButton.swift in Sources */,
+				325BA4AF2D6D75DF0072F961 /* ProfileImage.swift in Sources */,
 				3271A2382CF685F900EFB7AC /* AddImageIcon.swift in Sources */,
 				3271A23C2CF6986C00EFB7AC /* NavigationBar.swift in Sources */,
 				32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */,

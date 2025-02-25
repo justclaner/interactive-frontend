@@ -18,20 +18,45 @@ struct AddImageIcon: View {
     @Binding var imageNumber: Int
     @Binding var sideLength: Double
     
+    
+    //to-do: find a better way to implement this
+    @AppStorage("image1") var image1: String = ""
+    @AppStorage("image2") var image2: String = ""
+    @AppStorage("image3") var image3: String = ""
+    @AppStorage("image4") var image4: String = ""
+    @AppStorage("image5") var image5: String = ""
+    
+    @State var showTemporaryImage: Bool = false
     var body: some View {
-        PhotosPicker(selection: $selectedImage) {
-            if (UserDefaults.standard.string(forKey:"image\(imageNumber)") != nil) {
-                AsyncImage(url: URL(string: UserDefaults.standard.string(forKey:"image\(imageNumber)")!)) {result in
-                    result.image?
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width:CGFloat(sideLength),height:CGFloat(sideLength), alignment: .center)
-                        .clipped()
-                        .contentShape(Rectangle())
-                        .clipShape(RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2))
+        ZStack {
+            PhotosPicker(selection: $selectedImage) {
+                if (imageNumber == 1 && image1 != "") {
+                    ProfileImage(url: $image1, sideLength: $sideLength)
+                } else if (imageNumber == 2 && image2 != "") {
+                    ProfileImage(url: $image2, sideLength: $sideLength)
+                } else if (imageNumber == 3 && image3 != "") {
+                    ProfileImage(url: $image3, sideLength: $sideLength)
+                } else if (imageNumber == 4 && image4 != "") {
+                    ProfileImage(url: $image4, sideLength: $sideLength)
+                } else if (imageNumber == 5 && image5 != "") {
+                    ProfileImage(url: $image5, sideLength: $sideLength)
+                }
+                else
+                {
+                    ZStack {
+                        RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2)
+                            .fill(Control.hexColor(hexCode:"#999999"))
+                            .frame(width:CGFloat(sideLength),height:CGFloat(sideLength))
+                        Image(systemName:"plus")
+                            .font(.system(size:sideLength*0.5))
+                            .foregroundStyle(Control.hexColor(hexCode:"#CCCCCC"))
+                    }
                 }
             }
-            else
+            .onChange(of: selectedImage) {
+                loadImage()
+            }
+            //overlay temporary image while real image is being uploaded
             if let image {
                 image
                     .resizable()
@@ -40,35 +65,27 @@ struct AddImageIcon: View {
                     .clipped()
                     .contentShape(Rectangle())
                     .clipShape(RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2))
+                    .opacity(showTemporaryImage ? 1 : 0)
             }
-            else {
-                ZStack {
-                    RoundedRectangle(cornerRadius:CGFloat(sideLength)*0.2)
-                        .fill(Control.hexColor(hexCode:"#999999"))
-                        .frame(width:CGFloat(sideLength),height:CGFloat(sideLength))
-                    Image(systemName:"plus")
-                        .font(.system(size:sideLength*0.5))
-                        .foregroundStyle(Control.hexColor(hexCode:"#CCCCCC"))
-                }
-            }
-        }
-        .onChange(of: selectedImage) {
-            loadImage()
         }
     }
     func loadImage() {
         Task {
             guard let imageData = try await selectedImage?.loadTransferable(type: Data.self) else { return }
             guard let inputImage = UIImage(data: imageData) else { return }
-           // uiImage = inputImage
             image = Image(uiImage: inputImage)
+            showTemporaryImage = true;
             do {
                 let presignedResult: APIClient.PresignedPostUrlResponse = try await APIClient.getPresignedPostURL()
                 let _: Void = try await APIClient.uploadImageToS3(
                     userId: UserDefaults.standard.string(forKey: "userId")!,
-                    imageKey: "image\(imageNumber)",
+                    imageIndex: "image\(imageNumber)",
                     image: inputImage,
                     presignedPostResult: presignedResult)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + Control.showTemporaryImageInterval) {
+                    showTemporaryImage = false
+                }
             } catch {
                 print(error)
             }

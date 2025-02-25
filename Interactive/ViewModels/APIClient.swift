@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = false
+    static let localTesting: Bool = true
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
@@ -124,6 +124,9 @@ class APIClient {
         
     }
     
+    struct EmptyBody: Encodable {
+    }
+    
     
     static func postRequest(url: String, body: Encodable) async throws -> DefaultResponse {
         let urlString = URL(string: url)!
@@ -151,6 +154,21 @@ class APIClient {
         
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
        // print(String(data: data, encoding: .utf8)!)
+        let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
+        return decoded
+    }
+    
+    static func deleteRequest(url: String, body: Encodable) async throws -> DefaultResponse {
+        let urlString = URL(string: url)!
+        let encoded = try Control.encode(jsonBody: body)
+        
+        var request = URLRequest(url: urlString)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "DELETE"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
+        
+        let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
+        
         let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
     }
@@ -227,7 +245,7 @@ class APIClient {
         return decoded
     }
     
-    static func uploadImageToS3(userId: String, imageKey: String, image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
+    static func uploadImageToS3(userId: String, imageIndex: String, image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
         let userExists = try await fetchUser(userId: userId)
         if (userExists.success == false) {
             return
@@ -291,17 +309,19 @@ class APIClient {
         }).resume()
         
 
-        let uploadToBackend = try await uploadImageURLToBackend(userId: userId, imageKey: imageKey, imageURL: "\(data.url)\(data.fields.key)")
+        let uploadToBackend = try await uploadImageURLToBackend(userId: userId, imageIndex: imageIndex, imageURL: "\(data.url)\(data.fields.key)")
         if (!uploadToBackend.success) {
             return
         }
-        UserDefaults.standard.set("\(data.url)\(data.fields.key)", forKey: imageKey)
+        DispatchQueue.main.asyncAfter(deadline: .now() + Control.showTemporaryImageInterval) {
+            UserDefaults.standard.set("\(data.url)\(data.fields.key)", forKey: imageIndex)
+        }
     }
     
-    static func uploadImageURLToBackend(userId: String, imageKey: String, imageURL: String) async throws -> DefaultResponse {
+    static func uploadImageURLToBackend(userId: String, imageIndex: String, imageURL: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/images/userImage/\(userId)"
         let body: Encodable = [
-            "imageKey": imageKey,
+            "imageIndex": imageIndex,
             "imageURL": imageURL
         ]
         print(url)
@@ -326,4 +346,10 @@ class APIClient {
         return decoded
     }
     
+//    static func deleteuserImage(imageKey: String) async throws -> DefaultResponse {
+//        let url = "\(baseURL)/api/images/\(imageKey)"
+//    
+//        return try await deleteRequest(url: url, body: EmptyBody())
+//    }
+//    
 }
