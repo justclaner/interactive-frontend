@@ -99,7 +99,7 @@ struct EditProfilePage: View {
                             .padding([.top],20)
                         Spacer()
                     }
-                    .padding([.trailing],geometry.size.width*0.05)
+                    .padding([.trailing],Control.maxWidth*0.1)
                     
                 }
                 VStack {
@@ -180,7 +180,7 @@ struct EditProfilePage: View {
                         .padding([.leading],10)
                         Spacer()
                     }
-                    .frame(maxWidth:geometry.size.width*0.9)
+                    .frame(maxWidth:Control.maxWidth)
                     .padding([.vertical],10)
                     .opacity((inTutorial && tutorialStep != 2) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
@@ -190,13 +190,13 @@ struct EditProfilePage: View {
                         Text("About Me")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+                            .frame(width:Control.maxWidth,alignment:.leading)
 
                         TextField("", text: $aboutMe, axis:.vertical)
                                 .focused($aboutMeFocus)
                                 .padding([.leading,.trailing],10)
                                 .padding([.vertical],5)
-                                .frame(width:geometry.size.width*0.9)
+                                .frame(width:Control.maxWidth)
                                 .font(.system(size:13,weight:.regular))
                                 .foregroundStyle(Control.hexColor(hexCode: "#CCCCCC"))
                                 .background(Control.hexColor(hexCode: "#4D4D4D"))
@@ -218,7 +218,7 @@ struct EditProfilePage: View {
                         Text("Network")
                             .font(.system(size:13,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+                            .frame(width:Control.maxWidth,alignment:.leading)
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
@@ -238,7 +238,7 @@ struct EditProfilePage: View {
 //                        Text("Interests")
 //                            .font(.system(size:13,weight:.semibold))
 //                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-//                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+//                            .frame(width:Control.maxWidth,alignment:.leading)
 //                            .padding([.top],5)
 //                        HStack {
 //                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
@@ -247,7 +247,7 @@ struct EditProfilePage: View {
 //                        Text("Jobs")
 //                            .font(.system(size:13,weight:.semibold))
 //                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-//                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+//                            .frame(width:Control.maxWidth,alignment:.leading)
 //                            .padding([.top],5)
 //                        HStack {
 //                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
@@ -256,7 +256,7 @@ struct EditProfilePage: View {
 //                        Text("Interaction Goals")
 //                            .font(.system(size:13,weight:.semibold))
 //                            .foregroundStyle(Control.hexColor(hexCode: "#999999"))
-//                            .frame(width:geometry.size.width*0.9,alignment:.leading)
+//                            .frame(width:Control.maxWidth,alignment:.leading)
 //                            .padding([.top],5)
 //                        HStack {
 //                            AddButton(action:$testFunc, text: $add, colorHex:$gray_80)
@@ -271,8 +271,8 @@ struct EditProfilePage: View {
 //                    .opacity(ProfileSetup.tutorialWhiteOpacity)
                     Spacer()
                 }
-                .frame(maxWidth:geometry.size.width*0.9)
-                NavigationBar(height:.constant(geometry.size.height*0.13))
+                .frame(maxWidth:Control.maxWidth)
+                NavigationBar()
                     //.opacity(ProfileSetup.tutorialWhiteOpacity)
                 
                 
@@ -283,7 +283,7 @@ struct EditProfilePage: View {
                         .font(.system(size:16,weight:.regular))
                     Spacer()
                 }
-                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 .opacity((tutorialStep == 0 && inTutorial) ? 1 : 0)
                 .padding([.top],60)
                 
@@ -299,7 +299,7 @@ struct EditProfilePage: View {
                     Spacer()
                 }
                 .font(.system(size:16,weight:.regular))
-                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 .opacity((tutorialStep == 1 && inTutorial) ? 1 : 0)
                 .padding([.top],240)
                 
@@ -325,7 +325,7 @@ struct EditProfilePage: View {
                     Spacer()
                 }
                 .font(.system(size:16,weight:.regular))
-                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 .opacity((tutorialStep == 2 && inTutorial) ? 1 : 0)
                 .padding([.top],305)
                 
@@ -354,7 +354,7 @@ struct EditProfilePage: View {
 //                        }
                     Spacer()
                 }
-                .frame(maxWidth:geometry.size.width*0.9,alignment:.leading)
+                .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 .opacity(tutorialStep == 3 ? 1 : 0)
                 .padding([.top],390)
             }

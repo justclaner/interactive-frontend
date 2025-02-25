@@ -32,25 +32,25 @@ struct AddNetworkPage: View {
                 }
             BackButton(path:$path)
             VStack {
-                Text("Add Network")
+                Text("Network")
                     .font(.system(size:Control.mediumFontSize, weight:.semibold))
                     .foregroundStyle(Color.white)
-                    .frame(width: Control.maxWidth, alignment: .leading)
+                    .frame(width: Control.maxWidth, alignment: .center)
                 Text("Add a link to one of your social media accounts to connect with others!")
-                    .font(.system(size:Control.smallFontSize, weight:.medium))
+                    .font(.system(size:Control.tinyFontSize, weight:.medium))
                     .foregroundStyle(Color.white)
                     .frame(maxWidth: Control.maxWidth, alignment:.leading)
                     .padding([.top],5)
                     .padding([.bottom],20)
                 Text("Link:")
-                    .font(.system(size:Control.smallFontSize, weight:.semibold))
+                    .font(.system(size:Control.tinyFontSize, weight:.semibold))
                     .foregroundStyle(Color.white)
                     .frame(maxWidth: Control.maxWidth, alignment:.leading)
                 TextField("", text: $networkLink, prompt: Text(verbatim: "https://www.instagram.com/username")
-                    .font(.system(size:Control.smallFontSize,weight:.semibold))
+                    .font(.system(size:Control.tinyFontSize,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
-                    .padding(Control.smallFontSize)
+                    .padding(Control.tinyFontSize)
                     .frame(width:Control.maxWidth,height:Control.maxHeight)
                     .border(Color.black,width:1)
                     .clipShape(RoundedRectangle(cornerRadius:8))
@@ -74,7 +74,7 @@ struct AddNetworkPage: View {
                 }
                 Spacer()
                 Text(warning)
-                    .font(.system(size:Control.smallFontSize, weight:.bold))
+                    .font(.system(size:Control.tinyFontSize, weight:.bold))
                     .foregroundStyle(Color.red)
                     .opacity(showWarning ? 1 : 0.01)
                     .frame(maxWidth: Control.maxWidth,alignment:.leading)
@@ -128,7 +128,7 @@ struct AddNetworkPage: View {
                 )
                 .padding([.top],5)
             }
-            .padding([.top], Control.largeFontSize*1.5)
+          //  .padding([.top], Control.largeFontSize*1.5)
         }
     }
     

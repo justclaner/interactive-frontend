@@ -39,11 +39,11 @@ struct ShareLocationPage: View {
                 
                 Group {
                     Text("Interactive is based on presence.")
-                        .font(.system(size:Control.smallFontSize,weight:.regular))
+                        .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     +
                     Text("Location sharing is essential")
-                        .font(.system(size:Control.smallFontSize,weight:.regular))
+                        .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#E6E6E6"))
                 }
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
@@ -51,22 +51,22 @@ struct ShareLocationPage: View {
                 
                 Group {
                     Text("There is no map:")
-                        .font(.system(size:Control.smallFontSize,weight:.regular))
+                        .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     +
                     Text("No one will be able to see your movements or precise location.")
-                        .font(.system(size:Control.smallFontSize,weight:.regular))
+                        .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Color.white)
                 }
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 .padding([.bottom],20)
                 Group {
                     Text("You will only be able to see the people in the same area as you, ")
-                        .font(.system(size:Control.smallFontSize,weight:.regular))
+                        .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#E6E6E6"))
                     +
                     Text("without location or distance details.")
-                        .font(.system(size:Control.smallFontSize,weight:.regular))
+                        .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                 }
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
@@ -83,7 +83,7 @@ struct ShareLocationPage: View {
                     }
                     }) {
                         Text(requestedLocation ? "Continue" : "Turn on localization")
-                            .font(.system(size:Control.smallFontSize,weight:.semibold))
+                            .font(.system(size:Control.tinyFontSize,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#1A1A1A"))
                             .padding(10)
                             .frame(maxWidth:.infinity,maxHeight:.infinity)

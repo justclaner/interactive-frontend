@@ -21,10 +21,13 @@ class Control {
     static let maxWidth = Control.getMaxWidth()
     static let maxHeight = Control.getScreenSize().height * 0.04919908466
     static let mediumHeight = Control.getScreenSize().height * 0.04919908466 * 0.9
-    static let smallFontSize: CGFloat = Control.getScreenSize().height * 0.01830663615
+    static let tinyFontSize: CGFloat = Control.getScreenSize().height * 0.01830663615
+    static let smallFontSize: CGFloat = Control.getScreenSize().height * 0.02734553773
     static let mediumFontSize: CGFloat = Control.getScreenSize().height * 0.03546910755
     static let largeFontSize: CGFloat = Control.getScreenSize().height * 0.0423340961
+    static let navigationBarHeight: CGFloat = Control.getScreenSize().height * 0.14
     
+    static let navigationIconSize: CGFloat = Control.getScreenSize().height * 0.06
     /*
      Returns a Color given a color hexcode. Hexcodes must be
      prefixed with '#' and be exactly 7 characters long.
