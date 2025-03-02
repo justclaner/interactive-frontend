@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 import UIKit
 
 struct EditProfilePage: View {
@@ -22,6 +23,9 @@ struct EditProfilePage: View {
     @State var accent: String = "#FFDD1A"
     @State var updater: Bool = false
     
+    @State var showPhotosPicker: Bool = false
+    
+    @State var selectedImage: PhotosPickerItem?
     
     @State var username: String = UserDefaults.standard.string(forKey: "username") ?? "Username"
     
@@ -29,24 +33,41 @@ struct EditProfilePage: View {
     @FocusState var aboutMeFocus: Bool
     @FocusState var usernameFocus: Bool
     
-    @State var inTutorial: Bool = ProfileSetup.inTutorial
-    @State var tutorialStep: Int = ProfileSetup.tutorialStep
-    @State var addedImage: Bool = ProfileSetup.addedImage
+    //ProfileSetup.inTutorial
+    @State var inTutorial: Bool = UserDefaults.standard.bool(forKey: "inTutorial")
+    @State var tutorialStep: Int = 0
+    @State var addedImage: Bool = false
     
-    @State var networkLinks: [String] = []
+    @AppStorage("addedLink") var addedLink: Bool = UserDefaults.standard.bool(forKey: "addedLink")
     
+    @AppStorage("image1") var image1URL: String = UserDefaults.standard.string(forKey: "image1") ?? ""
+    @AppStorage("image2") var image2URL: String = UserDefaults.standard.string(forKey: "image2") ?? ""
+    @AppStorage("image3") var image3URL: String = UserDefaults.standard.string(forKey: "image3") ?? ""
+    @AppStorage("image4") var image4URL: String = UserDefaults.standard.string(forKey: "image4") ?? ""
+    @AppStorage("image5") var image5URL: String = UserDefaults.standard.string(forKey: "image5") ?? ""
     
-    //image for display
-    @State var image1: Image?
-    @State var image2: Image?
-    @State var image3: Image?
-    @State var image4: Image?
-    @State var image5: Image?
+    @AppStorage("image1Loading") var image1Loading: Bool = UserDefaults.standard.bool(forKey: "image1Loading")
+    @AppStorage("image2Loading") var image2Loading: Bool = UserDefaults.standard.bool(forKey: "image2Loading")
+    @AppStorage("image3Loading") var image3Loading: Bool = UserDefaults.standard.bool(forKey: "image3Loading")
+    @AppStorage("image4Loading") var image4Loading: Bool = UserDefaults.standard.bool(forKey: "image4Loading")
+    @AppStorage("image5Loading") var image5Loading: Bool = UserDefaults.standard.bool(forKey: "image5Loading")
     
+    @State var image1Clicked: Bool = false
+    @State var image2Clicked: Bool = false
+    @State var image3Clicked: Bool = false
+    @State var image4Clicked: Bool = false
+    @State var image5Clicked: Bool = false
+    
+    @State var changingPicture: Bool = false
+    @State var currentImageNumber: Int = 1
+    
+    let xIconSize = Control.getScreenSize().width * 0.06
+    let xIconCircleWidth = Control.getScreenSize().width * 0.08
+    
+    var data = UserData()
     
     var body: some View {
         //avoid keyboard pushing things up
-        GeometryReader {geometry in
             ZStack {
                 Text("\(updater)") //force rerender
                 Color.white.opacity(0.001)
@@ -62,21 +83,15 @@ struct EditProfilePage: View {
                     .onTapGesture {
                         usernameFocus = false
                         aboutMeFocus = false
-                        print(UserDefaults.standard.string(forKey:"image1") ?? "no image")
+                        showPhotosPicker = false
+                   //     print(currentImageNumber)
 //                        print(UserDefaults.standard.string(forKey: "locationStatus") ?? "no status")
                      //   print(UserDefaults.standard.string(forKey:"userId") ?? "no id")
 //                        print(UserDefaults.standard.bool(forKey: "inTutorial"))
 //                        print("tutorialStep: \(tutorialStep)")
 //                        print("ProfileSetup.tutorialStep: \(ProfileSetup.tutorialStep)")
 //                        print(ProfileSetup.addedImage)
-                        if (tutorialStep == 0) {
-                            tutorialStep = 1
-                            ProfileSetup.tutorialStep = 1
-                        }
-                        if (tutorialStep == 2) {
-                            tutorialStep = 3
-                            ProfileSetup.tutorialStep = 3
-                        }
+
                         updater.toggle()
                     }
 //                BackButton(path:$path)
@@ -85,24 +100,6 @@ struct EditProfilePage: View {
 //                             ProfileSetup.tutorialWhiteOpacity : 1)
                 
 //username      //step 1
-                HStack {
-                    Spacer()
-                    VStack {
-                        Image("pencil_edit")
-                            .resizable()
-                            .frame(width:20,height:20)
-                            .onTapGesture {
-                                if (!(inTutorial && tutorialStep != 0)) {
-                                    usernameFocus.toggle()
-                                }
-                            }
-                            .opacity((inTutorial && tutorialStep != 0) ? ProfileSetup.tutorialWhiteOpacity : 1)
-                            .padding([.top],20)
-                        Spacer()
-                    }
-                    .padding([.trailing],Control.maxWidth*0.1)
-                    
-                }
                 VStack {
                     TextField("", text:$username,
                               prompt:Text(username)
@@ -114,62 +111,285 @@ struct EditProfilePage: View {
                     .foregroundStyle(Color.white)
                     .padding([.top],15)
                     .focused($usernameFocus)
-                    .opacity((inTutorial && tutorialStep != 0) ? ProfileSetup.tutorialWhiteOpacity : 1)
-                    .disabled(ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 0)
+                    .opacity((inTutorial) ? ProfileSetup.tutorialWhiteOpacity : 1)
+                    .disabled(inTutorial)
                     .onChange(of: username) {
                         self.username = String(username.prefix(24))
                     }
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
-                    .onChange(of: usernameFocus) {
-                        if (username != UserDefaults.standard.string(forKey: "username")!) {
-                            UserDefaults.standard.set(username, forKey: "username")
-                        }
-                    }
-                    
-                    
-//images            //step 2
+                    .padding([.bottom], Control.smallFontSize)
+  //revised step 2
                     HStack {
-//                        if (image1URL != "") {
-//                            AsyncImage(url: URL(string: UserDefaults.standard.string(forKey:"image1")!)) {result in
-//                                result.image?
-//                                    .resizable()
-//                                    .scaledToFill()
-//                                    .frame(width:CGFloat(largeSideLength),height:CGFloat(largeSideLength), alignment: .center)
-//                                    .clipped()
-//                                    .contentShape(Rectangle())
-//                                    .clipShape(RoundedRectangle(cornerRadius:CGFloat(largeSideLength)*0.2))
-//                            }
-//                        } else {
-                            AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
-                     //   }
+                        ZStack {
+                            ProfileImage(url: $image1URL, sideLength: $largeSideLength, imageNumber: .constant(1))
+                                .padding([.trailing],mediumSideLength*0.1)
+                                .onTapGesture {
+                                    if (image1URL == "") {
+                                        showPhotosPicker = true
+                                    }
+                                }
+                            HStack {
+                                Spacer()
+                                VStack {
+                                    Image("x-icon")
+                                        .resizable()
+                                        .frame(width:xIconSize, height:xIconSize)
+                                        .background(
+                                            Circle()
+                                                .fill(Color.white)
+                                                .opacity(0.5)
+                                                .frame(width: xIconCircleWidth, height: xIconCircleWidth)
+                                        )
+                                        .onTapGesture {
+                                            image1Clicked = true
+                                        }
+                                        .confirmationDialog("editImage1", isPresented: $image1Clicked) {
+                                            Button("Delete") {
+                                                deleteImage(imageNumber: 1)
+                                            }
+                                            Button("Change picture (1)") {
+                                                currentImageNumber = 1
+                                                changingPicture = true
+                                                showPhotosPicker = true
+                                            }
+                                        }
+                                    Spacer()
+                                }
+                            }
+                        }.opacity(image1Loading ? 0.3 : 1)
                         HStack {
                             VStack {
-                                AddImageIcon(image: $image2, imageNumber: .constant(2), sideLength:$mediumSideLength)
+                                ZStack {
+                                    ProfileImage(url: $image2URL, sideLength: $mediumSideLength, imageNumber: .constant(2))
+                                        .onTapGesture {
+                                            if (image2URL == "") {
+                                                showPhotosPicker = true
+                                            }
+                                        }
+                                    HStack {
+                                        Spacer()
+                                        VStack {
+                                            if (image2URL != "") {
+                                                Image("x-icon")
+                                                    .resizable()
+                                                    .frame(width:xIconSize, height:xIconSize)
+                                                    .background(
+                                                        Circle()
+                                                            .fill(Color.white)
+                                                            .opacity(0.5)
+                                                            .frame(width: xIconCircleWidth, height: xIconCircleWidth)
+                                                    )
+                                                    .onTapGesture {
+                                                        image2Clicked = true
+                                                    }
+                                                    .confirmationDialog("editImage2", isPresented: $image2Clicked) {
+                                                        Button("Delete") {
+                                                            deleteImage(imageNumber: 2)
+                                                        }
+                                                        Button("Change picture (2)") {
+                                                            currentImageNumber = 2
+                                                            changingPicture = true
+                                                            showPhotosPicker = true
+                                                        }
+                                                    }
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                }.opacity(image2Loading ? 0.3 : 1)
                                 Spacer()
-                                AddImageIcon(image: $image3, imageNumber: .constant(4), sideLength:$mediumSideLength)
+                                ZStack {
+                                    ProfileImage(url: $image4URL, sideLength: $mediumSideLength, imageNumber: .constant(4))
+                                        .onTapGesture {
+                                            if (image4URL == "") {
+                                                showPhotosPicker = true
+                                            }
+                                        }
+                                    HStack {
+                                        Spacer()
+                                        VStack {
+                                            if (image4URL != "") {
+                                                Image("x-icon")
+                                                    .resizable()
+                                                    .frame(width:xIconSize, height:xIconSize)
+                                                    .background(
+                                                        Circle()
+                                                            .fill(Color.white)
+                                                            .opacity(0.5)
+                                                            .frame(width: xIconCircleWidth, height: xIconCircleWidth)
+                                                    )
+                                                    .onTapGesture {
+                                                        image4Clicked = true
+                                                    }
+                                                    .confirmationDialog("editImage4", isPresented: $image4Clicked) {
+                                                        Button("Delete") {
+                                                            deleteImage(imageNumber: 4)
+                                                        }
+                                                        Button("Change picture (4)") {
+                                                            currentImageNumber = 4
+                                                            changingPicture = true
+                                                            showPhotosPicker = true
+                                                        }
+                                                    }
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                }.opacity(image4Loading ? 0.3 : 1)
                             }
-                            .frame(maxHeight:174)
+                            .frame(maxHeight:largeSideLength)
                             Spacer()
                             VStack {
-                                AddImageIcon(image: $image4, imageNumber: .constant(3), sideLength:$mediumSideLength)
+                                ZStack {
+                                    ProfileImage(url: $image3URL, sideLength: $mediumSideLength, imageNumber: .constant(3))
+                                        .onTapGesture {
+                                            if (image3URL == "") {
+                                                showPhotosPicker = true
+                                            }
+                                        }
+                                    HStack {
+                                        Spacer()
+                                        VStack {
+                                            if (image3URL != "") {
+                                                Image("x-icon")
+                                                    .resizable()
+                                                    .frame(width:xIconSize, height:xIconSize)
+                                                    .background(
+                                                        Circle()
+                                                            .fill(Color.white)
+                                                            .opacity(0.5)
+                                                            .frame(width: xIconCircleWidth, height: xIconCircleWidth)
+                                                    )
+                                                    .onTapGesture {
+                                                        image3Clicked = true
+                                                    }
+                                                    .confirmationDialog("editImage3", isPresented: $image3Clicked) {
+                                                        Button("Delete") {
+                                                            deleteImage(imageNumber: 3)
+                                                        }
+                                                        Button("Change picture (3)") {
+                                                            currentImageNumber = 3
+                                                            changingPicture = true
+                                                            showPhotosPicker = true
+                                                        }
+                                                    }
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                }.opacity(image3Loading ? 0.3 : 1)
                                 Spacer()
-                                AddImageIcon(image: $image5, imageNumber: .constant(5), sideLength:$mediumSideLength)
+                                ZStack {
+                                    ProfileImage(url: $image5URL, sideLength: $mediumSideLength, imageNumber: .constant(5))
+                                        .onTapGesture {
+                                            if (image5URL == "") {
+                                                showPhotosPicker = true
+                                            }
+                                        }
+                                    HStack {
+                                        Spacer()
+                                        VStack {
+                                            if (image5URL != "") {
+                                                Image("x-icon")
+                                                    .resizable()
+                                                    .frame(width:xIconSize, height:xIconSize)
+                                                    .background(
+                                                        Circle()
+                                                            .fill(Color.white)
+                                                            .opacity(0.5)
+                                                            .frame(width: xIconCircleWidth, height: xIconCircleWidth)
+                                                    )
+                                                    .onTapGesture {
+                                                        image5Clicked = true
+                                                    }
+                                                    .confirmationDialog("editImage5", isPresented: $image5Clicked) {
+                                                        Button("Delete") {
+                                                            deleteImage(imageNumber: 5)
+                                                        }
+                                                        Button("Change picture (5)") {
+                                                            currentImageNumber = 5
+                                                            changingPicture = true
+                                                            showPhotosPicker = true
+                                                        }
+                                                    }
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                }.opacity(image5Loading ? 0.3 : 1)
                             }
-                            .frame(maxHeight:174)
-                        }.frame(width:174)
+                            .frame(maxHeight: largeSideLength)
+                        }.frame(width: largeSideLength)
                         Spacer()
                     }
-                    .padding([.top], 10)
-                    .opacity((inTutorial && tutorialStep != 1) ?
-                             ProfileSetup.tutorialWhiteOpacity : 1)
-                    .onTapGesture {
-                        updater.toggle()
+                    .frame(maxHeight: largeSideLength)
+                    .photosPicker(isPresented: $showPhotosPicker, selection: $selectedImage)
+                    .onChange(of: selectedImage) {
+                        print(image1Clicked)
+                        if (!changingPicture) {
+                            if (image1URL == "") {
+                                currentImageNumber = 1
+                            } else if (image2URL == "") {
+                                currentImageNumber = 2
+                            } else if (image3URL == "") {
+                                currentImageNumber = 3
+                            } else if (image4URL == "") {
+                                currentImageNumber = 4
+                            } else if (image5URL == "") {
+                                currentImageNumber = 5
+                            }
+                        }
+                        loadImage(imageNumber: currentImageNumber)
+                        
+                        changingPicture = false
                     }
-                    .onAppear {
-                        updater.toggle()
-                    }
-                    .allowsHitTesting(ProfileSetup.tutorialStep > 0 || !UserDefaults.standard.bool(forKey: "inTutorial"))
+//images            //step 2
+//                    HStack {
+////                        if (image1URL != "") {
+////                            AsyncImage(url: URL(string: UserDefaults.standard.string(forKey:"image1")!)) {result in
+////                                result.image?
+////                                    .resizable()
+////                                    .scaledToFill()
+////                                    .frame(width:CGFloat(largeSideLength),height:CGFloat(largeSideLength), alignment: .center)
+////                                    .clipped()
+////                                    .contentShape(Rectangle())
+////                                    .clipShape(RoundedRectangle(cornerRadius:CGFloat(largeSideLength)*0.2))
+////                            }
+////                        } else {
+//                            AddImageIcon(image: $image1, imageNumber: .constant(1), sideLength:$largeSideLength)
+//                     //   }
+//                        HStack {
+//                            VStack {
+//                                AddImageIcon(image: $image2, imageNumber: .constant(2), sideLength:$mediumSideLength)
+//                                Spacer()
+//                                AddImageIcon(image: $image3, imageNumber: .constant(4), sideLength:$mediumSideLength)
+//                            }
+//                            .frame(maxHeight:174)
+//                            Spacer()
+//                            VStack {
+//                                AddImageIcon(image: $image4, imageNumber: .constant(3), sideLength:$mediumSideLength)
+//                                Spacer()
+//                                AddImageIcon(image: $image5, imageNumber: .constant(5), sideLength:$mediumSideLength)
+//                            }
+//                            .frame(maxHeight:174)
+//                        }.frame(width:174)
+//                        Spacer()
+//                    }
+//                    .padding([.top], 10)
+//                    .opacity((inTutorial && tutorialStep != 1) ?
+//                             ProfileSetup.tutorialWhiteOpacity : 1)
+//                    .onTapGesture {
+//                        updater.toggle()
+//                    }
+//                    .onAppear {
+//                        updater.toggle()
+//                    }
+//                    .allowsHitTesting(ProfileSetup.tutorialStep > 0 || !UserDefaults.standard.bool(forKey: "inTutorial"))
+                    
+                    
+                    
+                    
                     //step 3
                     HStack {
                         VStack {
@@ -195,13 +415,13 @@ struct EditProfilePage: View {
                     }
                     .frame(maxWidth:Control.maxWidth)
                     .padding([.vertical],10)
-                    .opacity((inTutorial && tutorialStep != 2) ?
+                    .opacity((inTutorial) ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
                     
 //biography         //step 4
                     VStack {
                         Text("About Me")
-                            .font(.system(size:13,weight:.semibold))
+                            .font(.system(size:Control.tinyFontSize,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                             .frame(width:Control.maxWidth,alignment:.leading)
 
@@ -218,18 +438,17 @@ struct EditProfilePage: View {
                                 .disabled(ProfileSetup.inTutorial && ProfileSetup.tutorialStep != 3)
                                 .onChange(of: aboutMe) {
                                     aboutMe = String(aboutMe.prefix(150))
-                                    
                                 }
                                 .lineLimit(3, reservesSpace: true)
                                 .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
                     }
-                    .opacity((inTutorial && tutorialStep != 3) ?
+                    .opacity(inTutorial ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
 // network
                     VStack {
                         Text("Network")
-                            .font(.system(size:13,weight:.semibold))
+                            .font(.system(size:Control.tinyFontSize,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                             .frame(width:Control.maxWidth,alignment:.leading)
                         HStack {
@@ -238,6 +457,7 @@ struct EditProfilePage: View {
                                     NetworkList()
                                     AddNetworkIcon(sideLength:$smallSideLength)
                                         .onTapGesture {
+                                            print("test")
                                             path.append("Add Network")
                                         }
                                     Spacer()
@@ -245,7 +465,7 @@ struct EditProfilePage: View {
                             }
                         }
                     }
-                    .opacity(inTutorial ? ProfileSetup.tutorialWhiteOpacity : 1)
+                    .opacity((inTutorial && tutorialStep != 1) ? ProfileSetup.tutorialWhiteOpacity : 1)
                     //add in the future
 //                    VStack {
 //                        Text("Interests")
@@ -286,21 +506,30 @@ struct EditProfilePage: View {
                 }
                 .frame(maxWidth:Control.maxWidth)
                 NavigationBar()
+                
+                //settings gear icon
+                HStack {
+                    Spacer()
+                    VStack {
+                        Image("settings_gear")
+                            .resizable()
+                            .frame(width:35,height:35)
+                            .onTapGesture {
+                                print("settings page")
+                                path.append("Settings")
+                            }
+                            .opacity((inTutorial && tutorialStep != 0) ? ProfileSetup.tutorialWhiteOpacity : 1)
+                            .padding([.trailing],Control.smallFontSize * 0.8)
+                            .padding([.top], Control.smallFontSize * 0.7)
+                            
+                        Spacer()
+                    }
+                }
+                
                     //.opacity(ProfileSetup.tutorialWhiteOpacity)
                 
                 
                 //step 1
-                VStack {
-                    Text("Tap your username or the pencil icon to edit your \nusername.")
-                        .foregroundStyle(Color.white)
-                        .font(.system(size:16,weight:.regular))
-                    Spacer()
-                }
-                .frame(maxWidth:Control.maxWidth,alignment:.leading)
-                .opacity((tutorialStep == 0 && inTutorial) ? 1 : 0)
-                .padding([.top],60)
-                
-                //step 2
                 VStack {
                     Group {
                         Text("Insert at least one photo of yourself to continue.")
@@ -313,73 +542,42 @@ struct EditProfilePage: View {
                 }
                 .font(.system(size:16,weight:.regular))
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
-                .opacity((tutorialStep == 1 && inTutorial) ? 1 : 0)
-                .padding([.top],240)
+                .opacity((tutorialStep == 0 && inTutorial) ? 1 : 0)
+                .padding([.top],Control.largeFontSize * 7.5)
                 
-                //step 3
+                //step 2
                 VStack {
                     Group {
-                        Text("You will be able to see how many people have ")
-                            .foregroundStyle(Color.white)
-                            .bold()
-                        +
-                        Text("visited ")
-                            .foregroundStyle(Control.hexColor(hexCode: accent))
-                        +
-                        Text("your profile and how many people you have ")
-                            .foregroundStyle(Color.white)
-                        +
-                        Text("interacted ")
-                            .foregroundStyle(Control.hexColor(hexCode: accent))
-                        +
-                        Text("with.")
-                            .foregroundStyle(Color.white)
-                    }
-                    Spacer()
-                }
-                .font(.system(size:16,weight:.regular))
-                .frame(maxWidth:Control.maxWidth,alignment:.leading)
-                .opacity((tutorialStep == 2 && inTutorial) ? 1 : 0)
-                .padding([.top],305)
-                
-                
-                //step 4
-                VStack {
-                    Group {
-                        Text("Tell something more ")
+                        Text("Connect your social networks to interact with others. ")
                             .foregroundStyle(Control.hexColor(hexCode: accent))
                             .bold()
-                        +
-                        Text("about yourself ")
-                            .foregroundStyle(Control.hexColor(hexCode: accent))
-                        +
-                        Text("to people who would like to connect.")
-                            .foregroundStyle(Color.white)
+ //                       +
+//                        Text("You will be able to decide whether .")
+//                            .foregroundStyle(Color.white)
                     }
-                        .font(.system(size:16,weight:.regular))
+                    .font(.system(size:Control.tinyFontSize,weight:.regular))
                     Spacer()
                 }
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
-                .opacity(ProfileSetup.inTutorial && tutorialStep == 3 ? 1 : 0)
-                .padding([.top],390)
+                .opacity(inTutorial && tutorialStep == 1 ? 1 : 0)
+                .padding([.top],Control.largeFontSize * 13.75)
             }
-            .onChange(of: ProfileSetup.addedImage) { //step 2 add image
+            .onChange(of: addedImage) { //step 2 add image
                 print("image added")
-                ProfileSetup.tutorialStep = 2
-                tutorialStep = 2
+                tutorialStep += 1
             }
-            .onChange(of: aboutMeFocus) {  //step 3 visitors/interactions
-                if (ProfileSetup.addedBio && ProfileSetup.tutorialStep == 3) {
-                    ProfileSetup.tutorialStep = 4
-                    tutorialStep = 4
-                }
-                if (!aboutMeFocus && aboutMe != UserDefaults.standard.string(forKey: "biography") ?? "") {
+            .onChange(of: addedLink) {
+                print("link added")
+                tutorialStep += 1
+            }
+            .onChange(of: usernameFocus) {
+                if (!usernameFocus && username != UserDefaults.standard.string(forKey: "username") ?? "") {
                     Task {
                         do {
-                            let updateBioReq = try await APIClient.updateBio(bio: aboutMe)
-                            if (updateBioReq.success) {
-                                UserDefaults.standard.set(aboutMe, forKey: "biography")
-                                ProfileSetup.addedBio = true
+                            let updateUsernameReq = try await APIClient.updateUsername(username: username)
+                            print(updateUsernameReq)
+                            if (updateUsernameReq.success) {
+                                UserDefaults.standard.set(username, forKey: "username")
                             }
                         } catch {
                             print(error)
@@ -387,19 +585,82 @@ struct EditProfilePage: View {
                     }
                 }
             }
-            .onChange(of: ProfileSetup.tutorialStep) { //step 4 about me
-                if (ProfileSetup.tutorialStep >= ProfileSetup.lastStep) {
+            .onChange(of: aboutMeFocus) {
+                if (!aboutMeFocus && aboutMe != UserDefaults.standard.string(forKey: "biography") ?? "") {
+                    Task {
+                        do {
+                            let updateBioReq = try await APIClient.updateBio(bio: aboutMe)
+                            if (updateBioReq.success) {
+                                UserDefaults.standard.set(aboutMe, forKey: "biography")
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
+                }
+            }
+            .onChange(of: tutorialStep) { //step 4 about me
+                if (tutorialStep > ProfileSetup.lastStep) {
                     ProfileSetup.inTutorial = false
                     inTutorial = false
                     UserDefaults.standard.set(false, forKey:"inTutorial")
-                    UserDefaults.standard.set(username, forKey: "username")
-                    UserDefaults.standard.set(aboutMe, forKey:"biography")
                 }
             }
-        }
         .ignoresSafeArea(.keyboard)
     }
     
+    func loadImage(imageNumber: Int) {
+        Task {
+            guard let imageData = try await selectedImage?.loadTransferable(type: Data.self) else { return }
+            guard let inputImage = UIImage(data: imageData) else { return }
+            do {
+                let presignedResult: APIClient.PresignedPostUrlResponse = try await APIClient.getPresignedPostURL()
+                let _: Void = try await APIClient.uploadImageToS3(
+                    userId: UserDefaults.standard.string(forKey: "userId")!,
+                    imageIndex: "image\(imageNumber)",
+                    image: inputImage,
+                    presignedPostResult: presignedResult)
+            } catch {
+                print(error)
+            }
+        }
+        if (inTutorial) {
+            addedImage = true
+        }
+    }
+    
+    func deleteImage(imageNumber: Int) {
+        var url: String = ""
+        var imageKey: String = ""
+        switch imageNumber {
+        case 1:
+            url = image1URL
+            imageKey = "image1"
+        case 2:
+            url = image2URL
+            imageKey = "image2"
+        case 3:
+            url = image3URL
+            imageKey = "image3"
+        case 4:
+            url = image4URL
+            imageKey = "image4"
+        default:
+            url = image5URL
+            imageKey = "image5"
+        }
+        Task {
+            do {
+                let deleteResponse = try await APIClient.deleteUserImage(imageURL:  url, imageIndex: imageKey, userId: UserDefaults.standard.string(forKey: "userId") ?? "")
+                print(deleteResponse)
+                if (deleteResponse.success) {
+                    data.loadImages(userId: UserDefaults.standard.string(forKey: "userId") ?? "");
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
     
 }
 

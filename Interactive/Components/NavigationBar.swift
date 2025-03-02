@@ -63,6 +63,7 @@ struct NavigationBar: View {
                         .resizable()
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
                         .onTapGesture {
+                            //to-do use @AppStorage to fix this
                             let inProfile = UserDefaults.standard.bool(forKey: "inProfile")
                             UserDefaults.standard.set(!inProfile, forKey: "inProfile")
                         }

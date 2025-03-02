@@ -65,9 +65,15 @@ class UserData {
         UserDefaults.standard.set(user.birthMonth, forKey: "birthMonth")
         UserDefaults.standard.set(user.birthYear, forKey: "birthYear")
         
+        loadImages(userId: user._id)
+        
+        UserDefaults.standard.set(false, forKey:"inTutorial")
+    }
+    
+    func loadImages(userId: String) {
         Task {
             do {
-                let imagesResponse = try await APIClient.getUserImages(userId: user._id)
+                let imagesResponse = try await APIClient.getUserImages(userId: userId)
                 if (imagesResponse.success) {
                     if (imagesResponse.images.image1 != nil) {
                         UserDefaults.standard.set(imagesResponse.images.image1!, forKey: "image1")
@@ -87,7 +93,5 @@ class UserData {
                 }
             }
         }
-        
-        UserDefaults.standard.set(false, forKey:"inTutorial")
     }
 }

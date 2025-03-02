@@ -313,8 +313,10 @@ class APIClient {
         if (!uploadToBackend.success) {
             return
         }
+        UserDefaults.standard.set(true, forKey: "\(imageIndex)Loading")
         DispatchQueue.main.asyncAfter(deadline: .now() + Control.showTemporaryImageInterval) {
             UserDefaults.standard.set("\(data.url)\(data.fields.key)", forKey: imageIndex)
+            UserDefaults.standard.set(false, forKey: "\(imageIndex)Loading")
         }
     }
     
@@ -327,6 +329,15 @@ class APIClient {
         print(url)
         print(body)
         return try await postRequest(url: url, body: body)
+    }
+    
+    static func updateUsername(username: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/users/\(UserDefaults.standard.string(forKey:"userId") ?? "")"
+        let body: Encodable = [
+            "username": username
+        ]
+        
+        return try await putRequest(url: url, body: body)
     }
     
     static func updateBio(bio: String) async throws -> DefaultResponse {
@@ -346,10 +357,16 @@ class APIClient {
         return decoded
     }
     
-//    static func deleteuserImage(imageKey: String) async throws -> DefaultResponse {
-//        let url = "\(baseURL)/api/images/\(imageKey)"
-//    
-//        return try await deleteRequest(url: url, body: EmptyBody())
-//    }
-//    
+    static func deleteUserImage(imageURL: String, imageIndex: String, userId: String) async throws -> DefaultResponse {
+        
+        let url = "\(baseURL)/api/images/\(imageURL.dropFirst(54))"
+        
+        let body: Encodable = [
+            "imageIndex": imageIndex,
+            "userId": userId
+        ]
+    
+        return try await deleteRequest(url: url, body: body)
+    }
+    
 }

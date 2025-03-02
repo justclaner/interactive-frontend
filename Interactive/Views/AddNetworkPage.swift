@@ -104,6 +104,7 @@ struct AddNetworkPage: View {
                                         showWarning = true
                                         return
                                     } else {
+                                        UserDefaults.standard.set(true, forKey: "addedLink")
                                         path = ["Your Profile"]
                                     }
                                     print(uploadNetworkLink)

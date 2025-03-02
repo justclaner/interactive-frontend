@@ -32,10 +32,9 @@ struct Debug: View {
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
-                Text("test")
-                Link("View Our Terms of Service",
-                      destination: URL(string: "https://www.example.com/TOS.html")!)
-                .foregroundStyle(.black)
+                Image("settings_gear")
+                    .resizable()
+                    .frame(width:20,height:20)
 //                AsyncImage(url: URL(string: "https://interactive-images.s3.us-east-1.amazonaws.com/c47d6f835850ce9f96a0635f09d66afe")) { result in
 //                    result.image?
 //                        .resizable()

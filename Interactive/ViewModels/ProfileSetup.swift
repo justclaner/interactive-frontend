@@ -16,9 +16,8 @@ struct ProfileSetup {
     static let tutorialWhiteOpacity: Double = 0.3
     
     static var addedImage = false
-    static var addedBio = false
     
-    static var lastStep = 4
+    static var lastStep = 1
 }
 
 
