@@ -461,7 +461,7 @@ struct EditProfilePage: View {
                                             path.append("Add Network")
                                         }
                                     Spacer()
-                                }
+                                }.frame(maxHeight: Control.getScreenSize().width * 0.2)
                             }
                         }
                     }

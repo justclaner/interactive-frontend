@@ -359,7 +359,7 @@ class APIClient {
     
     static func deleteUserImage(imageURL: String, imageIndex: String, userId: String) async throws -> DefaultResponse {
         
-        let url = "\(baseURL)/api/images/\(imageURL.dropFirst(54))"
+        let url = "\(baseURL)/api/images/\(imageURL.suffix(36))"
         
         let body: Encodable = [
             "imageIndex": imageIndex,
@@ -367,6 +367,17 @@ class APIClient {
         ]
     
         return try await deleteRequest(url: url, body: body)
+    }
+    
+    static func deleteUserSocialMediaLink(linkURL: String) async throws -> DefaultResponse {
+        let queryURL = "\(baseURL)/api/sm/"
+        
+        let body: Encodable = [
+            "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
+            "url": linkURL
+        ]
+        
+        return try await deleteRequest(url: queryURL, body: body)
     }
     
 }
