@@ -454,7 +454,7 @@ struct EditProfilePage: View {
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
-                                    NetworkList()
+                                    NetworkList(path: $path)
                                     AddNetworkIcon(sideLength:$smallSideLength)
                                         .onTapGesture {
                                             print("test")

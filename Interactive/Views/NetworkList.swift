@@ -30,6 +30,8 @@ import SwiftUI
 }
 
 struct NetworkList: View {
+    @Binding var path: [String]
+    
     let xIconSize = Control.getScreenSize().width * 0.05
     let xIconCircleWidth = Control.getScreenSize().width * 0.06
     
@@ -81,7 +83,8 @@ struct NetworkList: View {
                                 }
                             }
                             Button("Change Link") {
-                                print("change picture")
+                                UserDefaults.standard.set(networkLinks.links[index], forKey: "tempNetworkLink")
+                                path.append("Edit Network")
                             }
                         }
                 }
@@ -94,5 +97,5 @@ struct NetworkList: View {
     }
 
 #Preview {
-    NetworkList()
+    NetworkList(path: .constant(["test"]))
 }

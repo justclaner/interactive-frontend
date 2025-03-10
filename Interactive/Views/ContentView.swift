@@ -48,6 +48,9 @@ struct ContentView: View {
                 } else if (page == "Add Network") {
                     AddNetworkPage(path:$viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Edit Network") {
+                    UpdateNetworkPage(path:$viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 } else if (page == "Settings") {
                     SettingsPage(path: $viewModel.path)
                         .navigationBarBackButtonHidden(true)

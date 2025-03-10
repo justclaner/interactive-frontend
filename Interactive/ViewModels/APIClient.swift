@@ -131,14 +131,14 @@ class APIClient {
     static func postRequest(url: String, body: Encodable) async throws -> DefaultResponse {
         let urlString = URL(string: url)!
         let encoded = try Control.encode(jsonBody: body)
-
+        
         var request = URLRequest(url: urlString)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-       // request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
-
+        // request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
+        
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
-       // print(String(data: data, encoding: .utf8)!)
+        // print(String(data: data, encoding: .utf8)!)
         let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
     }
@@ -146,14 +146,13 @@ class APIClient {
     static func putRequest(url: String, body: Encodable) async throws -> DefaultResponse {
         let urlString = URL(string: url)!
         let encoded = try Control.encode(jsonBody: body)
-
+        
         var request = URLRequest(url: urlString)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "PUT"
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
-        
+
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
-       // print(String(data: data, encoding: .utf8)!)
         let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
     }
@@ -176,7 +175,7 @@ class APIClient {
     static func fetchAllUsers() async throws -> UsersResponse {
         let url = URL(string: "\(baseURL)/api/users")!
         let (data, _) = try await URLSession.shared.data(from: url)
-
+        
         let decoded = try JSONDecoder().decode(UsersResponse.self, from: data)
         return decoded
     }
@@ -240,7 +239,7 @@ class APIClient {
     static func getPresignedPostURL() async throws -> PresignedPostUrlResponse {
         let url = URL(string: "\(baseURL)/api/images")!
         let (data, _) = try await URLSession.shared.data(from: url)
-
+        
         let decoded = try JSONDecoder().decode(PresignedPostUrlResponse.self, from: data)
         return decoded
     }
@@ -308,7 +307,7 @@ class APIClient {
             }
         }).resume()
         
-
+        
         let uploadToBackend = try await uploadImageURLToBackend(userId: userId, imageIndex: imageIndex, imageURL: "\(data.url)\(data.fields.key)")
         if (!uploadToBackend.success) {
             return
@@ -346,6 +345,17 @@ class APIClient {
             "biography": bio
         ]
         
+        return try await putRequest(url: url, body: body)
+    }
+    
+    static func updateLink(oldUrl: String, platform: String, newUrl: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/sm/"
+        let body: Encodable = [
+            "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
+            "oldUrl": oldUrl,
+            "social_media_name": platform,
+            "newUrl": newUrl
+        ]
         return try await putRequest(url: url, body: body)
     }
     
