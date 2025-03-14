@@ -349,7 +349,7 @@ class APIClient {
     }
     
     static func updateLink(oldUrl: String, platform: String, newUrl: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/sm/"
+        let url = "\(baseURL)/api/sm/";
         let body: Encodable = [
             "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
             "oldUrl": oldUrl,

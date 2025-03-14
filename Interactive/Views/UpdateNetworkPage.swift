@@ -99,11 +99,12 @@ struct UpdateNetworkPage: View {
                             Task {
                                 do {
                                     let updateNetworkLink = try await APIClient.updateLink(oldUrl: UserDefaults.standard.string(forKey: "tempNetworkLink") ?? "", platform: platform, newUrl: networkLink)
-                                    UserDefaults.standard.set("", forKey: "tempNetworkLink")
+                                    print(updateNetworkLink)
                                     if (!updateNetworkLink.success) {
                                         warning = "Either there already is a network link for this platform, the link you provided is invalid, or the server is down."
                                         showWarning = true
                                     } else {
+                                        UserDefaults.standard.set("", forKey: "tempNetworkLink")
                                         UserDefaults.standard.set(true, forKey: "addedLink")
                                         path = ["Your Profile"]
                                     }

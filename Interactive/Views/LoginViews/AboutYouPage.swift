@@ -149,9 +149,10 @@ struct AboutYouPage: View {
                         let year: String = dateFormatter.string(from: date)
                         birthYear = Int(year)!
                         
-                        dateFormatter.dateFormat = "MM"
+                        dateFormatter.dateFormat = "LLLL"
                         let month: String = dateFormatter.string(from: date)
                         birthMonth = month
+                        print(birthMonth)
                         
                         dateFormatter.dateFormat = "dd"
                         let day: String = dateFormatter.string(from: date)
