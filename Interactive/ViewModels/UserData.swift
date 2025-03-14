@@ -73,7 +73,7 @@ class UserData {
     func loadImages(userId: String) {
         Task {
             do {
-                let imagesResponse = try await APIClient.getUserImages(userId: userId)
+                let imagesResponse = try await APIClient.fetchUserImages(userId: userId)
                 if (imagesResponse.success) {
                     if (imagesResponse.images.image1 != nil) {
                         UserDefaults.standard.set(imagesResponse.images.image1!, forKey: "image1")

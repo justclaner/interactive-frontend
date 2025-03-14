@@ -29,7 +29,7 @@ import SwiftUI
     }
 }
 
-struct NetworkList: View {
+struct EditProfileNetworks: View {
     @Binding var path: [String]
     
     let xIconSize = Control.getScreenSize().width * 0.05
@@ -97,5 +97,5 @@ struct NetworkList: View {
     }
 
 #Preview {
-    NetworkList(path: .constant(["test"]))
+    EditProfileNetworks(path: .constant(["test"]))
 }

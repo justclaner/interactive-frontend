@@ -196,6 +196,14 @@ class APIClient {
         return decoded
     }
     
+    static func fetchUserNetworksFromId(userId: String) async throws -> SocialMediaLinksResponse {
+        let url = URL(string: "\(baseURL)/api/sm/user/\(userId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(SocialMediaLinksResponse.self, from: data)
+        return decoded
+    }
+    
     static func authenticateUser(email: String, password: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/users/auth"
         let body: Encodable = [
@@ -359,7 +367,7 @@ class APIClient {
         return try await putRequest(url: url, body: body)
     }
     
-    static func getUserImages(userId: String) async throws -> UserImagesResponse {
+    static func fetchUserImages(userId: String) async throws -> UserImagesResponse {
         let url = URL(string: "\(baseURL)/api/users/images/\(userId)")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
