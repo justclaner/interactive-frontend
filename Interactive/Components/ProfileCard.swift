@@ -44,16 +44,13 @@ struct ProfileCard: View {
                 }
             }
             .padding([.top], (cardWidth - imageSquareWidth) / 2)
-            .border(Color.blue, width: 2)
             Text(username)
                 .font(.system(size: Control.mediumFontSize, weight: .bold))
                 .frame(width: imageSquareWidth, alignment: .leading)
-                .border(Color.blue, width: 2)
                 .padding(0)
             Text(bio)
                 .font(.system(size: Control.tinyFontSize, weight: .semibold))
                 .frame(width: imageSquareWidth, alignment: .leading)
-                .border(Color.blue, width: 2)
                 .padding(0)
             ProfileNetworks(networkLinks: $networkLinks)
                 .padding([.top], Control.tinyFontSize * 0.5)
@@ -61,7 +58,6 @@ struct ProfileCard: View {
                 .padding([.leading, .trailing], (cardWidth - imageSquareWidth) / 2)
         }
         .frame(width: cardWidth)
-        .border(Color.red, width: 2)
         .background(
             RoundedRectangle(cornerRadius: Control.mediumFontSize)
                 .stroke(Control.hexColor(hexCode: "#9A9A9A"))
@@ -105,5 +101,5 @@ struct ProfileCard: View {
 }
 
 #Preview {
-    ProfileCard(path: .constant(["profile-67d45cbd2f34df445d2b0d78"]))
+    ProfileCard(path: .constant(["profile-card-67d45cbd2f34df445d2b0d78"]))
 }

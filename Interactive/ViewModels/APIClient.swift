@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = true
+    static let localTesting: Bool = false
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
@@ -173,7 +173,7 @@ class APIClient {
     }
     
     static func fetchAllUsers() async throws -> UsersResponse {
-        let url = URL(string: "\(baseURL)/api/users")!
+        let url = URL(string: "\(baseURL)/api/us/users")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(UsersResponse.self, from: data)
@@ -181,7 +181,7 @@ class APIClient {
     }
     
     static func fetchUser(userId: String) async throws -> UserResponse {
-        let url = URL(string: "\(baseURL)/api/users/\(userId)")!
+        let url = URL(string: "\(baseURL)/api/us/users/\(userId)")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(UserResponse.self, from: data)
@@ -189,7 +189,7 @@ class APIClient {
     }
     
     static func fetchUserNetworks() async throws -> SocialMediaLinksResponse {
-        let url = URL(string: "\(baseURL)/api/sm/user/\(UserDefaults.standard.string(forKey: "userId") ?? "")")!
+        let url = URL(string: "\(baseURL)/api/us/sm/user/\(UserDefaults.standard.string(forKey: "userId") ?? "")")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(SocialMediaLinksResponse.self, from: data)
@@ -197,7 +197,7 @@ class APIClient {
     }
     
     static func fetchUserNetworksFromId(userId: String) async throws -> SocialMediaLinksResponse {
-        let url = URL(string: "\(baseURL)/api/sm/user/\(userId)")!
+        let url = URL(string: "\(baseURL)/api/us/sm/user/\(userId)")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(SocialMediaLinksResponse.self, from: data)
@@ -205,7 +205,7 @@ class APIClient {
     }
     
     static func authenticateUser(email: String, password: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/users/auth"
+        let url = "\(baseURL)/api/us/users/auth"
         let body: Encodable = [
             "email": email,
             "password": password
@@ -214,11 +214,11 @@ class APIClient {
     }
     
     static func createUser(body: Encodable) async throws -> DefaultResponse {
-        return try await postRequest(url: "\(baseURL)/api/users", body: body)
+        return try await postRequest(url: "\(baseURL)/api/us/users", body: body)
     }
     
     static func createNetworkLink(platformName: String, url: String) async throws -> DefaultResponse {
-        let queryUrl = "\(baseURL)/api/sm/"
+        let queryUrl = "\(baseURL)/api/us/sm/"
         let body: Encodable = [
             "user_id": UserDefaults.standard.string(forKey: "userId") ?? "",
             "social_media_name": platformName,
@@ -229,7 +229,7 @@ class APIClient {
     }
     
     static func getUserFromUsername(username: String) async throws -> UserResponse {
-        let url = URL(string: "\(baseURL)/api/users/fetchFromUsername/\(username)")!
+        let url = URL(string: "\(baseURL)/api/us/users/fetchFromUsername/\(username)")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(UserResponse.self, from: data)
@@ -237,7 +237,7 @@ class APIClient {
     }
     
     static func checkUsernameExist(username: String) async throws -> UsernameExistResponse {
-        let url = URL(string: "\(baseURL)/api/users/username/\(username)")!
+        let url = URL(string: "\(baseURL)/api/us/users/username/\(username)")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(UsernameExistResponse.self, from: data)
@@ -245,7 +245,7 @@ class APIClient {
     }
     
     static func getPresignedPostURL() async throws -> PresignedPostUrlResponse {
-        let url = URL(string: "\(baseURL)/api/images")!
+        let url = URL(string: "\(baseURL)/api/us/images")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(PresignedPostUrlResponse.self, from: data)
@@ -328,7 +328,7 @@ class APIClient {
     }
     
     static func uploadImageURLToBackend(userId: String, imageIndex: String, imageURL: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/images/userImage/\(userId)"
+        let url = "\(baseURL)/api/us/images/userImage/\(userId)"
         let body: Encodable = [
             "imageIndex": imageIndex,
             "imageURL": imageURL
@@ -339,7 +339,7 @@ class APIClient {
     }
     
     static func updateUsername(username: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/users/\(UserDefaults.standard.string(forKey:"userId") ?? "")"
+        let url = "\(baseURL)/api/us/users/\(UserDefaults.standard.string(forKey:"userId") ?? "")"
         let body: Encodable = [
             "username": username
         ]
@@ -348,7 +348,7 @@ class APIClient {
     }
     
     static func updateBio(bio: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/users/\(UserDefaults.standard.string(forKey:"userId") ?? "")"
+        let url = "\(baseURL)/api/us/users/\(UserDefaults.standard.string(forKey:"userId") ?? "")"
         let body: Encodable = [
             "biography": bio
         ]
@@ -357,7 +357,7 @@ class APIClient {
     }
     
     static func updateLink(oldUrl: String, platform: String, newUrl: String) async throws -> DefaultResponse {
-        let url = "\(baseURL)/api/sm/";
+        let url = "\(baseURL)/api/us/sm/";
         let body: Encodable = [
             "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
             "oldUrl": oldUrl,
@@ -368,7 +368,7 @@ class APIClient {
     }
     
     static func fetchUserImages(userId: String) async throws -> UserImagesResponse {
-        let url = URL(string: "\(baseURL)/api/users/images/\(userId)")!
+        let url = URL(string: "\(baseURL)/api/us/users/images/\(userId)")!
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(UserImagesResponse.self, from: data)
@@ -377,7 +377,7 @@ class APIClient {
     
     static func deleteUserImage(imageURL: String, imageIndex: String, userId: String) async throws -> DefaultResponse {
         
-        let url = "\(baseURL)/api/images/\(imageURL.suffix(36))"
+        let url = "\(baseURL)/api/us/images/\(imageURL.suffix(36))"
         
         let body: Encodable = [
             "imageIndex": imageIndex,
@@ -388,7 +388,7 @@ class APIClient {
     }
     
     static func deleteUserSocialMediaLink(linkURL: String) async throws -> DefaultResponse {
-        let queryURL = "\(baseURL)/api/sm/"
+        let queryURL = "\(baseURL)/api/us/sm/"
         
         let body: Encodable = [
             "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
