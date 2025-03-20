@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = false
+    static let localTesting: Bool = true
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
@@ -41,8 +41,6 @@ class APIClient {
         let createdAt: String
         let updatedAt: String
         let __v: Int
-        let latitude: [String: String]?
-        let longitude: [String: String]?
     }
     
     struct UserImagesResponse: Decodable {
@@ -363,6 +361,16 @@ class APIClient {
             "oldUrl": oldUrl,
             "social_media_name": platform,
             "newUrl": newUrl
+        ]
+        return try await putRequest(url: url, body: body)
+    }
+    
+    static func updateLocation() async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/location/";
+        let body: Encodable = [
+            "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
+            "latitude": String(UserDefaults.standard.double(forKey:"lat")),
+            "longitude": String(UserDefaults.standard.double(forKey:"long"))
         ]
         return try await putRequest(url: url, body: body)
     }

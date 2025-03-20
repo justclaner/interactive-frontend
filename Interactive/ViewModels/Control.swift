@@ -323,4 +323,7 @@ class Control {
         guard let urlComponents = URLComponents(string: link) else { return nil }
         return urlComponents.host
     }
+    
+    static let updateLocationFrequencyInSeconds: TimeInterval = 30
+    static let updatingLocation: Bool = false
 }

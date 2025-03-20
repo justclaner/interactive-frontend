@@ -23,6 +23,22 @@ extension ContentView {
             return self.path
         }
         
+        let updateLocationTimer = Timer.scheduledTimer(withTimeInterval: Control.updateLocationFrequencyInSeconds, repeats: true) { timer in
+            if (Control.updatingLocation) {
+                print(Control.updatingLocation)
+                Task {
+                    do {
+                        let updateLocation = try await APIClient.updateLocation()
+                        if (!updateLocation.success) {
+                            print(updateLocation)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+        
     }
     
 }
