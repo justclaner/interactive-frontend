@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileNetworks: View {
     @Binding var networkLinks: [String]
+    @Binding var iconWidth: CGFloat
     var body: some View {
         HStack {
             ForEach(0..<min(3, networkLinks.count), id: \.self) { index in
@@ -18,8 +19,8 @@ struct ProfileNetworks: View {
                     .resizable()
                     .scaledToFill()
                     .frame(
-                        width:CGFloat(Control.getScreenSize().width * 0.12437810945),
-                        height:CGFloat(Control.getScreenSize().width * 0.12437810945),
+                        width:iconWidth,
+                        height:iconWidth,
                         alignment: .center)
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: Control.getScreenSize().width * 0.03233830845))
@@ -31,5 +32,5 @@ struct ProfileNetworks: View {
 }
 
 #Preview {
-    ProfileNetworks(networkLinks: .constant(["https://www.instagram.com/", "https://www.facebook.com/"]))
+    ProfileNetworks(networkLinks: .constant(["https://www.instagram.com/", "https://www.facebook.com/"]), iconWidth: .constant(CGFloat(Control.getScreenSize().width * 0.12437810945)))
 }

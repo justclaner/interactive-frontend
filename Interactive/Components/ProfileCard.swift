@@ -19,8 +19,8 @@ struct ProfileCard: View {
     init(path: Binding<[String]>) {
         self._path = path
         self._userId = State(initialValue:
-        (path.wrappedValue.last != nil && path.wrappedValue.last!.count > 8)
-            ? String(path.wrappedValue.last!.dropFirst(8))
+        (path.wrappedValue.last != nil && path.wrappedValue.last!.count > 13)
+            ? String(path.wrappedValue.last!.dropFirst(13))
             : ""
         )
     }
@@ -52,7 +52,7 @@ struct ProfileCard: View {
                 .font(.system(size: Control.tinyFontSize, weight: .semibold))
                 .frame(width: imageSquareWidth, alignment: .leading)
                 .padding(0)
-            ProfileNetworks(networkLinks: $networkLinks)
+            ProfileNetworks(networkLinks: $networkLinks, iconWidth: .constant(CGFloat(Control.getScreenSize().width * 0.12437810945)))
                 .padding([.top], Control.tinyFontSize * 0.5)
                 .padding([.bottom], Control.tinyFontSize)
                 .padding([.leading, .trailing], (cardWidth - imageSquareWidth) / 2)

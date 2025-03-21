@@ -38,6 +38,8 @@ class APIClient {
         let birthYear: Int
         let is_company: Bool
         let is_premium: Bool
+        let visitors: Int?
+        let interactions: Int?
         let createdAt: String
         let updatedAt: String
         let __v: Int
