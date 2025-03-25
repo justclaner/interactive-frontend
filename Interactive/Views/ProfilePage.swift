@@ -11,11 +11,11 @@ struct ProfilePage: View {
     @Binding var path: [String]
     @State var userId: String
     @State var username: String = "random username"
-    @State var bio: String = "hi am a random user"
+    @State var bio: String = "random bio"
     @State var visitors: Int = 0
     @State var interactions: Int = 0
-    @State var imageLinks: [String] = ["https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/640px-A_black_image.jpg", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/640px-A_black_image.jpg"]
-    @State var networkLinks: [String] = ["https://www.instagram.com/", "https://www.facebook.com/"]
+    @State var imageLinks: [String] = []
+    @State var networkLinks: [String] = []
     @State var interactStatus: String = "Interact"
     @State var interactButtonColor: Color = Color.white.opacity(0.55)
     
@@ -125,23 +125,71 @@ struct ProfilePage: View {
                     Text(interactStatus)
                         .font(.system(size:1.3 * Control.tinyFontSize,weight:.semibold))
                         .foregroundStyle(Color.white)
-                        .padding(10)
+                        .padding(Control.tinyFontSize)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
-                .frame(width:Control.maxWidth,height: Control.mediumHeight)
+                .frame(width:Control.maxWidth, height: Control.mediumHeight)
                 .background(interactButtonColor)
                 .clipShape(RoundedRectangle(cornerRadius:20))
                 .overlay(RoundedRectangle(cornerRadius: 20)
                     .stroke(.white.opacity(0.6), lineWidth: 1)
                 )
-                .padding([.bottom], Control.navigationBarHeight)
+                .padding([.bottom], 0.9 * Control.navigationBarHeight)
+            }
+            .onAppear {
+                //TO-DO: add API calls to increase visitor/interactions
+                Task {
+                    do {
+                        let imageResponse = try await APIClient.fetchUserImages(userId: userId)
+                        if (imageResponse.success) {
+                            if (imageResponse.images.image1 != nil) {
+                                imageLinks.append(imageResponse.images.image1!)
+                            }
+                            if (imageResponse.images.image2 != nil) {
+                                imageLinks.append(imageResponse.images.image2!)
+                            }
+                            if (imageResponse.images.image3 != nil) {
+                                imageLinks.append(imageResponse.images.image3!)
+                            }
+                            if (imageResponse.images.image4 != nil) {
+                                imageLinks.append(imageResponse.images.image4!)
+                            }
+                            if (imageResponse.images.image5 != nil) {
+                                imageLinks.append(imageResponse.images.image5!)
+                            }
+                        }
+                        
+                        let userResponse = try await APIClient.fetchUser(userId: userId)
+                        if (userResponse.success) {
+                            if (userResponse.user != nil) {
+                                username = userResponse.user!.username
+                                bio = userResponse.user!.biography ?? ""
+                                visitors = userResponse.user!.visitors ?? 0
+                                interactions = userResponse.user!.visitors ?? 0
+                            }
+                        }
+                        
+                        let networkResponse = try await APIClient.fetchUserNetworksFromId(userId: userId)
+                        if (networkResponse.success) {
+                            if (networkResponse.socialMediaLinks != nil) {
+                                networkResponse.socialMediaLinks!.forEach { socialMediaLink in
+                                    networkLinks.append(socialMediaLink.social_media_url)
+                                }
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
             }
             
             NavigationBar()
         }
+
     }
 }
 
 #Preview {
-    ProfilePage(path: .constant(["profile-67d45cbd2f34df445d2b0d78"]))
+    ProfilePage(path: .constant(["profile-67e1f1ebe8357f816722b319"]))
+        .ignoresSafeArea(.keyboard)
 }

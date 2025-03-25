@@ -64,7 +64,7 @@ struct ProfileCard: View {
                 .fill(Control.hexColor(hexCode: "#9A9A9A"))
         )
         .onTapGesture {
-            print(networkLinks);
+           // print(networkLinks);
         }
         .onAppear() {
             Task {

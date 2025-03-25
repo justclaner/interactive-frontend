@@ -446,24 +446,23 @@ struct EditProfilePage: View {
                     .opacity(inTutorial ?
                              ProfileSetup.tutorialWhiteOpacity : 1)
 // network
-                    VStack {
+                    VStack(spacing: 0) {
                         Text("Network")
                             .font(.system(size:Control.tinyFontSize,weight:.semibold))
                             .foregroundStyle(Control.hexColor(hexCode: "#999999"))
                             .frame(width:Control.maxWidth,alignment:.leading)
-                        HStack {
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    EditProfileNetworks(path: $path)
-                                    AddNetworkIcon(sideLength:$smallSideLength)
-                                        .onTapGesture {
-                                            print("test")
-                                            path.append("Add Network")
-                                        }
-                                    Spacer()
-                                }.frame(maxHeight: Control.getScreenSize().width * 0.2)
-                            }
+                        ScrollView(.horizontal) {
+                            HStack {
+                                EditProfileNetworks(path: $path)
+                                AddNetworkIcon(sideLength:$smallSideLength)
+                                    .onTapGesture {
+                                        print("test")
+                                        path.append("Add Network")
+                                    }
+                                Spacer()
+                            }.frame(maxHeight: Control.getScreenSize().width * 0.2)
                         }
+                        .padding([.top], -0.25*Control.tinyFontSize)
                     }
                     .opacity((inTutorial && tutorialStep != 1) ? ProfileSetup.tutorialWhiteOpacity : 1)
                     //add in the future
@@ -560,7 +559,7 @@ struct EditProfilePage: View {
                 }
                 .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 .opacity(inTutorial && tutorialStep == 1 ? 1 : 0)
-                .padding([.top],Control.largeFontSize * 13.75)
+                .padding([.top],Control.largeFontSize * 14)
             }
             .onChange(of: addedImage) { //step 2 add image
                 print("image added")

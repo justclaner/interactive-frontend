@@ -131,6 +131,7 @@ struct UpdateNetworkPage: View {
             }
           //  .padding([.top], Control.largeFontSize*1.5)
         }
+        .ignoresSafeArea(.keyboard)
     }
     
     func getDomainHost(from link: String) -> String? {
