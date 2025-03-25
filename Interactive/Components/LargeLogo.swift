@@ -12,19 +12,19 @@ struct LargeLogo: View {
         VStack{
             Ellipse()
                 .fill(Control.hexColor(hexCode: "#FFDD1A"))
-                .frame(width:16,height:14)
-                .padding([.bottom],-4)
-                .padding([.top],9)
+                .frame(width:1.05 * Control.tinyFontSize,height:Control.tinyFontSize)
+                .padding([.bottom],-0.25 * Control.tinyFontSize)
+                .padding([.top],0.5 * Control.tinyFontSize)
             Rectangle()
                 .fill(Control.hexColor(hexCode: "#FFDD1A"))
-                .frame(width:16,height:52)
-                .clipShape(RoundedRectangle(cornerRadius:12.11))
-                .padding([.bottom],10)
+                .frame(width:1.05 * Control.tinyFontSize,height: 1.35 * Control.largeFontSize)
+                .clipShape(RoundedRectangle(cornerRadius:0.6 * Control.tinyFontSize))
+                .padding([.bottom],0.5 * Control.tinyFontSize)
         }
             .background(
                 Circle()
                     .fill(Control.hexColor(hexCode:"#333333"))
-                    .frame(width:113,height:113)
+                    .frame(width:3 * Control.largeFontSize,height:3 * Control.largeFontSize)
             )
     }
 }

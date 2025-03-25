@@ -49,7 +49,7 @@ struct WelcomeBackPage: View {
                     .font(.system(size:Control.largeFontSize,weight:.semibold))
                     .foregroundStyle(Color.white)
                 LargeLogo()
-                    .padding([.vertical],20)
+                    .padding([.vertical],Control.smallFontSize)
                 TextField("", text: $email, prompt: Text(verbatim: "example@gmail.com")
                     .font(.system(size:Control.tinyFontSize,weight:.semibold))
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
