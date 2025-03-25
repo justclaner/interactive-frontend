@@ -11,8 +11,6 @@ class UserData {
     let defaults = UserDefaults.standard
     
     init() {
-        defaults.set(LocationManager.latitude, forKey: "lat")
-        defaults.set(LocationManager.longitude, forKey: "long")
         if (defaults.object(forKey: "inTutorial") == nil) {
             defaults.set(true, forKey: "inTutorial")
         }
@@ -30,8 +28,9 @@ class UserData {
     }
     
     func updateLocation(lat: Double, long: Double) {
-        defaults.set(lat, forKey: "lat")
-        defaults.set(long, forKey: "long")
+        print(lat, long)
+        UserDefaults.standard.set(lat, forKey: "lat")
+        UserDefaults.standard.set(long, forKey: "long")
     }
     
     func getLocation() -> (lat: Double, long: Double) {

@@ -12,7 +12,7 @@ struct HomePage: View {
     @Binding var path: [String]
     @State private var scrollOffset = 0.0
     @State private var visibleCardCount: Int = 6
-    @State private var userLinks: [String] = [String](repeating: "67e1f1ebe8357f816722b319", count: 1000)
+    @State private var userIds: [String] = []
     
     var body: some View {
         ZStack {
@@ -33,13 +33,16 @@ struct HomePage: View {
                 ScrollView(showsIndicators: false) {
                     HStack(spacing: Control.smallFontSize) {
                         VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<visibleCardCount/2, id: \.self) { index in
-                                ProfileCard(userId: .constant(userLinks[2*index]))
+                            ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
+                                ProfileCard(userId: .constant(userIds[2*index]))
+                            }
+                            if (userIds.count % 2 == 1) {
+                                ProfileCard(userId: .constant(userIds[userIds.count - 1]))
                             }
                         }
                         VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<visibleCardCount/2, id: \.self) { index in
-                                ProfileCard(userId: .constant(userLinks[2*index + 1]))
+                            ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
+                                ProfileCard(userId: .constant(userIds[2*index + 1]))
                             }
                         }
                     }
@@ -69,6 +72,21 @@ struct HomePage: View {
                 
             }
             NavigationBar()
+        }
+        .onAppear {
+            Task {
+                do {
+                    let nearbyUsers = try await APIClient.fetchNearbyUsers()
+                    if (nearbyUsers.success) {
+                        let locations = nearbyUsers.locations!
+                        locations.forEach { location in
+                            userIds.append(location.user_id)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }

@@ -96,6 +96,27 @@ class APIClient {
         let socialMediaLink: SocialMediaLink?
     }
     
+    struct UserLocationResponse: Decodable {
+        let success: Bool
+        let error: String?
+        let message: String?
+        let locations: [UserLocationStruct]?
+    }
+    
+    struct UserLocationStruct: Decodable {
+        let location: LocationStruct
+        let _id: String
+        let user_id: String
+        let createdAt: String
+        let updatedAt: String
+        let __v: Int
+    }
+    
+    struct LocationStruct: Decodable {
+        let type: String
+        let coordinates: [Double]
+    }
+    
     struct PresignedPostUrlResponse: Decodable {
         let url: String
         let fields: PresignedPostUrlFields
@@ -201,6 +222,27 @@ class APIClient {
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoded = try JSONDecoder().decode(SocialMediaLinksResponse.self, from: data)
+        return decoded
+    }
+    
+    static func fetchNearbyUsers() async throws -> UserLocationResponse {
+        let url = URL(string: "\(baseURL)/api/us/location/search")!
+        let body: Encodable = [
+            "latitude": UserDefaults.standard.double(forKey: "lat"),
+            "longitude": UserDefaults.standard.double(forKey: "long"),
+            "maxDistance": 250
+        ]
+        print(body)
+        
+        let encoded = try Control.encode(jsonBody: body)
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+    
+        let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
+        let decoded = try JSONDecoder().decode(UserLocationResponse.self, from: data)
+
         return decoded
     }
     
