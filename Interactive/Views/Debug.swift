@@ -70,12 +70,13 @@ struct Debug: View {
 //            }
 //        }
        // print(UserDefaults.standard.dictionaryRepresentation())
-        print("fuck")
+
+        print(Array(stride(from: 0, through: 10, by: 2)))
         Task {
             do {
 //                let response = try await APIClient.createNetworkLink(platformName:"instagram", url:"https://www.instagram.com/")
-                let response = try await APIClient.fetchUserNetworks()
-                print(response)
+//                let response = try await APIClient.fetchUserNetworks()
+//                print(response)
             }
         }
         

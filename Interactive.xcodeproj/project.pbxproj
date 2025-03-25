@@ -12,6 +12,7 @@
 		32548A312D80A9D900DBA8F4 /* EditProfileNetworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32548A1F2D80A9D900DBA8F4 /* EditProfileNetworks.swift */; };
 		32548A362D80B3DC00DBA8F4 /* ProfileCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32548A352D80B3DC00DBA8F4 /* ProfileCard.swift */; };
 		32548A382D84EF7000DBA8F4 /* ProfileNetworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32548A372D84EF7000DBA8F4 /* ProfileNetworks.swift */; };
+		32548A3E2D925F9E00DBA8F4 /* PlusIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32548A3D2D925F9E00DBA8F4 /* PlusIcon.swift */; };
 		325BA4AF2D6D75DF0072F961 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325BA4AE2D6D75DF0072F961 /* ProfileImage.swift */; };
 		3271A2382CF685F900EFB7AC /* AddImageIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A2372CF685F900EFB7AC /* AddImageIcon.swift */; };
 		3271A23A2CF6923C00EFB7AC /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271A2392CF6923C00EFB7AC /* AddButton.swift */; };
@@ -52,6 +53,7 @@
 		32548A1F2D80A9D900DBA8F4 /* EditProfileNetworks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileNetworks.swift; sourceTree = "<group>"; };
 		32548A352D80B3DC00DBA8F4 /* ProfileCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCard.swift; sourceTree = "<group>"; };
 		32548A372D84EF7000DBA8F4 /* ProfileNetworks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworks.swift; sourceTree = "<group>"; };
+		32548A3D2D925F9E00DBA8F4 /* PlusIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusIcon.swift; sourceTree = "<group>"; };
 		325BA4AE2D6D75DF0072F961 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		3271A2372CF685F900EFB7AC /* AddImageIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageIcon.swift; sourceTree = "<group>"; };
 		3271A2392CF6923C00EFB7AC /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				3271A2392CF6923C00EFB7AC /* AddButton.swift */,
 				32BF9FAF2CF433ED00D78CBC /* NumberVerificationInputField.swift */,
 				32BF9FAA2CEA7C5100D78CBC /* LargeLogo.swift */,
+				32548A3D2D925F9E00DBA8F4 /* PlusIcon.swift */,
 				32548A1F2D80A9D900DBA8F4 /* EditProfileNetworks.swift */,
 			);
 			path = Components;
@@ -323,6 +326,7 @@
 				3271A2382CF685F900EFB7AC /* AddImageIcon.swift in Sources */,
 				3271A23C2CF6986C00EFB7AC /* NavigationBar.swift in Sources */,
 				32DA0BFE2CD6E63A006BEF03 /* InteractiveApp.swift in Sources */,
+				32548A3E2D925F9E00DBA8F4 /* PlusIcon.swift in Sources */,
 				32548A362D80B3DC00DBA8F4 /* ProfileCard.swift in Sources */,
 				32548A312D80A9D900DBA8F4 /* EditProfileNetworks.swift in Sources */,
 				32064C7F2CFB9BAB009EDC60 /* SocialMediaLogo.swift in Sources */,

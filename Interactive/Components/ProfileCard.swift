@@ -9,24 +9,25 @@ import SwiftUI
 
 struct ProfileCard: View {
     
-    @Binding var path: [String]
-    @State var userId: String
+   // @Binding var path: [String]
+    @Binding var userId: String
+   // @State var userId: String
     @State var profileImageUrl: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/640px-A_black_image.jpg"
     @State var username: String = ""
     @State var bio: String = ""
     @State var networkLinks: [String] = []
     
-    init(path: Binding<[String]>) {
-        self._path = path
-        self._userId = State(initialValue:
-        (path.wrappedValue.last != nil && path.wrappedValue.last!.count > 13)
-            ? String(path.wrappedValue.last!.dropFirst(13))
-            : ""
-        )
-    }
+//    init(path: Binding<[String]>) {
+//        self._path = path
+//        self._userId = State(initialValue:
+//        (path.wrappedValue.last != nil && path.wrappedValue.last!.count > 13)
+//            ? String(path.wrappedValue.last!.dropFirst(13))
+//            : ""
+//        )
+//    }
     
-    let imageSquareWidth = Control.maxWidth * 0.42
-    let cardWidth = Control.maxWidth * 0.5
+    let imageSquareWidth = Control.maxWidth * 0.4
+    let cardWidth = Control.maxWidth * 0.46
     var body: some View {
         VStack(spacing: 0) {
             AsyncImage(url:URL(string:profileImageUrl)) {phase in
@@ -47,14 +48,30 @@ struct ProfileCard: View {
             Text(username)
                 .font(.system(size: Control.mediumFontSize, weight: .bold))
                 .frame(width: imageSquareWidth, alignment: .leading)
-                .padding(0)
-            Text(bio)
-                .font(.system(size: Control.tinyFontSize, weight: .semibold))
-                .frame(width: imageSquareWidth, alignment: .leading)
-                .padding(0)
+            if (!bio.isEmpty) {
+                Text(bio)
+                    .font(.system(size: Control.tinyFontSize, weight: .semibold))
+                    .frame(width: imageSquareWidth, alignment: .leading)
+            }
+//            HStack {
+//                ForEach(0..<min(3, networkLinks.count), id: \.self) { index in
+//                    Link(destination: URL(string: networkLinks[index])!) {
+//                        Image((String(Control.getDomainHost(from: networkLinks[index])!.dropFirst(4).dropLast(4))
+//                              ))
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(
+//                            width: Control.getScreenSize().width * 0.12437810945,
+//                            height: Control.getScreenSize().width * 0.12437810945,
+//                            alignment: .center)
+//                        .clipped()
+//                        .clipShape(RoundedRectangle(cornerRadius: Control.getScreenSize().width * 0.03233830845))
+//                    }
+//                }
+//                Spacer()
+//            }
             ProfileNetworks(networkLinks: $networkLinks, iconWidth: .constant(CGFloat(Control.getScreenSize().width * 0.12437810945)))
-                .padding([.top], Control.tinyFontSize * 0.5)
-                .padding([.bottom], Control.tinyFontSize)
+                .padding([.bottom], 0.5 * Control.tinyFontSize)
                 .padding([.leading, .trailing], (cardWidth - imageSquareWidth) / 2)
         }
         .frame(width: cardWidth)
@@ -101,5 +118,5 @@ struct ProfileCard: View {
 }
 
 #Preview {
-    ProfileCard(path: .constant(["profile-card-67d45cbd2f34df445d2b0d78"]))
+    ProfileCard(userId: .constant("67e1f1ebe8357f816722b319"))
 }
