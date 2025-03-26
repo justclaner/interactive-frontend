@@ -91,7 +91,7 @@ class APIClient {
     struct DefaultResponse: Decodable {
         let success: Bool
         let error: String?
-        let message: String
+        let message: String?
         let user: User?
         let socialMediaLink: SocialMediaLink?
     }
@@ -232,8 +232,7 @@ class APIClient {
             "longitude": UserDefaults.standard.double(forKey: "long"),
             "maxDistance": 250
         ]
-        print(body)
-        
+
         let encoded = try Control.encode(jsonBody: body)
         
         var request = URLRequest(url: url)
@@ -410,6 +409,7 @@ class APIClient {
     }
     
     static func updateLocation() async throws -> DefaultResponse {
+        print("updating location")
         let url = "\(baseURL)/api/us/location/";
         let body: Encodable = [
             "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
