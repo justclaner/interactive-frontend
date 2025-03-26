@@ -58,7 +58,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         LocationManager.longitude = userLocation!.coordinate.longitude
         LocationManager.latitude = userLocation!.coordinate.latitude
         data.updateLocation(lat: LocationManager.latitude!, long: LocationManager.longitude!)
-        print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
+        //print(userLocation!.timestamp, LocationManager.latitude!, LocationManager.longitude!)
     }
 
     // CLLocationManagerDelegate method for handling errors

@@ -409,7 +409,7 @@ class APIClient {
     }
     
     static func updateLocation() async throws -> DefaultResponse {
-        print("updating location")
+        //print("updating location")
         let url = "\(baseURL)/api/us/location/";
         let body: Encodable = [
             "userId": UserDefaults.standard.string(forKey:"userId") ?? "",
