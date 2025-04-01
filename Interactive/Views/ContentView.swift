@@ -54,6 +54,12 @@ struct ContentView: View {
                 } else if (page == "Settings") {
                     SettingsPage(path: $viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Home Page") {
+                    HomePage(path: $viewModel.path)
+                        .navigationBarBackButtonHidden(true)
+                } else if (page.hasPrefix("profile-") && page.count == 32) {
+                    ProfilePage(path: $viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 }
                 else {
                     Text("You selected \(page)")

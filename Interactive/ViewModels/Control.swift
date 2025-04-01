@@ -324,6 +324,6 @@ class Control {
         return urlComponents.host
     }
     
-    static let updateLocationFrequencyInSeconds: TimeInterval = 30
+    static let updateLocationFrequencyInSeconds: TimeInterval = 5
     static let updatingLocation: Bool = false
 }

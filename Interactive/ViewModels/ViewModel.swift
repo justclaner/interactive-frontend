@@ -14,9 +14,11 @@ extension ContentView {
         let initialPath : [String]
         var path: [String] = []
         let isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        let debugPath = ["Home Page"]
+        let debugMode: Bool = true
         init() {
             self.initialPath = isLoggedIn ? ["Your Profile"] : ["Login"]
-            self.path = initialPath
+            self.path = debugMode ? debugPath : initialPath
         }
         
         func getPath() -> [String] {
@@ -25,7 +27,7 @@ extension ContentView {
         
         let updateLocationTimer = Timer.scheduledTimer(withTimeInterval: Control.updateLocationFrequencyInSeconds, repeats: true) { timer in
             if (Control.updatingLocation) {
-                //print(Control.updatingLocation)
+                print("updating location in ViewModel")
                 Task {
                     do {
                         let updateLocation = try await APIClient.updateLocation()

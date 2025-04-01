@@ -27,7 +27,7 @@ struct HomePage: View {
                         .ignoresSafeArea()
                 )
                 .onTapGesture {
-                    print(scrollOffset)
+                   // print(scrollOffset)
                 }
             VStack(spacing: 0) {
                 Text("Home")
@@ -38,19 +38,38 @@ struct HomePage: View {
                         VStack(spacing: Control.smallFontSize) {
                             ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
                                 ProfileCard(userId: .constant(userIds[2*index]))
+                                    .highPriorityGesture(
+                                        TapGesture().onEnded {
+                                            path.append("profile-\(userIds[2*index])")
+                                        }
+                                    )
                             }
                             if (userIds.count % 2 == 1) {
                                 ProfileCard(userId: .constant(userIds[userIds.count - 1]))
+                                    .highPriorityGesture(
+                                        TapGesture().onEnded {
+                                            path.append("profile-\(userIds[userIds.count - 1])")
+                                        }
+                                    )
                             }
                             Spacer()
                         }
+                        .contentShape(Rectangle())
                         VStack(spacing: Control.smallFontSize) {
                             ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
                                 ProfileCard(userId: .constant(userIds[2*index + 1]))
+                                    .highPriorityGesture(
+                                        TapGesture().onEnded {
+                                            path.append("profile-\(userIds[2*index + 1])")
+                                        }
+                                    )
                             }
                             Spacer()
                         }
+                        .contentShape(Rectangle())
                     }
+                    .contentShape(Rectangle())
+                    
 //                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: Control.tinyFontSize) {
 //                        ForEach(0..<min(visibleCardCount, userLinks.count), id: \.self) {index in
 //                            ProfileCard(userId: .constant(userLinks[index]))
