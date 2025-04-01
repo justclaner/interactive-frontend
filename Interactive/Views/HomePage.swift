@@ -124,7 +124,7 @@ struct HomePage: View {
                     uniqueIds = []
                     let locations = nearbyUsers.locations!
                     locations.forEach { location in
-                        if (!uniqueIds.contains(location.user_id)) {
+                        if (!uniqueIds.contains(location.user_id) && location.user_id != UserDefaults.standard.string(forKey: "userId")!) {
                             uniqueIds.insert(location.user_id)
                             userIds.append(location.user_id)
                         }
