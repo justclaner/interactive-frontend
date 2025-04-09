@@ -72,9 +72,12 @@ struct Notification: View {
                 .stroke(Control.hexColor(hexCode: "#9A9A9A"))
                 .fill(Control.hexColor(hexCode: "#9A9A9A"))
         )
+        .onTapGesture {
+            print(notificationId)
+        }
     }
 }
 
 #Preview {
-    Notification(path: .constant(["notification-1093284014309813204"]))
+    Notification(path: .constant(["notification-67f5da39528a58f2a31ebb16"]))
 }

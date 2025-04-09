@@ -1,4 +1,4 @@
 # Interactive Frontend
 
 To-do:
-- MVVM model
+- Link notification id with notification details
