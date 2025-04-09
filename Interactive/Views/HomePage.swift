@@ -108,7 +108,7 @@ struct HomePage: View {
                 Spacer()
                 
             }
-            NavigationBar()
+            NavigationBar(path: $path)
         }
         .onAppear {
             updateUserIds()

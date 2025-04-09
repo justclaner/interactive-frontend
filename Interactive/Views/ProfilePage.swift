@@ -22,7 +22,7 @@ struct ProfilePage: View {
     init(path: Binding<[String]>) {
         self._path = path
         self._userId = State(initialValue:
-        (path.wrappedValue.last != nil && path.wrappedValue.last!.count > 8)
+        (path.wrappedValue.last != nil && path.wrappedValue.last?.count ?? 0 > 8)
             ? String(path.wrappedValue.last!.dropFirst(8))
             : ""
         )
@@ -183,7 +183,7 @@ struct ProfilePage: View {
                 }
             }
             
-            NavigationBar()
+            NavigationBar(path: $path)
         }
 
     }

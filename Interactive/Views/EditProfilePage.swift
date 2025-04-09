@@ -81,6 +81,7 @@ struct EditProfilePage: View {
                             .ignoresSafeArea()
                     )
                     .onTapGesture {
+                        print(path)
                         usernameFocus = false
                         aboutMeFocus = false
                         showPhotosPicker = false
@@ -504,7 +505,7 @@ struct EditProfilePage: View {
                     Spacer()
                 }
                 .frame(maxWidth:Control.maxWidth)
-                NavigationBar()
+                NavigationBar(path: $path)
                 
                 //settings gear icon
                 HStack {
@@ -667,6 +668,6 @@ struct EditProfilePage: View {
 
 
 #Preview {
-    EditProfilePage(path: .constant(["Profile Page"]))
+    EditProfilePage(path: .constant(["Your Profile"]))
         .ignoresSafeArea(.keyboard)
 }

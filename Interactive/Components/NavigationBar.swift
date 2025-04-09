@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct NavigationBar: View {
+    @Binding var path: [String]
     @State var activePresence: Bool = false
+    @State var inHome: Bool = false
+    @State var inNotifications: Bool = false
+    @State var inFeed: Bool = false
+    @State var inSettings: Bool = false
     var body: some View {
         VStack {
             Spacer()
@@ -21,12 +26,15 @@ struct NavigationBar: View {
                         print(Control.getScreenSize().width*0.17412935323)
                     }
                 HStack {
-                    Image("home_blank")
+                    Image(inHome ? "home_full" : "home_blank")
                         .resizable()
                         .frame(maxWidth: .infinity)
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
+                        .onTapGesture {
+                            path = ["Home Page"]
+                        }
                     Spacer()
-                    Image("bell_blank")
+                    Image(inNotifications ? "bell_full" : "bell_blank")
                         .resizable()
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
                     Spacer()
@@ -55,17 +63,15 @@ struct NavigationBar: View {
                         }
                         .transition(.opacity)
                     Spacer()
-                    Image("feed_blank")
+                    Image(inFeed ? "feed_full" : "feed_blank")
                         .resizable()
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
                     Spacer()
-                    Image(UserDefaults.standard.bool(forKey: "inProfile") ? "settings_full" : "settings_blank")
+                    Image(inSettings ? "settings_full" : "settings_blank")
                         .resizable()
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
                         .onTapGesture {
-                            //to-do use @AppStorage to fix this
-                            let inProfile = UserDefaults.standard.bool(forKey: "inProfile")
-                            UserDefaults.standard.set(!inProfile, forKey: "inProfile")
+                            path = ["Your Profile"]
                         }
                 }
                 .padding()
@@ -74,9 +80,19 @@ struct NavigationBar: View {
             }
         }
         .ignoresSafeArea()
+        .onAppear {
+            if (path.last! == "Home Page") {
+                inHome = true
+            } else if (path.last! == "Your Profile"
+                       || path.last! == "Add Network"
+                       || path.last! == "Edit Network"
+                       || path.last! == "Settings") {
+                inSettings = true
+            }
+        }
     }
 }
 
 #Preview {
-    NavigationBar()
+    NavigationBar(path: .constant(["hello"]))
 }
