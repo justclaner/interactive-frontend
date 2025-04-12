@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = false
+    static let localTesting: Bool = true
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
@@ -77,6 +77,28 @@ class APIClient {
         let user_id: String
         let social_media_name: String
         let social_media_url: String
+        let createdAt: String
+        let updatedAt: String
+        let __v: Int
+    }
+    
+    struct NotificationsResponse: Decodable {
+        let success: Bool
+        let message: String?
+        let notifications: [Notification]?
+    }
+    
+    struct NotificationResponse: Decodable {
+        let success: Bool
+        let message: String?
+        let notification: Notification?
+    }
+    
+    struct Notification: Decodable {
+        let _id: String
+        let sender_id: String
+        let recipient_id: String
+        let action: String
         let createdAt: String
         let updatedAt: String
         let __v: Int
@@ -242,6 +264,23 @@ class APIClient {
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
         let decoded = try JSONDecoder().decode(UserLocationResponse.self, from: data)
 
+        return decoded
+    }
+    
+    static func fetchNotificationFromRecipient(recipientId: String) async throws -> NotificationsResponse {
+        let url = URL(string: "\(baseURL)/api/us/connections/recipient/\(recipientId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(NotificationsResponse.self, from: data)
+        return decoded
+    }
+    
+    
+    static func fetchNotification(notificationId: String) async throws -> NotificationResponse {
+        let url = URL(string: "\(baseURL)/api/us/connections/notification/\(notificationId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(NotificationResponse.self, from: data)
         return decoded
     }
     

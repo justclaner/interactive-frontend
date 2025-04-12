@@ -1,4 +1,4 @@
 # Interactive Frontend
 
 To-do:
-- Link notification id with notification details
+- For swiftui.Notification, make api call to check whether user is interacting with the sender of the notification yet

@@ -14,7 +14,7 @@ struct Notification: View {
     @State var username: String = "username"
     @State var message: String = "interacted with you"
     @State var isInteracting: Bool = false
-    @State var action: String = "Interact"
+    @State var action: String = "InteractRequest"
     init(path: Binding<[String]>) {
         self._path = path
         self._notificationId = State(initialValue: (path.wrappedValue.last != nil && path.wrappedValue.last?.count ?? 0 > 13)
@@ -42,28 +42,55 @@ struct Notification: View {
             .padding([.leading])
             VStack {
                 Spacer()
-                Text(username)
-                    .font(.system(size:Control.tinyFontSize, weight:.bold))
-                    .fixedSize(horizontal: false, vertical: true)
-                Text(message)
-                    .font(.system(size:Control.tinyFontSize))
-                    .fixedSize(horizontal: false, vertical: true)
+                HStack {
+                    Text(username)
+                        .font(.system(size:Control.tinyFontSize, weight:.bold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                }
+                HStack {
+                    Text(message)
+                        .font(.system(size:Control.tinyFontSize))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                }
                 Spacer()
             }
-            .frame(maxWidth: Control.maxWidth * 0.35 , maxHeight: imageSquareWidth)
-            .padding([.leading], -Control.tinyFontSize)
+            .frame(maxWidth: action == "Interact" ? Control.maxWidth * 0.35 : Control.maxWidth * 0.5, maxHeight: imageSquareWidth, alignment: .leading)
+            .padding([.leading], 0.5*Control.tinyFontSize)
+
             Spacer()
-            Button(action: {
-                isInteracting.toggle()
-            }) {
-                Text(isInteracting ? "Interacting" : "Interact")
-                    .font(.system(size: Control.tinyFontSize, weight: .semibold))
-                    .foregroundStyle(Control.hexColor(hexCode: isInteracting ? "#000000" : "#FFDD1A"))
+            if (action == "Interact") {
+                Button(action: {
+                    isInteracting.toggle()
+                }) {
+                    Text(isInteracting ? "Interacting" : "Interact")
+                        .font(.system(size: Control.tinyFontSize, weight: .semibold))
+                        .foregroundStyle(Control.hexColor(hexCode: isInteracting ? "#000000" : "#FFDD1A"))
+                }
+                .frame(width:Control.maxWidth*0.35,height:Control.largeFontSize)
+                .background(Control.hexColor(hexCode: isInteracting ? "#FFDD1A" :"#333333"))
+                .clipShape(RoundedRectangle(cornerRadius: 0.5 * Control.tinyFontSize))
+                .padding([.trailing])
+            } else if (action == "InteractRequest") {
+                HStack {
+                    Image("reject_interact")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: Control.maxWidth * 0.1, height: Control.maxWidth * 0.1)
+                        .onTapGesture {
+                            print("reject interaction")
+                        }
+                    Image("accept_interact")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: Control.maxWidth * 0.1, height: Control.maxWidth * 0.1)
+                        .onTapGesture {
+                            print("accept interaction")
+                        }
+                }
+                .padding([.trailing], Control.tinyFontSize)
             }
-            .frame(width:Control.maxWidth*0.35,height:Control.largeFontSize)
-            .background(Control.hexColor(hexCode: isInteracting ? "#FFDD1A" :"#333333"))
-            .clipShape(RoundedRectangle(cornerRadius: 0.5 * Control.tinyFontSize))
-            .padding([.trailing])
         }
         .padding([.vertical])
         .frame(width: Control.maxWidth)
@@ -74,6 +101,52 @@ struct Notification: View {
         )
         .onTapGesture {
             print(notificationId)
+        }
+        .onAppear {
+            print(notificationId);
+            Task {
+                do {
+                    //fetch notification
+                    let notificationResponse = try await APIClient.fetchNotification(notificationId: notificationId)
+                    print(notificationResponse)
+                    if (notificationResponse.success) {
+                        //handle action to update message
+                        if (notificationResponse.notification != nil) {
+                            //action = notificationResponse.notification!.action
+                            switch (notificationResponse.notification!.action) {
+                                case "Interact":
+                                    message = "Interacted with you"
+                                case "InteractRequest":
+                                    message = "wants to Interact with you"
+                                default:
+                                    message = "visited your profile"
+                            }
+                        }
+                        
+                        
+                        if (notificationResponse.notification != nil) {
+                            let userResponse = try await APIClient.fetchUser(userId: notificationResponse.notification!.sender_id)
+                            print(userResponse)
+                            if (userResponse.success && userResponse.user != nil) {
+                                username = userResponse.user!.username
+                                
+                                //get user image
+                                let imageResponse = try await APIClient.fetchUserImages(userId: userResponse.user!._id)
+                                print(imageResponse)
+                                if (imageResponse.success) {
+                                    if (imageResponse.images.image1 != nil) {
+                                        profileImageUrl = imageResponse.images.image1!
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }
