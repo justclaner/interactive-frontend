@@ -37,6 +37,9 @@ struct NavigationBar: View {
                     Image(inNotifications ? "bell_full" : "bell_blank")
                         .resizable()
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
+                        .onTapGesture {
+                            path = ["Notifications"]
+                        }
                     Spacer()
                     VStack{
                         Ellipse()
@@ -88,6 +91,8 @@ struct NavigationBar: View {
                        || path.last! == "Edit Network"
                        || path.last! == "Settings") {
                 inSettings = true
+            } else if (path.last! == "Notifications") {
+                inNotifications = true
             }
         }
     }
