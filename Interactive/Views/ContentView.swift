@@ -60,6 +60,9 @@ struct ContentView: View {
                 } else if (page.hasPrefix("profile-") && page.count == 32) {
                     ProfilePage(path: $viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Notifications") {
+                    NotificationPage(path: $viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 }
                 else {
                     Text("You selected \(page)")

@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct Notification: View {
-    @Binding var path: [String]
-    @State var notificationId: String
+    //@Binding var path: [String]
+    @Binding var notificationId: String
     @State var profileImageUrl: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/640px-A_black_image.jpg"
     @State var username: String = "username"
     @State var message: String = "interacted with you"
     @State var isInteracting: Bool = false
     @State var action: String = "InteractRequest"
-    init(path: Binding<[String]>) {
-        self._path = path
-        self._notificationId = State(initialValue: (path.wrappedValue.last != nil && path.wrappedValue.last?.count ?? 0 > 13)
-        ? String(path.wrappedValue.last!.dropFirst(13))
-        : "")
-    }
+//    init(path: Binding<[String]>) {
+//        self._path = path
+//        self._notificationId = State(initialValue: (path.wrappedValue.last != nil && path.wrappedValue.last?.count ?? 0 > 13)
+//        ? String(path.wrappedValue.last!.dropFirst(13))
+//        : "")
+//    }
     
     let imageSquareWidth = Control.maxWidth * 0.22
     var body: some View {
@@ -100,15 +100,15 @@ struct Notification: View {
                 .fill(Control.hexColor(hexCode: "#9A9A9A"))
         )
         .onTapGesture {
-            print(notificationId)
+            //print(notificationId)
         }
         .onAppear {
-            print(notificationId);
+           // print(notificationId);
             Task {
                 do {
                     //fetch notification
                     let notificationResponse = try await APIClient.fetchNotification(notificationId: notificationId)
-                    print(notificationResponse)
+                   // print(notificationResponse)
                     if (notificationResponse.success) {
                         //handle action to update message
                         if (notificationResponse.notification != nil) {
@@ -126,13 +126,13 @@ struct Notification: View {
                         
                         if (notificationResponse.notification != nil) {
                             let userResponse = try await APIClient.fetchUser(userId: notificationResponse.notification!.sender_id)
-                            print(userResponse)
+                            //print(userResponse)
                             if (userResponse.success && userResponse.user != nil) {
                                 username = userResponse.user!.username
                                 
                                 //get user image
                                 let imageResponse = try await APIClient.fetchUserImages(userId: userResponse.user!._id)
-                                print(imageResponse)
+                                //print(imageResponse)
                                 if (imageResponse.success) {
                                     if (imageResponse.images.image1 != nil) {
                                         profileImageUrl = imageResponse.images.image1!
@@ -152,5 +152,5 @@ struct Notification: View {
 }
 
 #Preview {
-    Notification(path: .constant(["notification-67f5da39528a58f2a31ebb16"]))
+    Notification(notificationId: .constant("67f5da39528a58f2a31ebb16"))
 }
