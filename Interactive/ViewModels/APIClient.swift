@@ -104,6 +104,22 @@ class APIClient {
         let __v: Int
     }
     
+    struct InteractionResponse: Decodable {
+        let success: Bool
+        let message: String?
+        let interaction: Interaction?
+        let interactions: [Interaction]?
+    }
+    
+    struct Interaction: Decodable {
+        let _id: String
+        let user1_id: String
+        let user2_id: String
+        let createdAt: String
+        let updatedAt: String
+        let __v: Int
+    }
+    
     struct UsernameExistResponse: Decodable {
         let success: Bool
         let exists: Bool
