@@ -79,6 +79,14 @@ struct Notification: View {
                         .scaledToFill()
                         .frame(width: Control.maxWidth * 0.1, height: Control.maxWidth * 0.1)
                         .onTapGesture {
+                            Task {
+                                do {
+                                    let notificationResponse = try await APIClient.resolveNotification(notificationId: notificationId, action: "Reject")
+                                    print(notificationResponse)
+                                } catch {
+                                    print(error)
+                                }
+                            }
                             print("reject interaction")
                         }
                     Image("accept_interact")
@@ -86,6 +94,14 @@ struct Notification: View {
                         .scaledToFill()
                         .frame(width: Control.maxWidth * 0.1, height: Control.maxWidth * 0.1)
                         .onTapGesture {
+                            Task {
+                                do {
+                                    let notificationResponse = try await APIClient.resolveNotification(notificationId: notificationId, action: "Accept")
+                                    print(notificationResponse)
+                                } catch {
+                                    print(error)
+                                }
+                            }
                             print("accept interaction")
                         }
                 }

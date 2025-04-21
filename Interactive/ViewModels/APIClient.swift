@@ -300,6 +300,16 @@ class APIClient {
         return decoded
     }
     
+    static func resolveNotification(notificationId: String, action: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/connections/resolve"
+        let body: Encodable = [
+            "notificationId": notificationId,
+            "action": action
+        ]
+        
+        return try await postRequest(url: url, body: body)
+    }
+    
     static func authenticateUser(email: String, password: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/us/users/auth"
         let body: Encodable = [

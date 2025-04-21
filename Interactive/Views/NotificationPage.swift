@@ -6,19 +6,13 @@
 //
 
 import SwiftUI
+import SocketIO
+
+
 
 struct NotificationPage: View {
     @Binding var path: [String]
-    @State var notifications: [String] = [
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16",
-        "67f5da39528a58f2a31ebb16"
-    ]
+    @State var notifications: [String] = []
     
     var body: some View {
         ZStack {
@@ -49,6 +43,25 @@ struct NotificationPage: View {
             }
             
             NavigationBar(path: $path)
+        }
+        .onAppear {
+            getNotifications()
+        }
+    }
+    
+    func getNotifications() {
+        Task {
+            do {
+                let notificationsResponse = try await APIClient.fetchNotificationFromRecipient(recipientId: UserDefaults.standard.string(forKey: "userId")!)
+                print(notificationsResponse)
+                if (notificationsResponse.success) {
+                    notificationsResponse.notifications!.forEach { notification in
+                        notifications.append(notification._id);
+                    }
+                }
+            } catch {
+                print(error)
+            }
         }
     }
 }
