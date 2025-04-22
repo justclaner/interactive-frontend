@@ -8,7 +8,8 @@
 import SwiftUI
 import SocketIO
 
-
+let manager = SocketManager(socketURL: URL(string: "http://localhost:3002")!, config: [.log(true), .compress])
+let socket = manager.defaultSocket
 
 struct NotificationPage: View {
     @Binding var path: [String]
@@ -45,6 +46,7 @@ struct NotificationPage: View {
             NavigationBar(path: $path)
         }
         .onAppear {
+            socket.connect()
             getNotifications()
         }
     }
