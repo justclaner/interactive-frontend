@@ -8,7 +8,7 @@
 import SwiftUI
 import SocketIO
 
-let manager = SocketManager(socketURL: URL(string: "http://localhost:3002")!, config: [.log(true), .compress])
+let manager = SocketManager(socketURL: URL(string: SocketClient.connectionURL)!, config: [.log(true), .compress])
 let socket: SocketIOClient = manager.defaultSocket
 
 struct NotificationPage: View {

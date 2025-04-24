@@ -12,4 +12,7 @@ class SocketClient {
         let senderId: String
         let recipientId: String
     }
+    
+    static let debugging = true
+    static let connectionURL = debugging ? "http://localhost:3002" : "some ec2 instance"
 }
