@@ -9,7 +9,7 @@ import SwiftUI
 import SocketIO
 
 let manager = SocketManager(socketURL: URL(string: "http://localhost:3002")!, config: [.log(true), .compress])
-let socket = manager.defaultSocket
+let socket: SocketIOClient = manager.defaultSocket
 
 struct NotificationPage: View {
     @Binding var path: [String]
@@ -24,9 +24,6 @@ struct NotificationPage: View {
                         .resizable()
                         .ignoresSafeArea()
                 )
-                .onTapGesture {
-                    
-                }
             VStack {
                 Text("Notifications")
                     .font(.system(size:Control.largeFontSize, weight: .bold))
@@ -34,7 +31,8 @@ struct NotificationPage: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(0..<notifications.count, id: \.self) { i in
-                            Notification(notificationId: .constant(notifications[i]))
+                            Notification(notificationId: .constant(notifications[i]),
+                                         socket: .constant(socket))
                         }
                     }
                     .frame(width: Control.maxWidth)
@@ -42,12 +40,44 @@ struct NotificationPage: View {
                 .frame(width: Control.maxWidth, height: Control.maxHeight * 0.71)
                 Spacer();
             }
-            
+            .onTapGesture {
+                let testData = [
+                    "senderId": 5,
+                    "recipientId": 10
+                ]
+                print("sending data")
+                //socket.emit("sendNotification", testData)
+            }
             NavigationBar(path: $path)
         }
         .onAppear {
-            socket.connect()
             getNotifications()
+            socket.connect()
+//            socket.on(clientEvent: .connect) {data, ack in
+//                print("socket connected")
+//            }
+            socket.on("receiveNotification") {data, ack in
+                print(data[0])
+                getNotifications()
+            }
+            
+            socket.on("acceptedInteraction") {data, ack in
+                Task {
+                    do {
+                        guard let dict = data[0] as? [String: Any] else {
+                                        print("Could not cast data[0] to dictionary")
+                                        return
+                                    }
+                        let jsonData = try JSONSerialization.data(withJSONObject: dict)
+                        let body = try JSONDecoder().decode(SocketClient.connectionBody.self, from: jsonData)
+                        if (body.senderId as String == Control.getUserId()) {
+                            getNotifications()
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
         }
     }
     
@@ -55,8 +85,9 @@ struct NotificationPage: View {
         Task {
             do {
                 let notificationsResponse = try await APIClient.fetchNotificationFromRecipient(recipientId: UserDefaults.standard.string(forKey: "userId")!)
-                print(notificationsResponse)
+               // print(notificationsResponse)
                 if (notificationsResponse.success) {
+                    notifications = []
                     notificationsResponse.notifications!.forEach { notification in
                         notifications.append(notification._id);
                     }

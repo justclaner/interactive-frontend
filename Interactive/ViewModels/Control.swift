@@ -326,4 +326,8 @@ class Control {
     
     static let updateLocationFrequencyInSeconds: TimeInterval = 5
     static let updatingLocation: Bool = false
+    
+    static func getUserId() -> String {
+        return UserDefaults.standard.string(forKey:"userId") ?? ""
+    }
 }

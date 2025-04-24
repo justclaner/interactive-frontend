@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SocketIO
 
 struct Notification: View {
     //@Binding var path: [String]
     @Binding var notificationId: String
+    @Binding var socket: SocketIOClient
+    
     @State var profileImageUrl: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/640px-A_black_image.jpg"
     @State var username: String = "username"
+    @State var userId: String = "userId"
     @State var message: String = "interacted with you"
     @State var isInteracting: Bool = false
     @State var action: String = "InteractRequest"
@@ -80,12 +84,7 @@ struct Notification: View {
                         .frame(width: Control.maxWidth * 0.1, height: Control.maxWidth * 0.1)
                         .onTapGesture {
                             Task {
-                                do {
-                                    let notificationResponse = try await APIClient.resolveNotification(notificationId: notificationId, action: "Reject")
-                                    print(notificationResponse)
-                                } catch {
-                                    print(error)
-                                }
+                                deleteAndUpdate()
                             }
                             print("reject interaction")
                         }
@@ -94,15 +93,8 @@ struct Notification: View {
                         .scaledToFill()
                         .frame(width: Control.maxWidth * 0.1, height: Control.maxWidth * 0.1)
                         .onTapGesture {
-                            Task {
-                                do {
-                                    let notificationResponse = try await APIClient.resolveNotification(notificationId: notificationId, action: "Accept")
-                                    print(notificationResponse)
-                                } catch {
-                                    print(error)
-                                }
-                            }
-                            print("accept interaction")
+                            addInteraction()
+                            deleteAndUpdate()
                         }
                 }
                 .padding([.trailing], Control.tinyFontSize)
@@ -120,53 +112,90 @@ struct Notification: View {
         }
         .onAppear {
            // print(notificationId);
-            Task {
-                do {
-                    //fetch notification
-                    let notificationResponse = try await APIClient.fetchNotification(notificationId: notificationId)
-                   // print(notificationResponse)
-                    if (notificationResponse.success) {
-                        //handle action to update message
-                        if (notificationResponse.notification != nil) {
-                            //action = notificationResponse.notification!.action
-                            switch (notificationResponse.notification!.action) {
-                                case "Interact":
-                                    message = "Interacted with you"
-                                case "InteractRequest":
-                                    message = "wants to Interact with you"
-                                default:
-                                    message = "visited your profile"
-                            }
+            getNotification()
+        }
+    }
+    
+    func getNotification() {
+        Task {
+            do {
+                //fetch notification
+                let notificationResponse = try await APIClient.fetchNotification(notificationId: notificationId)
+               // print(notificationResponse)
+                if (notificationResponse.success) {
+                    //handle action to update message
+                    if (notificationResponse.notification != nil) {
+                        //action = notificationResponse.notification!.action
+                        switch (notificationResponse.notification!.action) {
+                            case "Interact":
+                                message = "Interacted with you"
+                            case "InteractRequest":
+                                message = "wants to Interact with you"
+                            default:
+                                message = "visited your profile"
                         }
-                        
-                        
-                        if (notificationResponse.notification != nil) {
-                            let userResponse = try await APIClient.fetchUser(userId: notificationResponse.notification!.sender_id)
-                            //print(userResponse)
-                            if (userResponse.success && userResponse.user != nil) {
-                                username = userResponse.user!.username
-                                
-                                //get user image
-                                let imageResponse = try await APIClient.fetchUserImages(userId: userResponse.user!._id)
-                                //print(imageResponse)
-                                if (imageResponse.success) {
-                                    if (imageResponse.images.image1 != nil) {
-                                        profileImageUrl = imageResponse.images.image1!
-                                    }
+                    }
+                    
+                    
+                    if (notificationResponse.notification != nil) {
+                        let userResponse = try await APIClient.fetchUser(userId: notificationResponse.notification!.sender_id)
+                        //print(userResponse)
+                        if (userResponse.success && userResponse.user != nil) {
+                            username = userResponse.user!.username
+                            userId = userResponse.user!._id
+                            //get user image
+                            let imageResponse = try await APIClient.fetchUserImages(userId: userId)
+                            //print(imageResponse)
+                            if (imageResponse.success) {
+                                if (imageResponse.images.image1 != nil) {
+                                    profileImageUrl = imageResponse.images.image1!
                                 }
                             }
                         }
                     }
-                    
-
-                } catch {
-                    print(error)
                 }
+                
+
+            } catch {
+                print(error)
+            }
+        }
+
+    }
+    
+    func addInteraction() {
+        Task {
+            do {
+                let _response = try await APIClient.addInteraction(userId1: Control.getUserId(), userId2: userId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func deleteAndUpdate() {
+        Task {
+            do {
+                let _deleteNotification = try await APIClient.deleteNotification(notificationId: notificationId)
+            
+                
+                let data = [
+                    "senderId": Control.getUserId(),
+                    "recipientId": userId
+                    
+                ]
+                print(data)
+                socket.emit("acceptInteraction", data)
+            } catch {
+                print(error)
             }
         }
     }
 }
 
 #Preview {
-    Notification(notificationId: .constant("67f5da39528a58f2a31ebb16"))
+    Notification(notificationId: .constant("67f5da39528a58f2a31ebb16"), socket: .constant(
+        SocketManager(socketURL: URL(string: "http://localhost:3002")!, config: [.log(true), .compress])
+            .defaultSocket
+    ))
 }

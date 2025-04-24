@@ -197,7 +197,7 @@ class APIClient {
         // request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
         
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
-        // print(String(data: data, encoding: .utf8)!)
+        print(String(data: data, encoding: .utf8)!)
         let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
     }
@@ -306,7 +306,7 @@ class APIClient {
             "notificationId": notificationId,
             "action": action
         ]
-        
+        print(body)
         return try await postRequest(url: url, body: body)
     }
     
@@ -334,6 +334,17 @@ class APIClient {
         return try await postRequest(url: queryUrl, body: body)
     }
     
+    static func addInteraction(userId1: String, userId2: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/interactions/"
+        let body: Encodable = [
+            "user1_id": userId1,
+            "user2_id": userId2
+        ]
+        
+        return try await postRequest(url: url, body: body)
+    }
+    
+    
     static func getUserFromUsername(username: String) async throws -> UserResponse {
         let url = URL(string: "\(baseURL)/api/us/users/fetchFromUsername/\(username)")!
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -357,6 +368,7 @@ class APIClient {
         let decoded = try JSONDecoder().decode(PresignedPostUrlResponse.self, from: data)
         return decoded
     }
+    
     
     static func uploadImageToS3(userId: String, imageIndex: String, image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
         let userExists = try await fetchUser(userId: userId)
@@ -513,6 +525,15 @@ class APIClient {
         ]
         
         return try await deleteRequest(url: queryURL, body: body)
+    }
+    
+    static func deleteNotification(notificationId: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/connections/"
+        let body: Encodable = [
+            "notificationId": notificationId
+        ]
+        
+        return try await deleteRequest(url: url, body: body)
     }
     
 }
