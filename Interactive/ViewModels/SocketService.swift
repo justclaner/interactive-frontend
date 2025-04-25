@@ -17,9 +17,9 @@ class SocketService {
     private init() {
         self.manager = SocketManager(socketURL: URL(string: SocketClient.connectionURL)!, config: [.log(true), .compress])
         self.socket = manager.defaultSocket
-        print("attempting to connect via socket.io")
+        //print("attempting to connect via socket.io")
         self.socket.on(clientEvent: .connect) { data, ack in
-            print("socket connected")
+           // print("socket connected")
         }
         self.socket.connect()
     }

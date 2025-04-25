@@ -324,7 +324,7 @@ class APIClient {
             "notificationId": notificationId,
             "action": action
         ]
-        print(body)
+        //print(body)
         return try await postRequest(url: url, body: body)
     }
     
@@ -560,6 +560,16 @@ class APIClient {
         let url = "\(baseURL)/api/us/connections/"
         let body: Encodable = [
             "notificationId": notificationId
+        ]
+        
+        return try await deleteRequest(url: url, body: body)
+    }
+    
+    static func deleteInteraction(user1Id: String, user2Id: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/interactions/"
+        let body: Encodable = [
+            "user1_id": user1Id,
+            "user2_id": user2Id
         ]
         
         return try await deleteRequest(url: url, body: body)

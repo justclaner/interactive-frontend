@@ -19,8 +19,14 @@ struct ProfilePage: View {
     @State var interactions: Int = 0
     @State var imageLinks: [String] = []
     @State var networkLinks: [String] = []
-    @State var interactStatus: String = "Interact"
-//    @State var interactButtonColor: Color = interactStatus == "Interacting" ? Control.hexColor(hexCode: "#FFDD1A"): Color.white.opacity(0.55)
+    //'Interact' 'Interacting' 'Interaction Request Sent'
+    @State var interactionStatus: String = "Interact"
+//    @State var interactButtonColor: Color = interactionStatus == "Interacting" ? Control.hexColor(hexCode: "#FFDD1A"): Color.white.opacity(0.55)
+    
+    @State var cancelingInteraction: Bool = false
+    @State var cancelingInteractionRequest: Bool = false
+    
+    @State var notificationId: String?
     
     init(path: Binding<[String]>) {
         self._path = path
@@ -132,16 +138,16 @@ struct ProfilePage: View {
                 Button(action: {
                     handleSendingInteraction()
                 }) {
-                    Text(interactStatus)
+                    Text(interactionStatus)
                         .font(.system(size:1.3 * Control.tinyFontSize,weight:.semibold))
-                        .foregroundStyle(interactStatus == "Interacting"
+                        .foregroundStyle(interactionStatus == "Interacting"
                                          ? Color.black
                                          : Color.white)
                         .padding(Control.tinyFontSize)
                         .frame(maxWidth:.infinity,maxHeight:.infinity)
                 }
                 .frame(width:Control.maxWidth, height: Control.mediumHeight)
-                .background(interactStatus == "Interacting"
+                .background(interactionStatus == "Interacting"
                             ? Control.hexColor(hexCode: "#FFDD1A")
                             : Color.white.opacity(0.55))
                 .clipShape(RoundedRectangle(cornerRadius:20))
@@ -159,6 +165,18 @@ struct ProfilePage: View {
             }
             
             NavigationBar(path: $path)
+        }
+        .confirmationDialog("Are you sure you want to cancel the interaction?", isPresented: $cancelingInteraction) {
+            Button("Cancel Interaction") {
+                cancelingInteraction = false
+                cancelInteraction()
+            }
+        }
+        .confirmationDialog("Are you sure you want to cancel the interaction?", isPresented: $cancelingInteractionRequest) {
+            Button("Cancel Interaction Request") {
+                cancelingInteractionRequest = false
+                cancelInteractionRequest()
+            }
         }
 
     }
@@ -238,24 +256,27 @@ struct ProfilePage: View {
         Task {
             do {
                 let interactionResponse = try await APIClient.fetchInteraction(user1Id: Control.getUserId(), user2Id: userId)
-                //print(interactionResponse)
+                print("parameters")
+                print(Control.getUserId())
+                print(interactionResponse)
                 
                 if (!interactionResponse.success) {
                     return
                 }
                 if (interactionResponse.interaction == nil) {
-                    interactStatus = "Interact"
+                    interactionStatus = "Interact"
                 } else {
-                    interactStatus = "Interacting"
+                    interactionStatus = "Interacting"
                 }
                 
                 let interactionRequestResponse = try await APIClient.fetchInteractionRequest(senderId: Control.getUserId(), recipientId: userId)
-                //print(interactionRequestResponse)
+                print(interactionRequestResponse)
                 if (!interactionRequestResponse.success) {
                     return
                 }
-                if (interactStatus != "Interacting" && interactionRequestResponse.notification != nil) {
-                    interactStatus = "Interaction Request Sent"
+                if (interactionStatus != "Interacting" && interactionRequestResponse.notification != nil) {
+                    notificationId = interactionRequestResponse.notification!._id
+                    interactionStatus = "Interaction Request Sent"
                 }
             } catch {
                 print(error)
@@ -266,7 +287,7 @@ struct ProfilePage: View {
     func handleSendingInteraction() {
         Task {
             do {
-                if (interactStatus == "Interact") {
+                if (interactionStatus == "Interact") {
                     //send interaction request
                     let createInteractionResponse = try await APIClient.createInteractionRequest(senderId: Control.getUserId(), recipientId: userId)
                     if (!createInteractionResponse.success) {
@@ -279,19 +300,66 @@ struct ProfilePage: View {
                         "recipientId": userId
                     ]
                     socket.emit("sendNotification", body)
+                    interactionStatus = "Interaction Request Sent"
                     
-                } else if (interactStatus == "Interacting") {
+                } else if (interactionStatus == "Interacting") {
                     //stop interaction
+                    cancelingInteraction = true
                     
-                } else if (interactStatus == "Interaction Request Sent") {
+                } else if (interactionStatus == "Interaction Request Sent") {
                     //cancel interaction request
-                    
+                    cancelingInteractionRequest = true
                 }
             } catch {
                 print(error)
             }
         }
     }
+    
+    func cancelInteraction() {
+        Task {
+            do {
+                let deleteInteractionResponse = try await APIClient.deleteInteraction(user1Id: Control.getUserId(), user2Id: userId)
+                if (!deleteInteractionResponse.success) {
+                    return
+                }
+                //optionally send socket
+//                let body = [
+//                    "senderId": Control.getUserId(),
+//                    "recipientId": userId
+//                ]
+//                socket.emit("sendNotification", body)
+                interactionStatus = "Interact"
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func cancelInteractionRequest() {
+        Task {
+            do {
+                if (notificationId != nil) {
+                    let deleteNotificationResponse = try await APIClient.deleteNotification(notificationId: notificationId!)
+                    if (!deleteNotificationResponse.success) {
+                        return
+                    }
+                    let body = [
+                        "senderId": Control.getUserId(),
+                        "recipientId": userId
+                    ]
+                    socket.emit("sendNotification", body)
+                    
+                    await MainActor.run {
+                        interactionStatus = "Interact"
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
 }
 
 #Preview {

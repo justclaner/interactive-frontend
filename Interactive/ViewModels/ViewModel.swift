@@ -19,7 +19,7 @@ extension ContentView {
         var path: [String] = []
         let isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
         let debugPath = ["Home Page"]
-        let debugMode: Bool = true
+        let debugMode: Bool = false
         
 
         
