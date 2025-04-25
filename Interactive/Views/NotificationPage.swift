@@ -8,12 +8,10 @@
 import SwiftUI
 import SocketIO
 
-let manager = SocketManager(socketURL: URL(string: SocketClient.connectionURL)!, config: [.log(true), .compress])
-let socket: SocketIOClient = manager.defaultSocket
-
 struct NotificationPage: View {
     @Binding var path: [String]
     @State var notifications: [String] = []
+    @State var socket: SocketIOClient = SocketService.shared.socket
     
     var body: some View {
         ZStack {
@@ -41,41 +39,32 @@ struct NotificationPage: View {
                 Spacer();
             }
             .onTapGesture {
-                let testData = [
-                    "senderId": 5,
-                    "recipientId": 10
-                ]
-                print("sending data")
-                //socket.emit("sendNotification", testData)
+//                let testData = [
+//                    "senderId": 5,
+//                    "recipientId": 10
+//                ]
+//                print(socket)
+//                print("sending data")
+//                socket.emit("sendNotification", testData)
             }
             NavigationBar(path: $path)
         }
         .onAppear {
             getNotifications()
-            socket.connect()
 //            socket.on(clientEvent: .connect) {data, ack in
 //                print("socket connected")
 //            }
             socket.on("receiveNotification") {data, ack in
-                print(data[0])
+                //print(data[0])
                 getNotifications()
             }
             
             socket.on("acceptedInteraction") {data, ack in
-                Task {
-                    do {
-                        guard let dict = data[0] as? [String: Any] else {
-                                        print("Could not cast data[0] to dictionary")
-                                        return
-                                    }
-                        let jsonData = try JSONSerialization.data(withJSONObject: dict)
-                        let body = try JSONDecoder().decode(SocketClient.connectionBody.self, from: jsonData)
-                        if (body.senderId as String == Control.getUserId()) {
-                            getNotifications()
-                        }
-                    } catch {
-                        print(error)
-                    }
+                //print(data[0])
+                guard let dict = data[0] as? [String: Any] else { return }
+                let body = SocketClient.getData(dict: dict)
+                if (body != nil && body!.senderId == Control.getUserId()) {
+                    getNotifications()
                 }
             }
         }
@@ -100,5 +89,6 @@ struct NotificationPage: View {
 }
 
 #Preview {
-    NotificationPage(path: .constant(["Notifications"]))
+    NotificationPage(path: .constant(["Notifications"])
+    )
 }

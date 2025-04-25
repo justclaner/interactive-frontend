@@ -300,6 +300,24 @@ class APIClient {
         return decoded
     }
     
+    //gets interaction between two users if it exists
+    static func fetchInteraction(user1Id: String, user2Id: String) async throws -> InteractionResponse {
+        let url = URL(string: "\(baseURL)/api/us/interactions/\(user1Id)/\(user2Id)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(InteractionResponse.self, from: data)
+        return decoded
+    }
+    
+    //gets interaction request (notification) if it exists
+    static func fetchInteractionRequest(senderId: String, recipientId: String) async throws -> NotificationResponse {
+        let url = URL(string: "\(baseURL)/api/us/connections/existingRequest/\(senderId)/\(recipientId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(NotificationResponse.self, from: data)
+        return decoded
+    }
+    
     static func resolveNotification(notificationId: String, action: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/us/connections/resolve"
         let body: Encodable = [
@@ -334,7 +352,18 @@ class APIClient {
         return try await postRequest(url: queryUrl, body: body)
     }
     
-    static func addInteraction(userId1: String, userId2: String) async throws -> DefaultResponse {
+    static func createInteractionRequest(senderId: String, recipientId: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/connections/"
+        let body: Encodable = [
+            "senderId": senderId,
+            "recipientId": recipientId,
+            "action": "InteractRequest"
+        ]
+        
+        return try await postRequest(url: url, body: body)
+    }
+    
+    static func createInteraction(userId1: String, userId2: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/us/interactions/"
         let body: Encodable = [
             "user1_id": userId1,

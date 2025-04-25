@@ -7,6 +7,10 @@
 
 import Foundation
 import MapKit
+import SwiftUI
+import Combine
+
+
 
 extension ContentView {
     @Observable
@@ -16,6 +20,10 @@ extension ContentView {
         let isLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isLoggedIn")
         let debugPath = ["Home Page"]
         let debugMode: Bool = true
+        
+
+        
+        
         init() {
             self.initialPath = isLoggedIn ? ["Your Profile"] : ["Login"]
             self.path = debugMode ? debugPath : initialPath

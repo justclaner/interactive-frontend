@@ -166,7 +166,7 @@ struct Notification: View {
     func addInteraction() {
         Task {
             do {
-                let _response = try await APIClient.addInteraction(userId1: Control.getUserId(), userId2: userId)
+                let _ = try await APIClient.createInteraction(userId1: Control.getUserId(), userId2: userId)
             } catch {
                 print(error)
             }
@@ -176,7 +176,7 @@ struct Notification: View {
     func deleteAndUpdate() {
         Task {
             do {
-                let _deleteNotification = try await APIClient.deleteNotification(notificationId: notificationId)
+                let _ = try await APIClient.deleteNotification(notificationId: notificationId)
             
                 
                 let data = [
@@ -184,7 +184,6 @@ struct Notification: View {
                     "recipientId": userId
                     
                 ]
-                print(data)
                 socket.emit("acceptInteraction", data)
             } catch {
                 print(error)
@@ -197,5 +196,6 @@ struct Notification: View {
     Notification(notificationId: .constant("67f5da39528a58f2a31ebb16"), socket: .constant(
         SocketManager(socketURL: URL(string: "http://localhost:3002")!, config: [.log(true), .compress])
             .defaultSocket
-    ))
+        )
+    )
 }

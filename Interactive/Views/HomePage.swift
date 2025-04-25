@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SocketIO
 
 struct HomePage: View {
     
     @Binding var path: [String]
+    
     @State private var scrollOffset = 0.0
     @State private var visibleCardCount: Int = 6
     @State private var userIds: [String] = []
@@ -37,7 +39,9 @@ struct HomePage: View {
                     HStack(spacing: Control.smallFontSize) {
                         VStack(spacing: Control.smallFontSize) {
                             ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
-                                ProfileCard(userId: .constant(userIds[2*index]))
+                                ProfileCard(
+                                    userId: .constant(userIds[2*index])
+                                )
                                     .highPriorityGesture(
                                         TapGesture().onEnded {
                                             path.append("profile-\(userIds[2*index])")
