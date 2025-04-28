@@ -1,18 +1,16 @@
 //
-//  HomePage.swift
+//  ContactsPage.swift
 //  Interactive
 //
-//  Created by Justin Zou on 2/11/25.
+//  Created by Justin Zou on 4/28/25.
 //
 
 import SwiftUI
 
-struct HomePage: View {
-    
+struct ContactsPage: View {
     @Binding var path: [String]
     
     @State private var scrollOffset = 0.0
-    @State private var visibleCardCount: Int = 6
     @State private var userIds: [String] = []
     @State private var uniqueIds: Set<String> = []
     @GestureState private var dragOffset: CGSize = .zero
@@ -31,13 +29,13 @@ struct HomePage: View {
                    // print(scrollOffset)
                 }
             VStack(spacing: 0) {
-                Text("Home")
+                Text("Contacts")
                     .font(.system(size:Control.largeFontSize, weight: .bold))
                     .foregroundStyle(.white)
                 ScrollView(showsIndicators: false) {
                     HStack(spacing: Control.smallFontSize) {
                         VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
+                            ForEach(0..<userIds.count/2, id: \.self) { index in
                                 ProfileCard(
                                     userId: .constant(userIds[2*index])
                                 )
@@ -59,7 +57,7 @@ struct HomePage: View {
                         }
                         .contentShape(Rectangle())
                         VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
+                            ForEach(0..<userIds.count/2, id: \.self) { index in
                                 ProfileCard(userId: .constant(userIds[2*index + 1]))
                                     .highPriorityGesture(
                                         TapGesture().onEnded {
@@ -95,13 +93,6 @@ struct HomePage: View {
                         }
                         return Color.clear
                     })
-                    
-                    PlusIcon()
-                        .padding([.top], Control.largeFontSize)
-                        .padding([.bottom], 0.75 * Control.navigationBarHeight)
-                        .onTapGesture {
-                            visibleCardCount += 6
-                        }
                 }
                 .coordinateSpace(name: "scroll")
                 .padding()
@@ -121,19 +112,32 @@ struct HomePage: View {
     private func updateUserIds() -> Void {
         Task {
             do {
-                let nearbyUsers = try await APIClient.fetchNearbyUsers()
-                print(nearbyUsers)
-                if (nearbyUsers.success) {
-                    userIds = []
-                    uniqueIds = []
-                    let locations = nearbyUsers.locations!
-                    locations.forEach { location in
-                        if (!uniqueIds.contains(location.user_id) && location.user_id != UserDefaults.standard.string(forKey: "userId")!) {
-                            uniqueIds.insert(location.user_id)
-                            userIds.append(location.user_id)
+                let contactsResponse = try await APIClient.fetchContacts(userId: Control.getUserId())
+                if (contactsResponse.success) {
+                    let contacts = contactsResponse.interactions!
+                    contacts.forEach { interaction in
+                        if (!uniqueIds.contains(interaction.user1_id) && interaction.user1_id != Control.getUserId()) {
+                            uniqueIds.insert(interaction.user1_id)
+                            userIds.append(interaction.user1_id)
+                        } else if (!uniqueIds.contains(interaction.user2_id) && interaction.user2_id != Control.getUserId()) {
+                            uniqueIds.insert(interaction.user2_id)
+                            userIds.append(interaction.user2_id)
                         }
                     }
                 }
+                
+//                let nearbyUsers = try await APIClient.fetchNearbyUsers()
+//                if (nearbyUsers.success) {
+//                    userIds = []
+//                    uniqueIds = []
+//                    let locations = nearbyUsers.locations!
+//                    locations.forEach { location in
+//                        if (!uniqueIds.contains(location.user_id) && location.user_id != UserDefaults.standard.string(forKey: "userId")!) {
+//                            uniqueIds.insert(location.user_id)
+//                            userIds.append(location.user_id)
+//                        }
+//                    }
+//                }
             } catch {
                 print(error)
             }
@@ -142,6 +146,6 @@ struct HomePage: View {
 }
 
 #Preview {
-    HomePage(path: .constant(["Home Page"]))
+    ContactsPage(path: .constant(["Contacts Page"]))
         .ignoresSafeArea(.keyboard)
 }

@@ -104,6 +104,7 @@ struct ProfileCard: View {
                     let networkResponse = try await APIClient.fetchUserNetworksFromId(userId: userId)
                     if (networkResponse.success) {
                         if (networkResponse.socialMediaLinks != nil) {
+                            networkLinks = [];
                             networkResponse.socialMediaLinks!.forEach { socialMediaLink in
                                 networkLinks.append(socialMediaLink.social_media_url)
                             }

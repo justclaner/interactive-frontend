@@ -176,7 +176,6 @@ struct SettingsPage: View {
                     .padding([.top], Control.largeFontSize * 2)
                     Spacer()
                 }
-                .border(Color.red, width: 2)
             }   //end of scrollview
                 
                 Spacer()

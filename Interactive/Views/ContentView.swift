@@ -64,6 +64,9 @@ struct ContentView: View {
                 } else if (page == "Notifications") {
                     NotificationPage(path: $viewModel.path)
                         .navigationBarBackButtonHidden(true)
+                } else if (page == "Contacts") {
+                    ContactsPage(path: $viewModel.path)
+                        .navigationBarBackButtonHidden(true)
                 }
                 else {
                     Text("You selected \(page)")

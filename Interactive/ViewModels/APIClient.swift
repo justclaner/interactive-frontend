@@ -318,6 +318,14 @@ class APIClient {
         return decoded
     }
     
+    static func fetchContacts(userId: String) async throws -> InteractionResponse {
+        let url = URL(string: "\(baseURL)/api/us/interactions/\(userId)")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let decoded = try JSONDecoder().decode(InteractionResponse.self, from: data)
+        return decoded
+    }
+    
     static func resolveNotification(notificationId: String, action: String) async throws -> DefaultResponse {
         let url = "\(baseURL)/api/us/connections/resolve"
         let body: Encodable = [

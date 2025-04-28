@@ -12,7 +12,7 @@ struct NavigationBar: View {
     @State var activePresence: Bool = false
     @State var inHome: Bool = false
     @State var inNotifications: Bool = false
-    @State var inFeed: Bool = false
+    @State var inContacts: Bool = false
     @State var inSettings: Bool = false
     var body: some View {
         VStack {
@@ -66,9 +66,12 @@ struct NavigationBar: View {
                         }
                         .transition(.opacity)
                     Spacer()
-                    Image(inFeed ? "feed_full" : "feed_blank")
+                    Image(inContacts ? "contacts_full" : "contacts_blank")
                         .resizable()
                         .frame(width: Control.navigationIconSize, height: Control.navigationIconSize)
+                        .onTapGesture {
+                            path = ["Contacts"]
+                        }
                     Spacer()
                     Image(inSettings ? "settings_full" : "settings_blank")
                         .resizable()
@@ -93,6 +96,8 @@ struct NavigationBar: View {
                 inSettings = true
             } else if (path.last! == "Notifications") {
                 inNotifications = true
+            } else if (path.last! == "Contacts") {
+                inContacts = true;
             }
         }
     }
