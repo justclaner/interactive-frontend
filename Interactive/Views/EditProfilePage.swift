@@ -412,6 +412,9 @@ struct EditProfilePage: View {
                                 .frame(width:91,alignment:.leading)
                         }
                         .padding([.leading],10)
+                        .onAppear {
+                            getVisitorsAndInteractions()
+                        }
                         Spacer()
                     }
                     .frame(maxWidth:Control.maxWidth)
@@ -655,6 +658,21 @@ struct EditProfilePage: View {
                 print(deleteResponse)
                 if (deleteResponse.success) {
                     data.loadImages(userId: UserDefaults.standard.string(forKey: "userId") ?? "");
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func getVisitorsAndInteractions() {
+        Task {
+            do {
+                let userResponse = try await APIClient.getUserFromUsername(username: username)
+                if (userResponse.success) {
+                    let userData = userResponse.user!
+                    visitors = userData.visitors!
+                    interactions = userData.interactions!
                 }
             } catch {
                 print(error)

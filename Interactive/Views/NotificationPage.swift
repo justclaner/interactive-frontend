@@ -66,6 +66,7 @@ struct NotificationPage: View {
                 if (body != nil && body!.senderId == Control.getUserId()) {
                     getNotifications()
                 }
+                Control.updateTwoUserInteractions(userId1: body!.senderId, userId2: body!.recipientId)
             }
         }
     }

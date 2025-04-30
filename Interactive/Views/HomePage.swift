@@ -28,83 +28,90 @@ struct HomePage: View {
                         .ignoresSafeArea()
                 )
                 .onTapGesture {
-                   // print(scrollOffset)
+                   print("test")
                 }
             VStack(spacing: 0) {
                 Text("Home")
                     .font(.system(size:Control.largeFontSize, weight: .bold))
                     .foregroundStyle(.white)
-                ScrollView(showsIndicators: false) {
-                    HStack(spacing: Control.smallFontSize) {
-                        VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
-                                ProfileCard(
-                                    userId: .constant(userIds[2*index])
-                                )
-                                    .highPriorityGesture(
-                                        TapGesture().onEnded {
-                                            path.append("profile-\(userIds[2*index])")
-                                        }
+                ScrollViewReader { proxy in
+                    ScrollView(showsIndicators: false) {
+                        HStack(spacing: Control.smallFontSize) {
+                            VStack(spacing: Control.smallFontSize) {
+                                ForEach(0..<min(visibleCardCount / 2, userIds.count/2), id: \.self) { index in
+                                    ProfileCard(
+                                        userId: .constant(userIds[2*index])
                                     )
+                                        .highPriorityGesture(
+                                            TapGesture().onEnded {
+                                                path.append("profile-\(userIds[2*index])")
+                                            }
+                                        )
+                                }
+                                if (userIds.count % 2 == 1) {
+                                    ProfileCard(userId: .constant(userIds[userIds.count - 1]))
+                                        .highPriorityGesture(
+                                            TapGesture().onEnded {
+                                                path.append("profile-\(userIds[userIds.count - 1])")
+                                            }
+                                        )
+                                }
+                                Spacer()
                             }
-                            if (userIds.count % 2 == 1) {
-                                ProfileCard(userId: .constant(userIds[userIds.count - 1]))
-                                    .highPriorityGesture(
-                                        TapGesture().onEnded {
-                                            path.append("profile-\(userIds[userIds.count - 1])")
-                                        }
-                                    )
+                            .contentShape(Rectangle())
+                            VStack(spacing: Control.smallFontSize) {
+                                ForEach(0..<min(visibleCardCount / 2, userIds.count/2), id: \.self) { index in
+                                    ProfileCard(userId: .constant(userIds[2*index + 1]))
+                                        .highPriorityGesture(
+                                            TapGesture().onEnded {
+                                                path.append("profile-\(userIds[2*index + 1])")
+                                            }
+                                        )
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .contentShape(Rectangle())
                         }
                         .contentShape(Rectangle())
-                        VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<min(userIds.count/2, visibleCardCount/2), id: \.self) { index in
-                                ProfileCard(userId: .constant(userIds[2*index + 1]))
-                                    .highPriorityGesture(
-                                        TapGesture().onEnded {
-                                            path.append("profile-\(userIds[2*index + 1])")
-                                        }
-                                    )
-                            }
-                            Spacer()
-                        }
-                        .contentShape(Rectangle())
-                    }
-                    .contentShape(Rectangle())
-                    
-//                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: Control.tinyFontSize) {
-//                        ForEach(0..<min(visibleCardCount, userLinks.count), id: \.self) {index in
-//                            ProfileCard(userId: .constant(userLinks[index]))
+//                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: Control.tinyFontSize) {
+//                            ForEach(0..<min(visibleCardCount, userIds.count), id: \.self) {index in
+//                                ProfileCard(userId: .constant(userIds[index]))
+//                                    .highPriorityGesture(
+//                                        TapGesture().onEnded {
+//                                            path.append("profile-\(userIds[userIds.count - 1])")
+//                                        }
+//                                    )
+//                            }
 //                        }
-//                    }
-                    .background(GeometryReader { proxy -> Color in
-                        DispatchQueue.main.async {
-                            scrollOffset = -proxy.frame(in: .named("scroll")).origin.y
-                            if (!isLoading && scrollOffset < -100) {
-                                isLoading = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                                    print("updating user ids")
-                                    updateUserIds()
+                        .background(GeometryReader { proxy -> Color in
+                            DispatchQueue.main.async {
+                                scrollOffset = -proxy.frame(in: .named("scroll")).origin.y
+                                if (!isLoading && scrollOffset < -100) {
+                                    isLoading = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                        print("updating user ids")
+                                        updateUserIds()
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        isLoading = false
+                                    }
                                 }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                                    isLoading = false
-                                }
+                                //print(scrollOffset)
                             }
-                        //print(scrollOffset)
-                        }
-                        return Color.clear
-                    })
-                    
-                    PlusIcon()
-                        .padding([.top], Control.largeFontSize)
-                        .padding([.bottom], 0.75 * Control.navigationBarHeight)
-                        .onTapGesture {
-                            visibleCardCount += 6
-                        }
+                            return Color.clear
+                        })
+                        
+                        
+                        PlusIcon()
+                            .padding([.top], Control.largeFontSize)
+                            .padding([.bottom], 0.75 * Control.navigationBarHeight)
+                            .onTapGesture {
+                                visibleCardCount += 6
+                            }
+                    }
+                    .coordinateSpace(name: "scroll")
+                    .padding()
                 }
-                .coordinateSpace(name: "scroll")
-                .padding()
 //                .onScrollPhaseChange { oldPhase, newPhase in
 //                            print(newPhase)
 //                        }
@@ -130,7 +137,8 @@ struct HomePage: View {
                     locations.forEach { location in
                         if (!uniqueIds.contains(location.user_id) && location.user_id != UserDefaults.standard.string(forKey: "userId")!) {
                             uniqueIds.insert(location.user_id)
-                            userIds.append(location.user_id)
+                            //userIds.append(location.user_id)
+                            userIds.append(contentsOf: Array(repeating: location.user_id, count: 20))
                         }
                     }
                 }

@@ -157,10 +157,6 @@ struct ProfilePage: View {
                 .padding([.bottom], 0.9 * Control.navigationBarHeight)
             }
             .onAppear {
-                //TO-DO: add API calls to increase visitor/interactions
-                if (Control.getUserId() != userId) {
-                    
-                }
                 getUserData()
             }
             
@@ -181,13 +177,13 @@ struct ProfilePage: View {
 
     }
     func getUserData() {
-        getImages()
+        handleInteractionStatus()
         
-        getTextData()
+        getImages()
         
         getNetwork()
         
-        handleInteractionStatus()
+        getTextData()
     }
     
     func getImages() {
@@ -226,9 +222,17 @@ struct ProfilePage: View {
                         username = userResponse.user!.username
                         bio = userResponse.user!.biography ?? ""
                         visitors = userResponse.user!.visitors ?? 0
-                        interactions = userResponse.user!.visitors ?? 0
+                        interactions = userResponse.user!.interactions ?? 0
+                    }
+                    print(Control.getUserId())
+                    print(userId)
+                    if (Control.getUserId() != userId) {
+                        let response = try await APIClient.updateVisitors(userId: userId, visitors: String(visitors + 1))
+                        visitors += 1
                     }
                 }
+                
+                
             } catch {
                 print(error)
             }
@@ -255,6 +259,8 @@ struct ProfilePage: View {
     func handleInteractionStatus() {
         Task {
             do {
+                Control.updateTwoUserInteractions(userId1: Control.getUserId(), userId2: userId)
+
                 let interactionResponse = try await APIClient.fetchInteraction(user1Id: Control.getUserId(), user2Id: userId)
                 print("parameters")
                 print(Control.getUserId())
@@ -319,10 +325,13 @@ struct ProfilePage: View {
     func cancelInteraction() {
         Task {
             do {
+                
                 let deleteInteractionResponse = try await APIClient.deleteInteraction(user1Id: Control.getUserId(), user2Id: userId)
                 if (!deleteInteractionResponse.success) {
                     return
                 }
+                Control.updateTwoUserInteractions(userId1: Control.getUserId(), userId2: userId)
+                interactions -= 1
                 //optionally send socket
 //                let body = [
 //                    "senderId": Control.getUserId(),

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContactsPage: View {
     @Binding var path: [String]
-    
+    @State private var visibleCardCount: Int = 6
     @State private var scrollOffset = 0.0
     @State private var userIds: [String] = []
     @State private var uniqueIds: Set<String> = []
@@ -35,7 +35,7 @@ struct ContactsPage: View {
                 ScrollView(showsIndicators: false) {
                     HStack(spacing: Control.smallFontSize) {
                         VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<userIds.count/2, id: \.self) { index in
+                            ForEach(0..<min(visibleCardCount / 2, userIds.count / 2), id: \.self) { index in
                                 ProfileCard(
                                     userId: .constant(userIds[2*index])
                                 )
@@ -57,7 +57,7 @@ struct ContactsPage: View {
                         }
                         .contentShape(Rectangle())
                         VStack(spacing: Control.smallFontSize) {
-                            ForEach(0..<userIds.count/2, id: \.self) { index in
+                            ForEach(0..<min(visibleCardCount / 2, userIds.count / 2), id: \.self) { index in
                                 ProfileCard(userId: .constant(userIds[2*index + 1]))
                                     .highPriorityGesture(
                                         TapGesture().onEnded {
@@ -72,8 +72,13 @@ struct ContactsPage: View {
                     .contentShape(Rectangle())
                     
 //                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: Control.tinyFontSize) {
-//                        ForEach(0..<min(visibleCardCount, userLinks.count), id: \.self) {index in
-//                            ProfileCard(userId: .constant(userLinks[index]))
+//                        ForEach(0..<userIds.count, id: \.self) {index in
+//                            ProfileCard(userId: .constant(userIds[index]))
+//                                .highPriorityGesture(
+//                                    TapGesture().onEnded {
+//                                        path.append("profile-\(userIds[userIds.count - 1])")
+//                                    }
+//                                )
 //                        }
 //                    }
                     .background(GeometryReader { proxy -> Color in
@@ -99,12 +104,20 @@ struct ContactsPage: View {
 //                .onScrollPhaseChange { oldPhase, newPhase in
 //                            print(newPhase)
 //                        }
+                
+                PlusIcon()
+                    .padding([.top], Control.largeFontSize)
+                    .padding([.bottom], 0.75 * Control.navigationBarHeight)
+                    .onTapGesture {
+                        visibleCardCount += 6
+                    }
                 Spacer()
                 
             }
             NavigationBar(path: $path)
         }
         .onAppear {
+            print("loaded contacts page")
             updateUserIds()
         }
     }
@@ -114,6 +127,8 @@ struct ContactsPage: View {
             do {
                 let contactsResponse = try await APIClient.fetchContacts(userId: Control.getUserId())
                 if (contactsResponse.success) {
+                    userIds = []
+                    uniqueIds = []
                     let contacts = contactsResponse.interactions!
                     contacts.forEach { interaction in
                         if (!uniqueIds.contains(interaction.user1_id) && interaction.user1_id != Control.getUserId()) {

@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = true
+    static let localTesting: Bool = false
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool
@@ -210,8 +210,20 @@ class APIClient {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "PUT"
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
-
+        
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
+        let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
+        return decoded
+    }
+    
+    static func putRequestNoBody(url: String) async throws -> DefaultResponse {
+        let urlString = URL(string: url)!
+        
+        var request = URLRequest(url: urlString)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "PUT"
+        
+        let (data, _) = try await URLSession.shared.upload(for: request, from: Data())
         let decoded = try JSONDecoder().decode(DefaultResponse.self, from: data)
         return decoded
     }
@@ -270,16 +282,16 @@ class APIClient {
             "longitude": UserDefaults.standard.double(forKey: "long"),
             "maxDistance": 250
         ]
-
+        
         let encoded = try Control.encode(jsonBody: body)
         
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-    
+        
         let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
         let decoded = try JSONDecoder().decode(UserLocationResponse.self, from: data)
-
+        
         return decoded
     }
     
@@ -406,7 +418,6 @@ class APIClient {
         return decoded
     }
     
-    
     static func uploadImageToS3(userId: String, imageIndex: String, image: UIImage, presignedPostResult: PresignedPostUrlResponse) async throws -> Void {
         let userExists = try await fetchUser(userId: userId)
         if (userExists.success == false) {
@@ -531,6 +542,32 @@ class APIClient {
             "longitude": String(UserDefaults.standard.double(forKey:"long"))
         ]
         return try await putRequest(url: url, body: body)
+    }
+    
+    
+    static func updateVisitors(userId: String, visitors: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/users/update/visitors"
+        let body: Encodable = [
+            "userId": userId,
+            "visitors": visitors
+        ]
+        
+        return try await putRequest(url: url, body: body)
+    }
+    
+    static func updateInteractionsSpecificUser(userId: String) async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/users/update/interactions"
+        let body: Encodable = [
+            "userId": userId
+        ]
+        
+        return try await putRequest(url: url, body: body)
+    }
+    
+    static func updateInteractions() async throws -> DefaultResponse {
+        let url = "\(baseURL)/api/us/users/update/interactions";
+        
+        return try await putRequestNoBody(url: url)
     }
     
     static func fetchUserImages(userId: String) async throws -> UserImagesResponse {

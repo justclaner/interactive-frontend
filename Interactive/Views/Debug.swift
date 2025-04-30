@@ -72,11 +72,13 @@ struct Debug: View {
        // print(UserDefaults.standard.dictionaryRepresentation())
 
        // print(Array(stride(from: 0, through: 10, by: 2)))
-        print(5/2)
         Task {
             do {
+                let response = try await APIClient.putRequestNoBody(url: "http://localhost:3000/api/us/users/test/test")
                // let response = try await APIClient.fetchNearbyUsers()
-               // print(response)
+               print(response)
+            } catch {
+                print(error)
             }
         }
         

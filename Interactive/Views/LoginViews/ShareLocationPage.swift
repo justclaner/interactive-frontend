@@ -38,7 +38,7 @@ struct ShareLocationPage: View {
                     .frame(maxWidth:Control.maxWidth,alignment:.leading)
                 
                 Group {
-                    Text("Interactive is based on presence.")
+                    Text("Interactive is based on presence. ")
                         .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     +
@@ -50,7 +50,7 @@ struct ShareLocationPage: View {
                 .padding([.bottom],20)
                 
                 Group {
-                    Text("There is no map:")
+                    Text("There are no maps. ")
                         .font(.system(size:Control.tinyFontSize,weight:.regular))
                         .foregroundStyle(Control.hexColor(hexCode: "#FFDD1A"))
                     +

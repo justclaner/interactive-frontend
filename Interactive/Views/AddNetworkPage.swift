@@ -51,7 +51,7 @@ struct AddNetworkPage: View {
                     .foregroundColor(Control.hexColor(hexCode: "#B3B3B3")))
                     .foregroundStyle(.white)
                     .padding(Control.tinyFontSize)
-                    .frame(width:Control.maxWidth,height:Control.maxHeight)
+                    .frame(width:Control.maxWidth,height:Control.largeFontSize)
                     .border(Color.black,width:1)
                     .clipShape(RoundedRectangle(cornerRadius:8))
                     .overlay(RoundedRectangle(cornerRadius: 8)

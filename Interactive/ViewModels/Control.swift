@@ -325,9 +325,20 @@ class Control {
     }
     
     static let updateLocationFrequencyInSeconds: TimeInterval = 5
-    static let updatingLocation: Bool = false
+    static let updatingLocation: Bool = true
     
     static func getUserId() -> String {
         return UserDefaults.standard.string(forKey:"userId") ?? ""
+    }
+    
+    static func updateTwoUserInteractions(userId1: String, userId2: String) {
+        Task {
+            do {
+                let _ = try await APIClient.updateInteractionsSpecificUser(userId: userId1)
+                let _ = try await APIClient.updateInteractionsSpecificUser(userId: userId2)
+            } catch {
+                print(error)
+            }
+        }
     }
 }
