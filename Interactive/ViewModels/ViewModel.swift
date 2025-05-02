@@ -35,10 +35,11 @@ extension ContentView {
         
         let updateLocationTimer = Timer.scheduledTimer(withTimeInterval: Control.updateLocationFrequencyInSeconds, repeats: true) { timer in
             if (Control.updatingLocation) {
-                print("updating location in ViewModel")
+                //print("updating location in ViewModel")
                 Task {
                     do {
                         let updateLocation = try await APIClient.updateLocation()
+                        print(updateLocation)
                         if (!updateLocation.success) {
                             print(updateLocation)
                         }

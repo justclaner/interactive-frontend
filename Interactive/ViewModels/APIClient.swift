@@ -11,7 +11,7 @@ import UIKit
 
 
 class APIClient {
-    static let localTesting: Bool = false
+    static let localTesting: Bool = true
     static let baseURL: String = localTesting ? "http://localhost:3000" : "https://interactive-backend-eight.vercel.app"
     struct UsersResponse: Decodable {
         let success: Bool

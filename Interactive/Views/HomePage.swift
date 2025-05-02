@@ -137,8 +137,8 @@ struct HomePage: View {
                     locations.forEach { location in
                         if (!uniqueIds.contains(location.user_id) && location.user_id != UserDefaults.standard.string(forKey: "userId")!) {
                             uniqueIds.insert(location.user_id)
-                            //userIds.append(location.user_id)
-                            userIds.append(contentsOf: Array(repeating: location.user_id, count: 20))
+                            userIds.append(location.user_id)
+//                            userIds.append(contentsOf: Array(repeating: location.user_id, count: 10))
                         }
                     }
                 }
